@@ -1,0 +1,27 @@
+{
+  parserClass="com.raket.silverstripe.parser.SilverStripeParser"
+  stubParserClass="com.raket.silverstripe.parser.GeneratedParserUtilBase"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="SilverStripe"
+  psiImplClassSuffix="Impl"
+  psiPackage="com.raket.silverstripe.psi"
+  psiImplPackage="com.raket.silverstripe.psi.impl"
+
+  elementTypeHolderClass="com.raket.silverstripe.psi.SilverStripeTypes"
+  elementTypeClass="com.raket.silverstripe.psi.SilverStripeElementType"
+  tokenTypeClass="com.raket.silverstripe.psi.SilverStripeTokenType"
+  psiImplUtilClass="com.raket.silverstripe.psi.impl.SilverStripePsiImplUtil"
+}
+
+silverstripeFile ::= item_*
+outer_wrapper ::= item_*
+
+private item_ ::= (COMMENT|CRLF|CONTENT|ss_block_start_statement|ss_block_simple_statement|ss_block_end_statement|SS_VAR|SS_VAR_DELIMITER|SS_BAD_VAR)
+
+ss_block_start_statement ::= (SS_BLOCK_START SS_START_KEYWORD SS_BLOCK_VAR SS_BLOCK_END)  {methods=[getKeyword]}
+ss_block_simple_statement ::= (SS_BLOCK_START SS_SIMPLE_KEYWORD SS_BLOCK_VAR? SS_BLOCK_END) {methods=[getKeyword]}
+ss_block_end_statement ::= (SS_BLOCK_START SS_END_KEYWORD SS_BLOCK_END) {methods=[getKeyword]}
+ss_var_statement ::= (SS_VAR_DELIMITER SS_VAR SS_VAR_DELIMITER)
+ss_block_statement ::= ()
