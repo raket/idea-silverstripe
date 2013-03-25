@@ -46,5 +46,8 @@
     <lang.fileViewProviderFactory language="SilverStripe" implementationClass="com.raket.silverstripe.file.SilverStripeFileViewProviderFactory"/>
     <lang.foldingBuilder language="SilverStripe"
                            implementationClass="com.raket.silverstripe.editor.folding.SilverStripeFoldingBuilder" />
+    <!--
+    <lang.formatter language="SilverStripe" implementationClass="com.intellij.lang.html.HtmlFormattingModelBuilder"/>
+    -->
   </extensions>
 </idea-plugin>

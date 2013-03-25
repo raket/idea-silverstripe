@@ -1,7 +1,14 @@
 <html>
 <head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Test</title>
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width">
+<link rel="stylesheet" href="css/main.css">
 </head>
 <body class="my-class">
+<p>
 # You are reading the ".properties" entry.
 ! The exclamation mark can also mark text as comments.
 website = http://en.wikipedia.org/
@@ -10,6 +17,8 @@ language = English
 # the value onto the next line.
 message = Welcome to \
           Wikipedia!
+</p>
+<p>
 # Add spaces to the key
 key\ with\ spaces = This is the value that could be looked up with the key "key with spaces".
 # Unicode
@@ -17,6 +26,7 @@ tab : \u0009
 Variable $Var
 Variable in quote "$Var"
 Delimited variable {$Var}
+</p>
 <% loop $Var %>
     Variable $Var
     <% if $Var %>
@@ -28,6 +38,14 @@ Delimited variable {$Var}
     <% if $Var %>
     <% end_if %>
 $Var
+// Simple string translation
+<%t Namespace.Entity "String to translate" %>
+
+// Using the natural languate comment parameter to supply additional context information to translators
+<%t SearchResults.NoResult "There are no results matching your query." is "A message displayed to users when the search produces no results." %>
+
+// Using injection to add variables into the translated strings (note that $Name and $Greeting must be available in the current template scope).
+<%t Header.Greeting "Hello {name} {greeting}" name=$Name greeting=$Greeting %>
 <% if $Var %>
 <script>
 	window.FBUserStatus = false;

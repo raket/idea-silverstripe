@@ -77,7 +77,7 @@ SS_BLOCK_VAR=(\$?[a-zA-Z]+)((\((\"|\')?[a-zA-Z]+(\"|\')?\))|\.|([a-zA-Z]+))*
 %state SS_BLOCK_START
 %state SS_BLOCK_VAR
 %state SS_BAD_VAR
-%state SS_BAD_BLOCK_VAR
+%state SS_BAD_BLOCK_STATEMENT
 %%
 
 <YYINITIAL> {
@@ -109,6 +109,7 @@ SS_BLOCK_VAR=(\$?[a-zA-Z]+)((\((\"|\')?[a-zA-Z]+(\"|\')?\))|\.|([a-zA-Z]+))*
 <SS_BLOCK_START> {SS_START_KEYWORD}                         { yybegin(SS_BLOCK_VAR); return SilverStripeTypes.SS_START_KEYWORD; }
 <SS_BLOCK_START> {SS_SIMPLE_KEYWORD}                        { yybegin(SS_BLOCK_VAR); return SilverStripeTypes.SS_SIMPLE_KEYWORD; }
 <SS_BLOCK_START> {SS_END_KEYWORD}                           { yybegin(SS_BLOCK_VAR); return SilverStripeTypes.SS_END_KEYWORD; }
+<SS_BLOCK_START> .                                          { yybegin(SS_BAD_BLOCK_STATEMENT); yypushback(1); }
 
 <SS_VAR> {
 	{SS_VAR} {
@@ -129,6 +130,10 @@ SS_BLOCK_VAR=(\$?[a-zA-Z]+)((\((\"|\')?[a-zA-Z]+(\"|\')?\))|\.|([a-zA-Z]+))*
 	}
     {SS_BLOCK_END}                                          { yybegin(YYINITIAL); return SilverStripeTypes.SS_BLOCK_END; }
 }
+<SS_BAD_BLOCK_STATEMENT> {
+    ~"%>"  { yybegin(SS_BLOCK_VAR); yypushback(2); return SilverStripeTypes.SS_BAD_BLOCK_STATEMENT; }
+}
+
 {CRLF}                                                      { yybegin(YYINITIAL); return SilverStripeTypes.CRLF; }
 {WHITE_SPACE}+                                              { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
 .                                                           { return TokenType.BAD_CHARACTER; }

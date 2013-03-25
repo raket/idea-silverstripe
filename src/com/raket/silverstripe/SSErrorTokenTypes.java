@@ -23,9 +23,10 @@ public class SSErrorTokenTypes {
 	}
 
 	static {
-		ERROR_TOKENS = TokenSet.create(SS_BAD_VAR);
+		ERROR_TOKENS = TokenSet.create(SS_BAD_VAR, SS_BAD_BLOCK_STATEMENT);
 		ERROR_TOKEN_MESSAGES = new HashMap<IElementType, String>();
 		ERROR_TOKEN_MESSAGES.put(SS_BAD_VAR, message("ss.parsing.bad.var"));
 		ERROR_TOKEN_MESSAGES.put(SS_VAR_STATEMENT, message("ss.parsing.missing.delimiter"));
+		ERROR_TOKEN_MESSAGES.put(SS_BAD_BLOCK_STATEMENT, message("ss.parsing.bad.block.statement"));
 	}
 }

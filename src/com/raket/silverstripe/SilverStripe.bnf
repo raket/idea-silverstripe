@@ -18,7 +18,7 @@
 silverstripeFile ::= item_*
 outer_wrapper ::= item_*
 
-private item_ ::= (COMMENT|CRLF|CONTENT|ss_block_start_statement|ss_block_simple_statement|ss_block_end_statement|SS_VAR|SS_VAR_DELIMITER|SS_BAD_VAR)
+private item_ ::= (COMMENT|CRLF|CONTENT|ss_block_start_statement|ss_block_simple_statement|ss_block_end_statement|SS_VAR|SS_VAR_DELIMITER|SS_BAD_VAR|SS_BAD_BLOCK_STATEMENT)
 
 ss_block_start_statement ::= (SS_BLOCK_START SS_START_KEYWORD SS_BLOCK_VAR SS_BLOCK_END)  {methods=[getKeyword]}
 ss_block_simple_statement ::= (SS_BLOCK_START SS_SIMPLE_KEYWORD SS_BLOCK_VAR? SS_BLOCK_END) {methods=[getKeyword]}

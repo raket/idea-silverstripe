@@ -18,6 +18,7 @@ public interface SilverStripeTypes {
   IElementType COMMENT = new SilverStripeTokenType("COMMENT");
   IElementType CONTENT = new SilverStripeTokenType("CONTENT");
   IElementType CRLF = new SilverStripeTokenType("CRLF");
+  IElementType SS_BAD_BLOCK_STATEMENT = new SilverStripeTokenType("SS_BAD_BLOCK_STATEMENT");
   IElementType SS_BAD_VAR = new SilverStripeTokenType("SS_BAD_VAR");
   IElementType SS_BLOCK_END = new SilverStripeTokenType("SS_BLOCK_END");
   IElementType SS_BLOCK_START = new SilverStripeTokenType("SS_BLOCK_START");

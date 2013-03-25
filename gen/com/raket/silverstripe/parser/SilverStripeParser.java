@@ -57,7 +57,7 @@ public class SilverStripeParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // COMMENT|CRLF|CONTENT|ss_block_start_statement|ss_block_simple_statement|ss_block_end_statement|SS_VAR|SS_VAR_DELIMITER|SS_BAD_VAR
+  // COMMENT|CRLF|CONTENT|ss_block_start_statement|ss_block_simple_statement|ss_block_end_statement|SS_VAR|SS_VAR_DELIMITER|SS_BAD_VAR|SS_BAD_BLOCK_STATEMENT
   static boolean item_(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "item_")) return false;
     boolean result_ = false;
@@ -71,6 +71,7 @@ public class SilverStripeParser implements PsiParser {
     if (!result_) result_ = consumeToken(builder_, SS_VAR);
     if (!result_) result_ = consumeToken(builder_, SS_VAR_DELIMITER);
     if (!result_) result_ = consumeToken(builder_, SS_BAD_VAR);
+    if (!result_) result_ = consumeToken(builder_, SS_BAD_BLOCK_STATEMENT);
     if (!result_) {
       marker_.rollbackTo();
     }
