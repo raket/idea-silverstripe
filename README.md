@@ -34,15 +34,15 @@ There's a variety of ways you can help this project out:
 * Contributing without coding
     * [File issues](https://github.com/raket/idea-silverstripe/issues/new) for bugs, suggestions and requests.  This is a great and easy way to help out.
 * Contributing code
-    * The [developer setup instructions](https://github.com/dmarcotte/idea-handlebars/blob/master/developer_environment.md) provided by @dmarcotte should get you up and running in no time
-    * Look at [contrib-welcome issues](https://github.com/raket/idea-silverstripe/issues?direction=desc&labels=contrib-welcome&page=1&sort=created&state=open) for ideas, or [submit an idea of your own](https://github.com/raket/idea-silverstripe/issues/new)
+    * The [developer setup instructions](https://github.com/dmarcotte/idea-handlebars/blob/master/developer_environment.md) provided by [@dmarcotte](https://github.com/dmarcotte) should get you up and running in no time
+    * Look at [contrib-welcome issues](https://github.com/raket/idea-silverstripe/issues?direction=desc&labels=contrib-welcome&page=1&sort=created&state=open) for ideas, or [submit an idea of your own](https://github.com/raket/idea-silverstripe/issues/new).
 
 ## Acknowledgements
 A big thank you goes out to [Daniel Marcotte](https://github.com/dmarcotte) and his [Handlebars plugin](https://github.com/dmarcotte/idea-handlebars).
-Without his help this plugin would never have seen the light of day and he is totally awesome. Thank you @dmarcotte!
+Without his help this plugin would never have seen the light of day and he is totally awesome. Thank you [@dmarcotte](https://github.com/dmarcotte)!
 Head on over and fork his modules and give him some love. This will hopefully be enough to make him forgive me for stealing his readme as a basis for my own.
 I'm sorry but it was just so good!
 
 Thank you also to @juzna for his [Latte in IntelliJ IDEA / PhpStorm](https://github.com/juzna/intellij-latte) with its simpler parser implementation which gave me enough confidence to roll my own.
 Last but not least a big thank you to the [SilverStripe team](https://github.com/silverstripe) and its community for making an awesome framework and CMS.
-Hopefully this plugin will help SilverStripe developers with template development.
+Hopefully this plugin will help SilverStripe developers with their template development.
