@@ -6,7 +6,7 @@ The primary focus is PHPStorm since SilverStripe is a PHP framework but the plug
 ## Installing
 * To install the latest release, download this repo and install this plugin using your IDE's plugin manager:
   * In Settings->Plugins, choose "Install plugin from disk...".  Point it to the SilverStripe.jar file and restart the IDE.
-  * If you have already added `*.ss` files to your file types manually you need to remove it for the plugin to work. Go to `Settings->File Types` types and remove `*.ss` from the file type you added it to (most likely html).
+  * If you have already added `*.ss` files to your file types manually you need to remove it for the plugin to work. Go to `Settings->File Types` and remove `*.ss` from the file type you added it to (most likely html).
 
 ## Features
 * Basic syntax error highlighting with wanrings for mismatching blocks and unclosed blocks.
