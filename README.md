@@ -1,11 +1,12 @@
 # [SilverStripe](http://silverstripe.org/) template plugin for Jetbrains IDEs
 
-IDEA-SilverStripe adds support for [SilverStripe](http://silverstripe.org/) templates to IDEs based on the Intellij IDEA platform (IntelliJ IDEA, IDEA Community Edition, RubyMine, PhpStorm, WebStorm, PyCharm, AppCode).
+IDEA-SilverStripe adds support for [SilverStripe](http://silverstripe.org/) templates to IDEs based on the IntelliJ IDEA platform (IntelliJ IDEA, IDEA Community Edition, RubyMine, PhpStorm, WebStorm, PyCharm, AppCode).
 The primary focus is PHPStorm since SilverStripe is a PHP framework but the plugin should work in all the versions.
 
 ## Installing
 * To install the latest release, download this repo and install this plugin using your IDE's plugin manager:
   * In Settings->Plugins, choose "Install plugin from disk...".  Point it to the SilverStripe.jar file and restart the IDE.
+  * If you have already added `*.ss` files to your file types manually you need to remove it for the plugin to work. Go to `Settings->File Types` types and remove `*.ss` from the file type you added it to (most likely html).
 
 ## Features
 * Basic syntax error highlighting with wanrings for mismatching blocks and unclosed blocks.
@@ -34,7 +35,8 @@ There's a variety of ways you can help this project out:
 * Contributing without coding
     * [File issues](https://github.com/raket/idea-silverstripe/issues/new) for bugs, suggestions and requests.  This is a great and easy way to help out.
 * Contributing code
-    * The [developer setup instructions](https://github.com/dmarcotte/idea-handlebars/blob/master/developer_environment.md) provided by [@dmarcotte](https://github.com/dmarcotte) should get you up and running in no time
+    * The awesome [developer setup instructions](https://github.com/dmarcotte/idea-handlebars/blob/master/developer_environment.md) provided by [@dmarcotte](https://github.com/dmarcotte) should get you up and running in no time.
+    * After the initial setup clone or fork this repo and create an IntelliJ IDEA plugin project. When the project is created you need to mark the gen package and the resources package as source roots for the project to compile properly.
     * Look at [contrib-welcome issues](https://github.com/raket/idea-silverstripe/issues?direction=desc&labels=contrib-welcome&page=1&sort=created&state=open) for ideas, or [submit an idea of your own](https://github.com/raket/idea-silverstripe/issues/new).
 
 ## Acknowledgements
