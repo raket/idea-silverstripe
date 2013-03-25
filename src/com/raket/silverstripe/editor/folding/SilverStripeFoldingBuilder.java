@@ -32,8 +32,8 @@ public class SilverStripeFoldingBuilder implements FoldingBuilder, DumbAware {
 
 		if (SilverStripeTypes.SS_BLOCK_STATEMENT == node.getElementType()) {
 
-			ASTNode endOpenBlockStache = getOpenBlockCloseStacheElement(node.getFirstChildNode());
-			ASTNode endCloseBlockStache = getCloseBlockCloseStacheElement(node.getLastChildNode());
+			ASTNode endOpenBlockStache = getOpenBlockCloseElement(node.getFirstChildNode());
+			ASTNode endCloseBlockStache = getCloseBlockCloseElement(node.getLastChildNode());
 
 			// if we've got a well formed block with the open and close elems we need, define a region to fold
 			if (endOpenBlockStache != null && endCloseBlockStache != null) {
@@ -59,32 +59,32 @@ public class SilverStripeFoldingBuilder implements FoldingBuilder, DumbAware {
 		}
 	}
 
-	private ASTNode getOpenBlockCloseStacheElement(ASTNode node) {
+	private ASTNode getOpenBlockCloseElement(ASTNode node) {
 		ASTNode contentNode = node.getFirstChildNode();
 		if (contentNode == null || contentNode.getElementType() != SilverStripeTypes.SS_BLOCK_START_STATEMENT) {
 			return null;
 		}
 
-		ASTNode endOpenStache = contentNode.getLastChildNode();
-		if (endOpenStache == null || endOpenStache.getElementType() != SilverStripeTypes.SS_BLOCK_END) {
+		ASTNode endOpenStatement = contentNode.getLastChildNode();
+		if (endOpenStatement == null || endOpenStatement.getElementType() != SilverStripeTypes.SS_BLOCK_END) {
 			return null;
 		}
 
-		return endOpenStache;
+		return endOpenStatement;
 	}
 
-	private ASTNode getCloseBlockCloseStacheElement(ASTNode node) {
+	private ASTNode getCloseBlockCloseElement(ASTNode node) {
 		ASTNode contentNode = node.getFirstChildNode();
 		if (contentNode == null || contentNode.getElementType() != SilverStripeTypes.SS_BLOCK_END_STATEMENT) {
 			return null;
 		}
 
-		ASTNode endCloseStache = contentNode.getLastChildNode();
-		if (endCloseStache == null || endCloseStache.getElementType() != SilverStripeTypes.SS_BLOCK_END) {
+		ASTNode endCloseStatement = contentNode.getLastChildNode();
+		if (endCloseStatement == null || endCloseStatement.getElementType() != SilverStripeTypes.SS_BLOCK_END) {
 			return null;
 		}
 
-		return endCloseStache;
+		return endCloseStatement;
 	}
 
 	@Nullable
