@@ -38,6 +38,9 @@ Delimited variable {$Var}
     <% if $Var %>
     <% end_if %>
 $Var
+// SilverStripe comment
+<%-- This is a comment --%>
+
 // Simple string translation
 <%t Namespace.Entity "String to translate" %>
 

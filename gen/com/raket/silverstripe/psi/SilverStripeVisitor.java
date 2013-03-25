@@ -31,6 +31,10 @@ public class SilverStripeVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitSsCommentStatement(@NotNull SilverStripeSsCommentStatement o) {
+    visitPsiElement(o);
+  }
+
   public void visitSsFragment(@NotNull SilverStripeSsFragment o) {
     visitPsiElement(o);
   }

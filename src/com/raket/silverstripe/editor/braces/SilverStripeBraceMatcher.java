@@ -22,12 +22,14 @@ public class SilverStripeBraceMatcher implements BraceMatcher {
 		SS_BLOCK_START,
 		SS_BLOCK_START_START,
 		SS_BLOCK_SIMPLE_START,
-		SS_VAR_START_DELIMITER
+		SS_VAR_START_DELIMITER,
+		SS_COMMENT_START
 	);
 
 	private static final TokenSet RIGHT_BRACES = TokenSet.create(
 		SS_BLOCK_END,
-		SS_VAR_END_DELIMITER
+		SS_VAR_END_DELIMITER,
+		SS_COMMENT_END
 	);
 
 	/*
@@ -49,6 +51,8 @@ public class SilverStripeBraceMatcher implements BraceMatcher {
 
 	@Override
 	public boolean isLBraceToken(HighlighterIterator iterator, CharSequence fileText, FileType fileType) {
+		// Comments are never nested blocks
+		if (iterator.getTokenType() == SS_COMMENT_START) return true;
 		if (!LEFT_BRACES.contains(iterator.getTokenType())) {
 			// definitely not a left brace
 			return false;
@@ -82,8 +86,8 @@ public class SilverStripeBraceMatcher implements BraceMatcher {
 
 	@Override
 	public boolean isRBraceToken(HighlighterIterator iterator, CharSequence fileText, FileType fileType) {
-		//return RIGHT_BRACES.contains(iterator.getTokenType());
-
+		// Comments are never nested blocks
+		if (iterator.getTokenType() == SS_COMMENT_END) return true;
 		if (!RIGHT_BRACES.contains(iterator.getTokenType())) {
 			// definitely not a right brace
 			return false;

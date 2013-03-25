@@ -7,7 +7,7 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
-import com.raket.silverstripe.psi.SilverStripeTypes;
+import static com.raket.silverstripe.psi.SilverStripeTypes.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,10 +30,30 @@ public class SilverStripeFoldingBuilder implements FoldingBuilder, DumbAware {
 			return;
 		}
 
-		if (SilverStripeTypes.SS_BLOCK_STATEMENT == node.getElementType()) {
+		if (SS_BLOCK_STATEMENT == node.getElementType()) {
 
 			ASTNode endOpenBlockStache = getOpenBlockCloseElement(node.getFirstChildNode());
 			ASTNode endCloseBlockStache = getCloseBlockCloseElement(node.getLastChildNode());
+
+			// if we've got a well formed block with the open and close elems we need, define a region to fold
+			if (endOpenBlockStache != null && endCloseBlockStache != null) {
+				int endOfFirstOpenStacheLine
+						= document.getLineEndOffset(document.getLineNumber(node.getTextRange().getStartOffset()));
+
+				// we set the start of the text we'll fold to be just before the close braces of the open stache,
+				//     or, if the open stache spans multiple lines, to the end of the first line
+				int foldingRangeStartOffset = Math.min(endOpenBlockStache.getTextRange().getStartOffset(), endOfFirstOpenStacheLine);
+				// we set the end of the text we'll fold to be just before the final close braces in this block
+				int foldingRangeEndOffset = endCloseBlockStache.getTextRange().getStartOffset();
+
+				TextRange range = new TextRange(foldingRangeStartOffset, foldingRangeEndOffset);
+
+				descriptors.add(new FoldingDescriptor(node, range));
+			}
+		}
+		else if (SS_COMMENT_STATEMENT == node.getElementType()) {
+			ASTNode endOpenBlockStache = node.getFirstChildNode();
+			ASTNode endCloseBlockStache = node.getLastChildNode();
 
 			// if we've got a well formed block with the open and close elems we need, define a region to fold
 			if (endOpenBlockStache != null && endCloseBlockStache != null) {
@@ -61,12 +81,12 @@ public class SilverStripeFoldingBuilder implements FoldingBuilder, DumbAware {
 
 	private ASTNode getOpenBlockCloseElement(ASTNode node) {
 		ASTNode contentNode = node.getFirstChildNode();
-		if (contentNode == null || contentNode.getElementType() != SilverStripeTypes.SS_BLOCK_START_STATEMENT) {
+		if (contentNode == null || contentNode.getElementType() != SS_BLOCK_START_STATEMENT) {
 			return null;
 		}
 
 		ASTNode endOpenStatement = contentNode.getLastChildNode();
-		if (endOpenStatement == null || endOpenStatement.getElementType() != SilverStripeTypes.SS_BLOCK_END) {
+		if (endOpenStatement == null || endOpenStatement.getElementType() != SS_BLOCK_END) {
 			return null;
 		}
 
@@ -75,12 +95,12 @@ public class SilverStripeFoldingBuilder implements FoldingBuilder, DumbAware {
 
 	private ASTNode getCloseBlockCloseElement(ASTNode node) {
 		ASTNode contentNode = node.getFirstChildNode();
-		if (contentNode == null || contentNode.getElementType() != SilverStripeTypes.SS_BLOCK_END_STATEMENT) {
+		if (contentNode == null || contentNode.getElementType() != SS_BLOCK_END_STATEMENT) {
 			return null;
 		}
 
 		ASTNode endCloseStatement = contentNode.getLastChildNode();
-		if (endCloseStatement == null || endCloseStatement.getElementType() != SilverStripeTypes.SS_BLOCK_END) {
+		if (endCloseStatement == null || endCloseStatement.getElementType() != SS_BLOCK_END) {
 			return null;
 		}
 

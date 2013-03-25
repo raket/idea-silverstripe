@@ -14,6 +14,7 @@ public interface SilverStripeTypes {
   IElementType SS_BLOCK_SIMPLE_STATEMENT = new SilverStripeElementType("SS_BLOCK_SIMPLE_STATEMENT");
   IElementType SS_BLOCK_START_STATEMENT = new SilverStripeElementType("SS_BLOCK_START_STATEMENT");
   IElementType SS_BLOCK_STATEMENT = new SilverStripeElementType("SS_BLOCK_STATEMENT");
+  IElementType SS_COMMENT_STATEMENT = new SilverStripeElementType("SS_COMMENT_STATEMENT");
   IElementType SS_FRAGMENT = new SilverStripeElementType("SS_FRAGMENT");
   IElementType SS_VAR_STATEMENT = new SilverStripeElementType("SS_VAR_STATEMENT");
 
@@ -27,6 +28,8 @@ public interface SilverStripeTypes {
   IElementType SS_BLOCK_START = new SilverStripeTokenType("SS_BLOCK_START");
   IElementType SS_BLOCK_START_START = new SilverStripeTokenType("SS_BLOCK_START_START");
   IElementType SS_BLOCK_VAR = new SilverStripeTokenType("SS_BLOCK_VAR");
+  IElementType SS_COMMENT_END = new SilverStripeTokenType("SS_COMMENT_END");
+  IElementType SS_COMMENT_START = new SilverStripeTokenType("SS_COMMENT_START");
   IElementType SS_END_KEYWORD = new SilverStripeTokenType("SS_END_KEYWORD");
   IElementType SS_SIMPLE_KEYWORD = new SilverStripeTokenType("SS_SIMPLE_KEYWORD");
   IElementType SS_START_KEYWORD = new SilverStripeTokenType("SS_START_KEYWORD");
@@ -54,6 +57,9 @@ public interface SilverStripeTypes {
       }
       else if (type == SS_BLOCK_STATEMENT) {
         return new SilverStripeSsBlockStatementImpl(node);
+      }
+      else if (type == SS_COMMENT_STATEMENT) {
+        return new SilverStripeSsCommentStatementImpl(node);
       }
       else if (type == SS_FRAGMENT) {
         return new SilverStripeSsFragmentImpl(node);

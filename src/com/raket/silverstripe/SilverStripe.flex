@@ -72,6 +72,8 @@ SS_START_KEYWORD= loop | if | else_if | else | with | control
 SS_SIMPLE_KEYWORD= include | base_tag
 SS_END_KEYWORD= end_loop | end_if | end_with | end_control
 SS_BLOCK_VAR=(\$?[a-zA-Z]+)((\((\"|\')?[a-zA-Z]+(\"|\')?\))|\.|([a-zA-Z]+))*
+SS_COMMENT_START= <%--
+SS_COMMENT_END= --%>
 
 %state SS_VAR
 %state SS_WITH_DELIMITER
@@ -79,6 +81,7 @@ SS_BLOCK_VAR=(\$?[a-zA-Z]+)((\((\"|\')?[a-zA-Z]+(\"|\')?\))|\.|([a-zA-Z]+))*
 %state SS_BLOCK_VAR
 %state SS_BAD_VAR
 %state SS_BAD_BLOCK_STATEMENT
+%state SS_COMMENT
 %%
 
 <YYINITIAL> {
@@ -110,7 +113,12 @@ SS_BLOCK_VAR=(\$?[a-zA-Z]+)((\((\"|\')?[a-zA-Z]+(\"|\')?\))|\.|([a-zA-Z]+))*
 <SS_BLOCK_START> {SS_START_KEYWORD}                         { yybegin(SS_BLOCK_VAR); return SilverStripeTypes.SS_START_KEYWORD; }
 <SS_BLOCK_START> {SS_SIMPLE_KEYWORD}                        { yybegin(SS_BLOCK_VAR); return SilverStripeTypes.SS_SIMPLE_KEYWORD; }
 <SS_BLOCK_START> {SS_END_KEYWORD}                           { yybegin(SS_BLOCK_VAR); return SilverStripeTypes.SS_END_KEYWORD; }
+<SS_BLOCK_START> {SS_COMMENT_START}                         { yybegin(SS_COMMENT); return SilverStripeTypes.SS_COMMENT_START; }
 <SS_BLOCK_START> .                                          { yybegin(SS_BAD_BLOCK_STATEMENT); yypushback(1); }
+
+<SS_COMMENT> {
+                 ~"--%>"                                      { yybegin(SS_BLOCK_VAR); yypushback(4); return SilverStripeTypes.COMMENT; }
+}
 
 <SS_VAR> {
 	{SS_VAR} {
@@ -130,6 +138,7 @@ SS_BLOCK_VAR=(\$?[a-zA-Z]+)((\((\"|\')?[a-zA-Z]+(\"|\')?\))|\.|([a-zA-Z]+))*
         yybegin(SS_BLOCK_VAR); return checkBlockVariable(SilverStripeTypes.SS_BLOCK_VAR, SilverStripeTypes.SS_BAD_VAR);
 	}
     {SS_BLOCK_END}                                          { yybegin(YYINITIAL); return SilverStripeTypes.SS_BLOCK_END; }
+    {SS_COMMENT_END}                                        { yybegin(YYINITIAL); return SilverStripeTypes.SS_COMMENT_END; }
 }
 <SS_BAD_BLOCK_STATEMENT> {
     ~"%>"  { yybegin(SS_BLOCK_VAR); yypushback(2); return SilverStripeTypes.SS_BAD_BLOCK_STATEMENT; }

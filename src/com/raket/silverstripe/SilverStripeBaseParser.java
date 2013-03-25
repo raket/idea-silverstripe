@@ -100,7 +100,7 @@ public class SilverStripeBaseParser implements PsiParser {
 		while(!builder.eof()) {
 			type = builder.getTokenType();
 			parseResult = new ParseResult();
-			if (type == SS_BLOCK_START) {
+			if (type == SS_BLOCK_START || type == SS_COMMENT_START) {
 				tokenValue = getNextTokenValue(builder);
 				parseResult = parseStatementsBlock(builder, tokenValue);
 				if (parseResult.success)
@@ -224,6 +224,10 @@ public class SilverStripeBaseParser implements PsiParser {
 			IElementType[] tokensToConsume = {SS_BLOCK_SIMPLE_START, SS_SIMPLE_KEYWORD, SS_BLOCK_VAR, SS_BLOCK_END};
             result = createBlock(builder, SS_BLOCK_SIMPLE_STATEMENT, tokensToConsume, TokenSet.create(SS_BLOCK_VAR));
         }
+		else if (builder.getTokenType() == SS_COMMENT_START) {
+			IElementType[] tokensToConsume = {SS_COMMENT_START, SS_COMMENT_END};
+			result = createBlock(builder, SS_COMMENT_STATEMENT, tokensToConsume, TokenSet.create());
+		}
 
 		parseResult.marker = marker;
 		parseResult.success = result;

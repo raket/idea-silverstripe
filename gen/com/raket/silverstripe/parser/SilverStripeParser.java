@@ -41,6 +41,9 @@ public class SilverStripeParser implements PsiParser {
     else if (root_ == SS_BLOCK_STATEMENT) {
       result_ = ss_block_statement(builder_, level_ + 1);
     }
+    else if (root_ == SS_COMMENT_STATEMENT) {
+      result_ = ss_comment_statement(builder_, level_ + 1);
+    }
     else if (root_ == SS_FRAGMENT) {
       result_ = ss_fragment(builder_, level_ + 1);
     }
@@ -63,7 +66,9 @@ public class SilverStripeParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // COMMENT|CRLF|CONTENT|ss_block_start_statement|ss_block_simple_statement|ss_block_end_statement|SS_VAR|SS_VAR_START_DELIMITER|SS_VAR_END_DELIMITER|SS_BAD_VAR|SS_BLOCK_START_START|SS_BLOCK_SIMPLE_START
+  // COMMENT|CRLF|CONTENT|ss_block_start_statement|ss_block_simple_statement|ss_block_end_statement
+  // 	|SS_VAR|SS_VAR_START_DELIMITER|SS_VAR_END_DELIMITER|SS_BAD_VAR|SS_BLOCK_START_START|SS_BLOCK_SIMPLE_START
+  // 	|SS_COMMENT_START|SS_COMMENT_END
   static boolean item_(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "item_")) return false;
     boolean result_ = false;
@@ -80,6 +85,8 @@ public class SilverStripeParser implements PsiParser {
     if (!result_) result_ = consumeToken(builder_, SS_BAD_VAR);
     if (!result_) result_ = consumeToken(builder_, SS_BLOCK_START_START);
     if (!result_) result_ = consumeToken(builder_, SS_BLOCK_SIMPLE_START);
+    if (!result_) result_ = consumeToken(builder_, SS_COMMENT_START);
+    if (!result_) result_ = consumeToken(builder_, SS_COMMENT_END);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -198,6 +205,13 @@ public class SilverStripeParser implements PsiParser {
   // ()
   public static boolean ss_block_statement(PsiBuilder builder_, int level_) {
     builder_.mark().done(SS_BLOCK_STATEMENT);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // ()
+  public static boolean ss_comment_statement(PsiBuilder builder_, int level_) {
+    builder_.mark().done(SS_COMMENT_STATEMENT);
     return true;
   }
 

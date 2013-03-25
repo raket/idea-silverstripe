@@ -19,7 +19,7 @@ public class SilverStripeColorSettingsPage implements ColorSettingsPage {
             new AttributesDescriptor("Value", SilverStripeSyntaxHighlighter.VALUE),
             new AttributesDescriptor("Delimiter", SilverStripeSyntaxHighlighter.SS_BLOCK),
             new AttributesDescriptor("Keyword", SilverStripeSyntaxHighlighter.SS_KEYWORD),
-            new AttributesDescriptor("Variable", SilverStripeSyntaxHighlighter.SS_BLOCK_VAR),
+            new AttributesDescriptor("Variable", SilverStripeSyntaxHighlighter.SS_BLOCK_VAR_KEY),
     };
 
     @Nullable
