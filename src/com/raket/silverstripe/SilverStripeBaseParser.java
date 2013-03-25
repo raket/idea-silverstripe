@@ -189,7 +189,7 @@ public class SilverStripeBaseParser implements PsiParser {
 		rb.rollbackTo();
 		return returnString;
 	}
-
+	// TODO Remove token remapping. Brace matcher does its magic before the parser is invoked.
     private ParseResult parseStatementsBlock(PsiBuilder builder, String tokenValue) {
         PsiBuilder.Marker marker = builder.mark();
         IElementType nextToken = builder.lookAhead(1);
