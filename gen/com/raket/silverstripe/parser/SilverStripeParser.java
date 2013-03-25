@@ -26,6 +26,9 @@ public class SilverStripeParser implements PsiParser {
     if (root_ == OUTER_WRAPPER) {
       result_ = outer_wrapper(builder_, level_ + 1);
     }
+    else if (root_ == SS_BAD_BLOCK_STATEMENT) {
+      result_ = ss_bad_block_statement(builder_, level_ + 1);
+    }
     else if (root_ == SS_BLOCK_END_STATEMENT) {
       result_ = ss_block_end_statement(builder_, level_ + 1);
     }
@@ -37,6 +40,9 @@ public class SilverStripeParser implements PsiParser {
     }
     else if (root_ == SS_BLOCK_STATEMENT) {
       result_ = ss_block_statement(builder_, level_ + 1);
+    }
+    else if (root_ == SS_FRAGMENT) {
+      result_ = ss_fragment(builder_, level_ + 1);
     }
     else if (root_ == SS_VAR_STATEMENT) {
       result_ = ss_var_statement(builder_, level_ + 1);
@@ -57,7 +63,7 @@ public class SilverStripeParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // COMMENT|CRLF|CONTENT|ss_block_start_statement|ss_block_simple_statement|ss_block_end_statement|SS_VAR|SS_VAR_DELIMITER|SS_BAD_VAR|SS_BAD_BLOCK_STATEMENT
+  // COMMENT|CRLF|CONTENT|ss_block_start_statement|ss_block_simple_statement|ss_block_end_statement|SS_VAR|SS_VAR_START_DELIMITER|SS_VAR_END_DELIMITER|SS_BAD_VAR|SS_BLOCK_START_START|SS_BLOCK_SIMPLE_START
   static boolean item_(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "item_")) return false;
     boolean result_ = false;
@@ -69,9 +75,11 @@ public class SilverStripeParser implements PsiParser {
     if (!result_) result_ = ss_block_simple_statement(builder_, level_ + 1);
     if (!result_) result_ = ss_block_end_statement(builder_, level_ + 1);
     if (!result_) result_ = consumeToken(builder_, SS_VAR);
-    if (!result_) result_ = consumeToken(builder_, SS_VAR_DELIMITER);
+    if (!result_) result_ = consumeToken(builder_, SS_VAR_START_DELIMITER);
+    if (!result_) result_ = consumeToken(builder_, SS_VAR_END_DELIMITER);
     if (!result_) result_ = consumeToken(builder_, SS_BAD_VAR);
-    if (!result_) result_ = consumeToken(builder_, SS_BAD_BLOCK_STATEMENT);
+    if (!result_) result_ = consumeToken(builder_, SS_BLOCK_START_START);
+    if (!result_) result_ = consumeToken(builder_, SS_BLOCK_SIMPLE_START);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -120,13 +128,20 @@ public class SilverStripeParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // SS_BLOCK_START SS_END_KEYWORD SS_BLOCK_END
+  // ()
+  public static boolean ss_bad_block_statement(PsiBuilder builder_, int level_) {
+    builder_.mark().done(SS_BAD_BLOCK_STATEMENT);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // SS_BLOCK_END_START SS_END_KEYWORD SS_BLOCK_END
   public static boolean ss_block_end_statement(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "ss_block_end_statement")) return false;
-    if (!nextTokenIs(builder_, SS_BLOCK_START)) return false;
+    if (!nextTokenIs(builder_, SS_BLOCK_END_START)) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, SS_BLOCK_START, SS_END_KEYWORD, SS_BLOCK_END);
+    result_ = consumeTokens(builder_, 0, SS_BLOCK_END_START, SS_END_KEYWORD, SS_BLOCK_END);
     if (result_) {
       marker_.done(SS_BLOCK_END_STATEMENT);
     }
@@ -187,13 +202,20 @@ public class SilverStripeParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // SS_VAR_DELIMITER SS_VAR SS_VAR_DELIMITER
+  // ()
+  public static boolean ss_fragment(PsiBuilder builder_, int level_) {
+    builder_.mark().done(SS_FRAGMENT);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // SS_VAR_START_DELIMITER SS_VAR SS_VAR_END_DELIMITER
   public static boolean ss_var_statement(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "ss_var_statement")) return false;
-    if (!nextTokenIs(builder_, SS_VAR_DELIMITER)) return false;
+    if (!nextTokenIs(builder_, SS_VAR_START_DELIMITER)) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, SS_VAR_DELIMITER, SS_VAR, SS_VAR_DELIMITER);
+    result_ = consumeTokens(builder_, 0, SS_VAR_START_DELIMITER, SS_VAR, SS_VAR_END_DELIMITER);
     if (result_) {
       marker_.done(SS_VAR_STATEMENT);
     }

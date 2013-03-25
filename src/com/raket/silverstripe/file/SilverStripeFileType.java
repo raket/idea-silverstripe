@@ -35,7 +35,7 @@ public class SilverStripeFileType extends LanguageFileType implements TemplateLa
     @NotNull
     @Override
     public String getName() {
-        return "SilverStripe template file";
+        return "SilverStripe";
     }
 
     @NotNull

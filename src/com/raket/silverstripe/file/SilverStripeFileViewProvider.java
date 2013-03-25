@@ -84,7 +84,7 @@ public class SilverStripeFileViewProvider extends MultiplePsiFilesPerDocumentFil
         Language templateDataLanguage = getTemplateDataLanguage(myManager, myFile);
         if (lang == templateDataLanguage) {
             PsiFileImpl file = (PsiFileImpl) parserDefinition.createFile(this);
-            file.setContentElementType(new TemplateDataElementType("SS_TEMPLATE_DATA", templateDataLanguage, SilverStripeTypes.CONTENT, SilverStripeTypes.OUTER_WRAPPER));
+            file.setContentElementType(new TemplateDataElementType("SS_TEMPLATE_DATA", templateDataLanguage, SilverStripeTypes.CONTENT, SilverStripeTypes.SS_FRAGMENT));
             return file;
         } else if (lang == SilverStripeLanguage.INSTANCE) {
             return parserDefinition.createFile(this);

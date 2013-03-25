@@ -106,7 +106,7 @@ public class SilverStripeBaseParser implements PsiParser {
 				if (parseResult.success)
 					buildStatementsBlock(builder, tokenValue, parseResult);
 			}
-			else if (type == SS_VAR_DELIMITER) {
+			else if (type == SS_VAR_START_DELIMITER) {
 				parseResult = parseVarStatement(builder, type);
 			}
 			if (!parseResult.success)
@@ -128,7 +128,7 @@ public class SilverStripeBaseParser implements PsiParser {
 		ParseResult parseResult = new ParseResult();
 		boolean tokensConsumed;
 		IElementType varKeyword = builder.lookAhead(1);
-		IElementType[] varTokens = {SS_VAR_DELIMITER, varKeyword, SS_VAR_DELIMITER};
+		IElementType[] varTokens = {SS_VAR_START_DELIMITER, varKeyword, SS_VAR_END_DELIMITER};
 		PsiBuilder.Marker varMarker = builder.mark();
 
 		tokensConsumed = consumeTokens(builder, varTokens, TokenSet.create());
@@ -201,11 +201,13 @@ public class SilverStripeBaseParser implements PsiParser {
 
 		if (nextToken == SS_START_KEYWORD) {
 			IElementType varToken = builder.lookAhead(2);
-			IElementType[] tokensToConsume = {SS_BLOCK_START, SS_START_KEYWORD, varToken, SS_BLOCK_END};
+			builder.remapCurrentToken(SS_BLOCK_START_START);
+			IElementType[] tokensToConsume = {SS_BLOCK_START_START, SS_START_KEYWORD, varToken, SS_BLOCK_END};
 			result = createBlock(builder, SS_BLOCK_START_STATEMENT, tokensToConsume, TokenSet.create());
         }
         else if (nextToken == SS_END_KEYWORD) {
-			IElementType[] tokensToConsume = {SS_BLOCK_START, SS_END_KEYWORD, SS_BLOCK_END};
+			builder.remapCurrentToken(SS_BLOCK_END_START);
+			IElementType[] tokensToConsume = {SS_BLOCK_END_START, SS_END_KEYWORD, SS_BLOCK_END};
             result = createBlock(builder, SS_BLOCK_END_STATEMENT, tokensToConsume, TokenSet.create());
 
 			// Was this end block expected? If not it needs to be marked as an error
@@ -218,7 +220,8 @@ public class SilverStripeBaseParser implements PsiParser {
 			}
         }
         else if (nextToken == SS_SIMPLE_KEYWORD) {
-			IElementType[] tokensToConsume = {SS_BLOCK_START, SS_SIMPLE_KEYWORD, SS_BLOCK_VAR, SS_BLOCK_END};
+			builder.remapCurrentToken(SS_BLOCK_SIMPLE_START);
+			IElementType[] tokensToConsume = {SS_BLOCK_SIMPLE_START, SS_SIMPLE_KEYWORD, SS_BLOCK_VAR, SS_BLOCK_END};
             result = createBlock(builder, SS_BLOCK_SIMPLE_STATEMENT, tokensToConsume, TokenSet.create(SS_BLOCK_VAR));
         }
 

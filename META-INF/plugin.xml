@@ -49,5 +49,6 @@
     <!--
     <lang.formatter language="SilverStripe" implementationClass="com.intellij.lang.html.HtmlFormattingModelBuilder"/>
     -->
+    <braceMatcher filetype="SilverStripe" implementationClass="com.raket.silverstripe.editor.braces.SilverStripeBraceMatcher"/>
   </extensions>
 </idea-plugin>

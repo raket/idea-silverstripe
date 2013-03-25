@@ -11,6 +11,10 @@ public class SilverStripeVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitSsBadBlockStatement(@NotNull SilverStripeSsBadBlockStatement o) {
+    visitPsiElement(o);
+  }
+
   public void visitSsBlockEndStatement(@NotNull SilverStripeSsBlockEndStatement o) {
     visitPsiElement(o);
   }
@@ -24,6 +28,10 @@ public class SilverStripeVisitor extends PsiElementVisitor {
   }
 
   public void visitSsBlockStatement(@NotNull SilverStripeSsBlockStatement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSsFragment(@NotNull SilverStripeSsFragment o) {
     visitPsiElement(o);
   }
 

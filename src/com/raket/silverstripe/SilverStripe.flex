@@ -64,7 +64,8 @@ SEPARATOR=[:=]
 KEY_CHARACTER=[^:=\ \n\r\t\f\\] | "\\"{CRLF} | "\\".
 
 SS_VAR= (\$[a-zA-Z]+)((\((\"|\')?[a-zA-Z]+(\"|\')?\))|\.|([a-zA-Z]+))*
-SS_VAR_DELIMITER= \{ | \}
+SS_VAR_START_DELIMITER= \{
+SS_VAR_END_DELIMITER= \}
 SS_BLOCK_START= <%
 SS_BLOCK_END= %>
 SS_START_KEYWORD= loop | if | else_if | else | with | control
@@ -115,13 +116,13 @@ SS_BLOCK_VAR=(\$?[a-zA-Z]+)((\((\"|\')?[a-zA-Z]+(\"|\')?\))|\.|([a-zA-Z]+))*
 	{SS_VAR} {
         yybegin(YYINITIAL); return checkVariable(SilverStripeTypes.SS_VAR, SilverStripeTypes.SS_BAD_VAR);
 	}
-	{SS_VAR_DELIMITER}                                       { yybegin(SS_WITH_DELIMITER); return SilverStripeTypes.SS_VAR_DELIMITER; }
+	{SS_VAR_START_DELIMITER}                                       { yybegin(SS_WITH_DELIMITER); return SilverStripeTypes.SS_VAR_START_DELIMITER; }
 }
 <SS_WITH_DELIMITER> {
 	{SS_VAR} {
         yybegin(SS_WITH_DELIMITER); return checkVariable(SilverStripeTypes.SS_VAR, SilverStripeTypes.SS_BAD_VAR);
 	}
-	{SS_VAR_DELIMITER}                                       { yybegin(YYINITIAL); return SilverStripeTypes.SS_VAR_DELIMITER; }
+	{SS_VAR_END_DELIMITER}                                       { yybegin(YYINITIAL); return SilverStripeTypes.SS_VAR_END_DELIMITER; }
 }
 <SS_BLOCK_VAR> {
     {WHITE_SPACE}+                                          { yybegin(SS_BLOCK_VAR); return TokenType.WHITE_SPACE; }
