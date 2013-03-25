@@ -16,16 +16,15 @@ import static com.raket.silverstripe.SilverStripeBundle.message;
 import java.util.Arrays;
 
 /**
+ * TODO Decide if different parse levels (tokens, elements and blocks) should be moved out to separate classes.
  * Created with IntelliJ IDEA.
  * User: Marcus Dalgren
  * Date: 2013-03-21
  * Time: 21:40
- * To change this template use File | Settings | File Templates.
  */
 
 public class SilverStripeBaseParser implements PsiParser {
-	Stack<String> levelTypeStack = new Stack<String>();
-	Stack<PsiBuilder.Marker> levelStack = new Stack<PsiBuilder.Marker>();
+	Stack<BlockLevel> blockLevelStack = new Stack<BlockLevel>();
 	String[] startStatements = {"if", "loop", "with", "control"};
 	String[] endStatements = {"end_if", "end_loop", "end_with", "end_control"};
 
@@ -35,9 +34,42 @@ public class SilverStripeBaseParser implements PsiParser {
 	}
 
 	/**
-	 * TODO Split up parse method into smaller parts.
-	 * TODO Find a way to rollback for error marking?
-	 *
+	 * This class is responsible for creating block levels that contain finished block statements.
+	 * It wraps the opening block statement in a temporary error which gets dropped if the block statement
+	 * gets finished properly. Yay for being able to drop done markers.
+	 */
+	private class BlockLevel {
+		public String levelType;
+		public PsiBuilder.Marker level;
+		public ParseResult levelResult;
+		private PsiBuilder.Marker error;
+
+		/**
+		 * @param currentLevelType the type of level being started. "if", "loop", "with" or "control".
+		 * @param currentLevelResult the block tag which gets wrapped in the block level.
+		 */
+		public BlockLevel(String currentLevelType, ParseResult currentLevelResult) {
+			levelType = currentLevelType;
+			level = currentLevelResult.marker.precede();
+			levelResult = currentLevelResult;
+			error = buildErrorStatement(levelResult, message("ss.parsing.unclosed.block", currentLevelType));
+		}
+
+		public void done(IElementType type) {
+			level.done(type);
+			error.drop();
+		}
+
+		public void drop() {
+			level.drop();
+		}
+
+		public String toString() {
+			return levelType;
+		}
+	}
+
+	/**
 	 * @param root The file currently being parsed
 	 * @param builder used to build the parse tree
 	 * @return parsed tree
@@ -53,9 +85,10 @@ public class SilverStripeBaseParser implements PsiParser {
         // Process all tokens
 		parseTree(builder);
 
-        wrapperMarker.done(SilverStripeTypes.OUTER_WRAPPER);
+        wrapperMarker.done(OUTER_WRAPPER);
         rootMarker.done(root);
-        return builder.getTreeBuilt();
+		ASTNode tree = builder.getTreeBuilt();
+        return tree;
     }
 
 	// Tries to parse the whole tree
@@ -80,10 +113,11 @@ public class SilverStripeBaseParser implements PsiParser {
 				consumeToken(builder, type); // move to next token
 
 			// These are errors, all blocks should be closed when we've reached the End Of File
-			if (builder.eof() && !levelStack.empty()) {
-				levelStack.pop().rollbackTo();
-				String levelType = levelTypeStack.pop();
-				buildErrorStatement(parseStatementsBlock(builder, levelType),message("ss.parsing.unclosed.block", levelType ));
+			// We drop the block statement marker and put an error around the open block statement
+			while (builder.eof() && !blockLevelStack.empty()) {
+				BlockLevel currentLevel = blockLevelStack.pop();
+				currentLevel.drop();
+				//buildErrorStatement(currentLevel.levelResult, message("ss.parsing.unclosed.block", currentLevel.toString() ));
 			}
 		}
 
@@ -122,21 +156,17 @@ public class SilverStripeBaseParser implements PsiParser {
 			return;
 		// Starts the statements block
 		if (Arrays.asList(startStatements).contains(tokenValue)) {
-			levelStack.push(parseResult.marker.precede());
-			levelTypeStack.push(tokenValue);
+			blockLevelStack.push(new BlockLevel(tokenValue, parseResult));
 		}
 		// We have an ending statement
-		else if (!levelStack.empty() && tokenValue.contains(levelTypeStack.peek())) {
-			levelTypeStack.pop();
-			levelStack.pop().done(SilverStripeTypes.SS_BLOCK_STATEMENT);
+		else if (!blockLevelStack.empty() && tokenValue.contains(blockLevelStack.peek().toString())) {
+			blockLevelStack.pop().done(SS_BLOCK_STATEMENT);
 		}
-		// No match, it's an error - we roll back to mark the error
-		else if (!levelStack.empty()) {
-			String levelType = levelTypeStack.pop();
-			PsiBuilder.Marker level = levelStack.pop();
-
-			level.rollbackTo();
-			buildErrorStatement(parseStatementsBlock(builder, levelType), message("ss.parsing.unclosed.block", tokenValue));
+		// No match, it's an error - we drop the block statement and mark the offending element
+		else if (!blockLevelStack.empty()) {
+			BlockLevel currentLevel = blockLevelStack.pop();
+			currentLevel.drop();
+			//buildErrorStatement(currentLevel.levelResult, message("ss.parsing.unclosed.block", currentLevel.levelType));
 		}
 	}
 
@@ -145,9 +175,10 @@ public class SilverStripeBaseParser implements PsiParser {
 	 * @param elementToMark
 	 * @param errorMessage
 	 */
-	private void buildErrorStatement(ParseResult elementToMark, String errorMessage) {
+	private PsiBuilder.Marker buildErrorStatement(ParseResult elementToMark, String errorMessage) {
 		PsiBuilder.Marker errorMarker = elementToMark.marker.precede();
 		errorMarker.error(errorMessage);
+		return errorMarker;
 	}
 
 	private String getNextTokenValue(PsiBuilder builder) {
@@ -172,20 +203,18 @@ public class SilverStripeBaseParser implements PsiParser {
 			IElementType varToken = builder.lookAhead(2);
 			IElementType[] tokensToConsume = {SS_BLOCK_START, SS_START_KEYWORD, varToken, SS_BLOCK_END};
 			result = createBlock(builder, SS_BLOCK_START_STATEMENT, tokensToConsume, TokenSet.create());
-			if (varToken == SS_BAD_VAR) {
-				//markAsError = true;
-				//errorMessage = "Incomplete var statement. Add closing delimiter.";
-
-			}
         }
         else if (nextToken == SS_END_KEYWORD) {
 			IElementType[] tokensToConsume = {SS_BLOCK_START, SS_END_KEYWORD, SS_BLOCK_END};
             result = createBlock(builder, SS_BLOCK_END_STATEMENT, tokensToConsume, TokenSet.create());
 
 			// Was this end block expected? If not it needs to be marked as an error
-			if (levelTypeStack.empty() || !tokenValue.contains(levelTypeStack.peek())) {
+			if (blockLevelStack.empty() || !tokenValue.contains(blockLevelStack.peek().toString())) {
 				markAsError = true;
-				errorMessage = message("ss.parsing.unexpected.end.statement");
+				if (!blockLevelStack.empty())
+					errorMessage = message("ss.parsing.unexpected.end.statement.expected", "end_"+blockLevelStack.peek().toString());
+				else
+					errorMessage = message("ss.parsing.unexpected.end.statement");
 			}
         }
         else if (nextToken == SS_SIMPLE_KEYWORD) {
