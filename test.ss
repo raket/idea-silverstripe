@@ -36,6 +36,10 @@ Delimited variable {$Var}
 <% base_tag %>
 <% include MetaTags %>
     <% if $Var %>
+        <% if $Var %>
+
+        <% end_if %>
+    <% else %>
     <% end_if %>
 $Var
 // SilverStripe comment

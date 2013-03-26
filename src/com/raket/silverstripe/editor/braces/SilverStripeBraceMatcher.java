@@ -1,6 +1,8 @@
 package com.raket.silverstripe.editor.braces;
 
 import com.intellij.codeInsight.highlighting.BraceMatcher;
+import com.intellij.codeInsight.template.LiveTemplateBuilder;
+import com.intellij.lang.impl.PsiBuilderImpl;
 import com.intellij.openapi.editor.highlighter.HighlighterIterator;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.psi.PsiFile;
@@ -52,6 +54,7 @@ public class SilverStripeBraceMatcher implements BraceMatcher {
 	@Override
 	public boolean isLBraceToken(HighlighterIterator iterator, CharSequence fileText, FileType fileType) {
 		// Comments are never nested blocks
+
 		if (iterator.getTokenType() == SS_COMMENT_START) return true;
 		if (!LEFT_BRACES.contains(iterator.getTokenType())) {
 			// definitely not a left brace
@@ -63,6 +66,7 @@ public class SilverStripeBraceMatcher implements BraceMatcher {
 		while (true) {
 			iterator.advance();
 			iteratorAdvanceCount++;
+			IElementType tokenType = iterator.getTokenType();
 			if (iterator.atEnd()) {
 				break;
 			}
@@ -71,7 +75,7 @@ public class SilverStripeBraceMatcher implements BraceMatcher {
 				break;
 			}
 
-			if (iterator.getTokenType() == SS_START_KEYWORD || iterator.getTokenType() == SS_SIMPLE_KEYWORD) {
+			if (tokenType == SS_START_KEYWORD || tokenType == SS_SIMPLE_KEYWORD || tokenType == SS_IF_KEYWORD) {
 				isLBraceToken = true;
 			}
 		}
@@ -98,18 +102,19 @@ public class SilverStripeBraceMatcher implements BraceMatcher {
 		while (true) {
 			iterator.retreat();
 			iteratorRetreatCount++;
+			IElementType tokenType = iterator.getTokenType();
 			if (iterator.atEnd()) {
 				break;
 			}
 
-			if (iterator.getTokenType() == SS_START_KEYWORD) {
+			if (tokenType == SS_START_KEYWORD) {
 				// the first open type token we encountered is a block opener,
 				// so this is not a close brace (the paired close brace for these tokens
 				// is at the end of the corresponding block close 'stache)
 				break;
 			}
 
-			if (iterator.getTokenType() == SS_END_KEYWORD || iterator.getTokenType() == SS_SIMPLE_KEYWORD) {
+			if (tokenType == SS_END_KEYWORD || tokenType == SS_SIMPLE_KEYWORD || tokenType == SS_IF_KEYWORD) {
 				// the first open token we encountered was a simple opener (i.e. didn't start a block)
 				// or the close brace of a close block 'stache for some open block.  Definitely a right brace.
 				isRBraceToken = true;
