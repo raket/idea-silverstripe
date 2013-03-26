@@ -1,52 +1,85 @@
 <idea-plugin version="2">
-  <id>com.raket.silverstripe</id>
-  <name>SilverStripe Template Language Support</name>
-  <version>1.0</version>
-  <vendor email="marcus@raket.nu" url="http://www.raket.nu">Raket Webbyrå</vendor>
+    <id>com.raket.silverstripe</id>
+    <name>SilverStripe Template Language Support</name>
+    <version>0.1</version>
+    <vendor logo="/icons/raket.png" email="marcus@raket.nu" url="http://www.raket.nu">Raket Webbyrå</vendor>
 
-  <description><![CDATA[
-      Enter short description for your plugin here.<br>
-      <small>most HTML tags may be used</small>
-      ]]></description>
-
-  <change-notes><![CDATA[
-      Add change notes here.<br>
-      <small>most HTML tags may be used</small>
+    <description><![CDATA[
+      <a href="http://www.silverstripe.org/">SilverStripe</a> template language support<br>
+      <br>
+      <br>
+      Issues, feature requests and contributions welcome: <a href="https://github.com/raket/idea-silverstripe">https://github.com/raket/idea-silverstripe</a>
       ]]>
-  </change-notes>
+    </description>
+    <category>Custom Languages</category>
+    <change-notes>
+        <![CDATA[
+        <strong>Version 0.1</strong>
+        <br>
+        First version of the plugin. It brings basic tag recognition, syntax highlighting, brace matching and code folding.
+        It also recognizes HTML as a separate language and allows the formatting of HTML inside an ss file.
+        <ul>
+            <li><b>Features</b></li>
+            <li>Basic tag recognition. Recognizes the following tags:
+                <ul>
+                    <li><% if $Var %> - <% else_if %> - <% else %> - <% end_if %></li>
+                    <li><% loop %> - <% end_loop %></li>
+                    <li><% with %> - <% end_with %></li>
+                    <li><% control %> - <% end_control %></li>
+                    <li><%-- Comment --%></li>
+                    <li><% include File %></li>
+                    <li><% base_tag %></li>
+                    <li>Var statements, both {$Var} and $Var is supported.</li>
+                </ul>
+            </li>
+            <li>Basic syntax highlighting</li>
+            <li>Brace matching</li>
+            <li>Code folding</li>
+            <li>HTML is recognized and can be formatted.</li>
+            <li>Error messages for mismatching blocks and unexpected blocks.<br>
+                Error messages for syntax errors in Var statements.
+            </li>
+            <li>Message about unrecognized tags.</li>
+        </ul>
+      ]]>
+    </change-notes>
 
-  <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Build+Number+Ranges for description -->
-  <idea-version since-build="107.105"/>
+    <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Build+Number+Ranges for description -->
+    <idea-version since-build="107.105"/>
 
-  <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
-       on how to target different products -->
-  <!-- uncomment to enable plugin in all products -->
-  <depends>com.intellij.modules.lang</depends>
+    <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products -->
+    <depends>com.intellij.modules.lang</depends>
 
-  <application-components>
-    <!-- Add your application components here -->
-  </application-components>
+    <application-components>
+        <!-- Add your application components here -->
+    </application-components>
 
-  <project-components>
-    <!-- Add your project components here -->
-  </project-components>
+    <project-components>
+        <!-- Add your project components here -->
+    </project-components>
 
-  <actions>
-    <!-- Add your actions here -->
-  </actions>
+    <actions>
+        <!-- Add your actions here -->
+    </actions>
 
-  <extensions defaultExtensionNs="com.intellij">
-    <!-- Add your extensions here -->
-    <fileTypeFactory implementation="com.raket.silverstripe.file.SilverStripeFileTypeFactory"/>
-    <lang.parserDefinition language="SilverStripe" implementationClass="com.raket.silverstripe.SilverStripeParserDefinition"/>
-    <!--
-    <lang.syntaxHighlighterFactory key="SilverStripe" implementationClass="com.raket.silverstripe.SilverStripeSyntaxHighlighterFactory"/>
-    -->
-    <colorSettingsPage implementation="com.raket.silverstripe.SilverStripeColorSettingsPage"/>
-    <lang.fileViewProviderFactory language="SilverStripe" implementationClass="com.raket.silverstripe.file.SilverStripeFileViewProviderFactory"/>
-    <lang.foldingBuilder language="SilverStripe"
-                           implementationClass="com.raket.silverstripe.editor.folding.SilverStripeFoldingBuilder" />
-    <lang.formatter language="SilverStripe" implementationClass="com.raket.silverstripe.format.SilverStripeFormattingModelBuilder"/>
-    <braceMatcher filetype="SilverStripe" implementationClass="com.raket.silverstripe.editor.braces.SilverStripeBraceMatcher"/>
-  </extensions>
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+        <fileTypeFactory implementation="com.raket.silverstripe.file.SilverStripeFileTypeFactory"/>
+        <lang.parserDefinition language="SilverStripe"
+                               implementationClass="com.raket.silverstripe.SilverStripeParserDefinition"/>
+        <!--
+        <lang.syntaxHighlighterFactory key="SilverStripe" implementationClass="com.raket.silverstripe.SilverStripeSyntaxHighlighterFactory"/>
+        -->
+        <colorSettingsPage implementation="com.raket.silverstripe.SilverStripeColorSettingsPage"/>
+        <lang.fileViewProviderFactory language="SilverStripe"
+                                      implementationClass="com.raket.silverstripe.file.SilverStripeFileViewProviderFactory"/>
+        <lang.foldingBuilder language="SilverStripe"
+                             implementationClass="com.raket.silverstripe.editor.folding.SilverStripeFoldingBuilder"/>
+        <lang.formatter language="SilverStripe"
+                        implementationClass="com.raket.silverstripe.format.SilverStripeFormattingModelBuilder"/>
+        <braceMatcher filetype="SilverStripe"
+                      implementationClass="com.raket.silverstripe.editor.braces.SilverStripeBraceMatcher"/>
+    </extensions>
 </idea-plugin>
