@@ -23,9 +23,9 @@
             <li>Basic tag recognition. Recognizes the following tags:
                 <ul>
                     <li><% if $Var %> - <% else_if %> - <% else %> - <% end_if %></li>
-                    <li><% loop %> - <% end_loop %></li>
-                    <li><% with %> - <% end_with %></li>
-                    <li><% control %> - <% end_control %></li>
+                    <li><% loop $Var %> - <% end_loop %></li>
+                    <li><% with $Var %> - <% end_with %></li>
+                    <li><% control $Var %> - <% end_control %></li>
                     <li><%-- Comment --%></li>
                     <li><% include File %></li>
                     <li><% base_tag %></li>
