@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NonNls;
 import javax.swing.*;
 
 public class SilverStripeFileType extends LanguageFileType implements TemplateLanguageFileType {
-    public static final Icon FILE_ICON = IconLoader.getIcon("/com/raket/silverstripe/icons/silverstripe.png");
+    public static final Icon FILE_ICON = IconLoader.getIcon("/icons/silverstripe.png");
     public static final SilverStripeFileType INSTANCE = new SilverStripeFileType();
 
     @NonNls
