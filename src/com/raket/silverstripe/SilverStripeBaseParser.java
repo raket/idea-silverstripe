@@ -7,7 +7,6 @@ import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 import com.intellij.util.containers.Stack;
 import com.raket.silverstripe.psi.SilverStripeCompositeElementType;
-import com.raket.silverstripe.psi.SilverStripeTypes;
 import org.jetbrains.annotations.NotNull;
 import static com.raket.silverstripe.psi.SilverStripeTypes.*;
 import static com.raket.silverstripe.SSErrorTokenTypes.ERROR_TOKEN_MESSAGES;
@@ -31,6 +30,13 @@ public class SilverStripeBaseParser implements PsiParser {
 	private class ParseResult {
 		public boolean success = false;
 		public PsiBuilder.Marker marker;
+
+		public ParseResult set(PsiBuilder.Marker marker, boolean success) {
+			this.marker = marker;
+			this.success = success;
+
+			return this;
+		}
 	}
 
 	/**
@@ -102,7 +108,7 @@ public class SilverStripeBaseParser implements PsiParser {
 			parseResult = new ParseResult();
 			if (type == SS_BLOCK_START || type == SS_COMMENT_START) {
 				tokenValue = getNextTokenValue(builder);
-				parseResult = parseStatementsBlock(builder, tokenValue);
+				parseResult = parseStatementBlock(builder, tokenValue);
 				if (parseResult.success)
 					buildStatementsBlock(builder, tokenValue, parseResult);
 			}
@@ -189,8 +195,15 @@ public class SilverStripeBaseParser implements PsiParser {
 		rb.rollbackTo();
 		return returnString;
 	}
-	// TODO Remove token remapping. Brace matcher does its magic before the parser is invoked.
-    private ParseResult parseStatementsBlock(PsiBuilder builder, String tokenValue) {
+
+	/**
+	 * TODO Remove token remapping. Brace matcher does its magic before the parser is invoked.
+	 * TODO Move getting the next token in the stream here?
+	 * @param builder builder used to build the parse tree
+	 * @param tokenValue is the value of the NEXT token in the stream, not the current one.
+	 * @return the ParseResult which contains the marker and whether the parsing was successful or not.
+	 */
+    private ParseResult parseStatementBlock(PsiBuilder builder, String tokenValue) {
         PsiBuilder.Marker marker = builder.mark();
         IElementType nextToken = builder.lookAhead(1);
 	    ParseResult parseResult = new ParseResult();
@@ -205,6 +218,10 @@ public class SilverStripeBaseParser implements PsiParser {
 			IElementType[] tokensToConsume = {SS_BLOCK_START_START, SS_START_KEYWORD, varToken, SS_BLOCK_END};
 			result = createBlock(builder, SS_BLOCK_START_STATEMENT, tokensToConsume, TokenSet.create());
         }
+		else if (nextToken == SS_IF_KEYWORD) {
+			IElementType[] tokensToConsume = {SS_BLOCK_START, SS_IF_KEYWORD, SS_BLOCK_END};
+			result = createBlock(builder, SS_BLOCK_CONTINUE_STATEMENT, tokensToConsume, TokenSet.create());
+		}
         else if (nextToken == SS_END_KEYWORD) {
 			builder.remapCurrentToken(SS_BLOCK_END_START);
 			IElementType[] tokensToConsume = {SS_BLOCK_END_START, SS_END_KEYWORD, SS_BLOCK_END};
@@ -229,8 +246,7 @@ public class SilverStripeBaseParser implements PsiParser {
 			result = createBlock(builder, SS_COMMENT_STATEMENT, tokensToConsume, TokenSet.create());
 		}
 
-		parseResult.marker = marker;
-		parseResult.success = result;
+	    parseResult.set(marker, result);
 		if (result) {
             marker.done(new SilverStripeCompositeElementType("SS_"+tokenValue.toUpperCase()));
 			if (markAsError)

@@ -68,7 +68,8 @@ SS_VAR_START_DELIMITER= \{
 SS_VAR_END_DELIMITER= \}
 SS_BLOCK_START= <%
 SS_BLOCK_END= %>
-SS_START_KEYWORD= loop | if | else_if | else | with | control
+SS_START_KEYWORD= loop | if | with | control
+SS_IF_KEYWORD= else_if | else
 SS_SIMPLE_KEYWORD= include | base_tag
 SS_END_KEYWORD= end_loop | end_if | end_with | end_control
 SS_BLOCK_VAR=(\$?[a-zA-Z]+)((\((\"|\')?[a-zA-Z]+(\"|\')?\))|\.|([a-zA-Z]+))*
@@ -111,6 +112,7 @@ SS_COMMENT_END= --%>
 <SS_BLOCK_START> {WHITE_SPACE}+                             { yybegin(SS_BLOCK_START); return TokenType.WHITE_SPACE; }
 <SS_BLOCK_START> {SS_BLOCK_START}                           { yybegin(SS_BLOCK_START); return SilverStripeTypes.SS_BLOCK_START; }
 <SS_BLOCK_START> {SS_START_KEYWORD}                         { yybegin(SS_BLOCK_VAR); return SilverStripeTypes.SS_START_KEYWORD; }
+<SS_BLOCK_START> {SS_IF_KEYWORD}                            { yybegin(SS_BLOCK_VAR); return SilverStripeTypes.SS_IF_KEYWORD; }
 <SS_BLOCK_START> {SS_SIMPLE_KEYWORD}                        { yybegin(SS_BLOCK_VAR); return SilverStripeTypes.SS_SIMPLE_KEYWORD; }
 <SS_BLOCK_START> {SS_END_KEYWORD}                           { yybegin(SS_BLOCK_VAR); return SilverStripeTypes.SS_END_KEYWORD; }
 <SS_BLOCK_START> {SS_COMMENT_START}                         { yybegin(SS_COMMENT); return SilverStripeTypes.SS_COMMENT_START; }

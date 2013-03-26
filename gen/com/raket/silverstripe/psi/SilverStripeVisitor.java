@@ -15,6 +15,10 @@ public class SilverStripeVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitSsBlockContinueStatement(@NotNull SilverStripeSsBlockContinueStatement o) {
+    visitPsiElement(o);
+  }
+
   public void visitSsBlockEndStatement(@NotNull SilverStripeSsBlockEndStatement o) {
     visitPsiElement(o);
   }

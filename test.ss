@@ -23,7 +23,7 @@ message = Welcome to \
 key\ with\ spaces = This is the value that could be looked up with the key "key with spaces".
 # Unicode
 tab : \u0009
-Variable $Var
+Variable $Var.Foo("Bar").Baz
 Variable in quote "$Var"
 Delimited variable {$Var}
 </p>
@@ -44,7 +44,7 @@ $Var
 // Simple string translation
 <%t Namespace.Entity "String to translate" %>
 
-// Using the natural languate comment parameter to supply additional context information to translators
+// Using the natural language comment parameter to supply additional context information to translators
 <%t SearchResults.NoResult "There are no results matching your query." is "A message displayed to users when the search produces no results." %>
 
 // Using injection to add variables into the translated strings (note that $Name and $Greeting must be available in the current template scope).

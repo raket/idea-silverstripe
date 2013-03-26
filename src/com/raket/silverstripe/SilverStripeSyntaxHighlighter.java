@@ -51,12 +51,10 @@ public class SilverStripeSyntaxHighlighter extends SyntaxHighlighterBase {
         if (tokenType.equals(SS_BLOCK_START) || tokenType.equals(SS_BLOCK_END)
 				|| tokenType.equals(SS_COMMENT_START) || tokenType.equals(SS_COMMENT_END)) {
             return SS_BLOCK_KEYS;
-        } else if (tokenType.equals(SS_BLOCK_VAR)) {
+        } else if (tokenType.equals(SS_BLOCK_VAR) || tokenType.equals(SS_VAR)) {
 			return SS_BLOCK_VAR_KEYS;
-		} else if (tokenType.equals(SS_VAR)) {
-            return SS_BLOCK_VAR_KEYS;
-        } else if (tokenType.equals(SS_START_KEYWORD) || tokenType.equals(SS_END_KEYWORD) ||
-                tokenType.equals(SS_SIMPLE_KEYWORD)) {
+		} else if (tokenType.equals(SS_START_KEYWORD) || tokenType.equals(SS_END_KEYWORD) ||
+				tokenType.equals(SS_IF_KEYWORD) || tokenType.equals(SS_SIMPLE_KEYWORD)) {
             return SS_KEYWORD_KEYS;
         } else if (tokenType.equals(COMMENT)) {
 			return COMMENT_KEYS;

@@ -29,6 +29,9 @@ public class SilverStripeParser implements PsiParser {
     else if (root_ == SS_BAD_BLOCK_STATEMENT) {
       result_ = ss_bad_block_statement(builder_, level_ + 1);
     }
+    else if (root_ == SS_BLOCK_CONTINUE_STATEMENT) {
+      result_ = ss_block_continue_statement(builder_, level_ + 1);
+    }
     else if (root_ == SS_BLOCK_END_STATEMENT) {
       result_ = ss_block_end_statement(builder_, level_ + 1);
     }
@@ -138,6 +141,32 @@ public class SilverStripeParser implements PsiParser {
   // ()
   public static boolean ss_bad_block_statement(PsiBuilder builder_, int level_) {
     builder_.mark().done(SS_BAD_BLOCK_STATEMENT);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // SS_BLOCK_START SS_IF_KEYWORD SS_BLOCK_VAR? SS_BLOCK_END
+  public static boolean ss_block_continue_statement(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "ss_block_continue_statement")) return false;
+    if (!nextTokenIs(builder_, SS_BLOCK_START)) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeTokens(builder_, 0, SS_BLOCK_START, SS_IF_KEYWORD);
+    result_ = result_ && ss_block_continue_statement_2(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, SS_BLOCK_END);
+    if (result_) {
+      marker_.done(SS_BLOCK_CONTINUE_STATEMENT);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    return result_;
+  }
+
+  // SS_BLOCK_VAR?
+  private static boolean ss_block_continue_statement_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "ss_block_continue_statement_2")) return false;
+    consumeToken(builder_, SS_BLOCK_VAR);
     return true;
   }
 
