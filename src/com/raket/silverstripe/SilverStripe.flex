@@ -74,6 +74,7 @@ SS_ELSE_IF_KEYWORD= else_if
 SS_ELSE_KEYWORD= else
 SS_COMPARISON_OPERATOR= "==" | "!=" | "=" | "not"
 SS_AND_OR_OPERATOR= "&&" | "||"
+SS_STRING= \"[^\"]*\" | \'[^\']*\'
 SS_SIMPLE_KEYWORD= include | base_tag
 SS_END_KEYWORD= end_loop | end_if | end_with | end_control
 SS_BLOCK_VAR=(\$?[a-zA-Z]+)((\((\"|\')?[a-zA-Z]+(\"|\')?\))|\.|([a-zA-Z]+))*
@@ -135,6 +136,7 @@ SS_TRANSLATION_START= <%t
     {WHITE_SPACE}+                     { yybegin(SS_IF_STATEMENT); return TokenType.WHITE_SPACE; }
     {SS_COMPARISON_OPERATOR}           { yybegin(SS_IF_STATEMENT); return SilverStripeTypes.SS_COMPARISON_OPERATOR; }
     {SS_AND_OR_OPERATOR}               { yybegin(SS_IF_STATEMENT); return SilverStripeTypes.SS_AND_OR_OPERATOR; }
+    {SS_STRING}                        { yybegin(SS_IF_STATEMENT); return SilverStripeTypes.SS_STRING; }
 	{SS_BLOCK_VAR} {
         yybegin(SS_IF_STATEMENT); return checkBlockVariable(SilverStripeTypes.SS_BLOCK_VAR, SilverStripeTypes.SS_BAD_VAR);
 	}
@@ -142,7 +144,7 @@ SS_TRANSLATION_START= <%t
 }
 
 <SS_TRANSLATION> {
-    ~"%>"  { yybegin(SS_BLOCK_START); yypushback(2); return SilverStripeTypes.SS_TRANSLATION_STATEMENT; }
+    ~"%>"  { yybegin(SS_BLOCK_START); yypushback(2); return SilverStripeTypes.SS_TRANSLATION_CONTENT; }
 }
 
 <SS_BLOCK_VAR> {

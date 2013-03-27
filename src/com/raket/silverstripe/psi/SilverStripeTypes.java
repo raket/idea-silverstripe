@@ -16,7 +16,9 @@ public interface SilverStripeTypes {
 	IElementType SS_FRAGMENT = new SilverStripeElementType("SS_FRAGMENT");
 	IElementType SS_VAR_STATEMENT = new SilverStripeElementType("SS_VAR_STATEMENT");
 	IElementType SS_IF_STATEMENT = new SilverStripeElementType("SS_IF_STATEMENT");
+	IElementType SS_ELSE_IF_STATEMENT = new SilverStripeElementType("SS_ELSE_IF_STATEMENT");
 	IElementType SS_ELSE_STATEMENT = new SilverStripeElementType("SS_ELSE_STATEMENT");
+	IElementType SS_TRANSLATION_STATEMENT = new SilverStripeElementType("SS_TRANSLATION_STATEMENT");
 
 	IElementType COMMENT = new SilverStripeTokenType("COMMENT");
 	IElementType CONTENT = new SilverStripeTokenType("CONTENT");
@@ -36,7 +38,8 @@ public interface SilverStripeTypes {
 	IElementType SS_ELSE_KEYWORD = new SilverStripeTokenType("SS_ELSE_KEYWORD");
 	IElementType SS_COMPARISON_OPERATOR = new SilverStripeTokenType("SS_COMPARISON_OPERATOR");
 	IElementType SS_AND_OR_OPERATOR = new SilverStripeTokenType("SS_AND_OR_OPERATOR");
-	IElementType SS_TRANSLATION_STATEMENT = new SilverStripeTokenType("SS_TRANSLATION_STATEMENT");
+	IElementType SS_TRANSLATION_CONTENT = new SilverStripeTokenType("SS_TRANSLATION_CONTENT");
+	IElementType SS_STRING = new SilverStripeTokenType("SS_STRING");
 
 	IElementType SS_SIMPLE_KEYWORD = new SilverStripeTokenType("SS_SIMPLE_KEYWORD");
 	IElementType SS_START_KEYWORD = new SilverStripeTokenType("SS_START_KEYWORD");

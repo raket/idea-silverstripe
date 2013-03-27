@@ -12,7 +12,10 @@ import static com.raket.silverstripe.psi.SilverStripeTypes.*;
 import static com.raket.silverstripe.SSErrorTokenTypes.ERROR_TOKEN_MESSAGES;
 import static com.raket.silverstripe.SSErrorTokenTypes.ERROR_TOKENS;
 import static com.raket.silverstripe.SilverStripeBundle.message;
+
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * TODO Decide if different parse levels (tokens, elements and blocks) should be moved out to separate classes.
@@ -214,22 +217,24 @@ public class SilverStripeBaseParser implements PsiParser {
 
 		if (nextToken == SS_START_KEYWORD) {
 			IElementType varToken = builder.lookAhead(2);
-			builder.remapCurrentToken(SS_BLOCK_START_START);
-			IElementType[] tokensToConsume = {SS_BLOCK_START_START, nextToken, varToken, SS_BLOCK_END};
+			//builder.remapCurrentToken(SS_BLOCK_START_START);
+			IElementType[] tokensToConsume = {SS_BLOCK_START, nextToken, varToken, SS_BLOCK_END};
 			result = createBlock(builder, SS_BLOCK_START_STATEMENT, tokensToConsume, TokenSet.create());
         }
-		else if (nextToken == SS_IF_KEYWORD) {
-			IElementType varToken = builder.lookAhead(2);
-			IElementType[] tokensToConsume = {SS_BLOCK_START, nextToken, varToken, SS_BLOCK_END};
-			result = createBlock(builder, SS_IF_STATEMENT, tokensToConsume, TokenSet.create());
+		else if (nextToken == SS_IF_KEYWORD || nextToken == SS_ELSE_IF_KEYWORD) {
+			IElementType buildType = (nextToken == SS_IF_KEYWORD) ? SS_IF_STATEMENT : SS_ELSE_IF_STATEMENT;
+
+			TokenSet tokensToConsume = TokenSet.create(SS_BLOCK_START, nextToken, SS_BLOCK_VAR,
+					SS_AND_OR_OPERATOR, SS_COMPARISON_OPERATOR,SS_STRING);
+			result = createBlock(builder, buildType, tokensToConsume, SS_BLOCK_END);
 		}
 		else if (nextToken == SS_ELSE_KEYWORD) {
 			IElementType[] tokensToConsume = {SS_BLOCK_START, nextToken, SS_BLOCK_END};
 			result = createBlock(builder, SS_ELSE_STATEMENT, tokensToConsume, TokenSet.create());
 		}
         else if (nextToken == SS_END_KEYWORD) {
-			builder.remapCurrentToken(SS_BLOCK_END_START);
-			IElementType[] tokensToConsume = {SS_BLOCK_END_START, nextToken, SS_BLOCK_END};
+			//builder.remapCurrentToken(SS_BLOCK_END_START);
+			IElementType[] tokensToConsume = {SS_BLOCK_START, nextToken, SS_BLOCK_END};
             result = createBlock(builder, SS_BLOCK_END_STATEMENT, tokensToConsume, TokenSet.create());
 
 			// Was this end block expected? If not it needs to be marked as an error
@@ -242,13 +247,17 @@ public class SilverStripeBaseParser implements PsiParser {
 			}
         }
         else if (nextToken == SS_SIMPLE_KEYWORD) {
-			builder.remapCurrentToken(SS_BLOCK_SIMPLE_START);
-			IElementType[] tokensToConsume = {SS_BLOCK_SIMPLE_START, SS_SIMPLE_KEYWORD, SS_BLOCK_VAR, SS_BLOCK_END};
+			//builder.remapCurrentToken(SS_BLOCK_SIMPLE_START);
+			IElementType[] tokensToConsume = {SS_BLOCK_START, SS_SIMPLE_KEYWORD, SS_BLOCK_VAR, SS_BLOCK_END};
             result = createBlock(builder, SS_BLOCK_SIMPLE_STATEMENT, tokensToConsume, TokenSet.create(SS_BLOCK_VAR));
         }
 		else if (nextToken == SS_BAD_BLOCK_STATEMENT) {
 			IElementType[] tokensToConsume = {SS_BLOCK_START, SS_BAD_BLOCK_STATEMENT, SS_BLOCK_END};
 			result = createBlock(builder, SS_BAD_BLOCK, tokensToConsume, TokenSet.create());
+		}
+		else if (nextToken == SS_TRANSLATION_CONTENT) {
+			IElementType[] tokensToConsume = {SS_BLOCK_START, nextToken, SS_BLOCK_END};
+			result = createBlock(builder, SS_TRANSLATION_STATEMENT, tokensToConsume, TokenSet.create());
 		}
 		else if (builder.getTokenType() == SS_COMMENT_START) {
 			IElementType[] tokensToConsume = {SS_COMMENT_START, SS_COMMENT_END};
@@ -257,7 +266,7 @@ public class SilverStripeBaseParser implements PsiParser {
 
 	    parseResult.set(marker, result);
 		if (result) {
-            marker.done(new SilverStripeCompositeElementType("SS_"+tokenValue.toUpperCase()));
+            marker.done(new SilverStripeCompositeElementType(nextToken.toString()));
 			if (markAsError)
 				buildErrorStatement(parseResult, errorMessage);
         }
@@ -291,6 +300,19 @@ public class SilverStripeBaseParser implements PsiParser {
         return result;
     }
 
+	private boolean createBlock(PsiBuilder builder, IElementType markerType, TokenSet tokens, IElementType endToken) {
+		PsiBuilder.Marker marker = builder.mark();
+		boolean result;
+		result = consumeAllTokens(builder, tokens, endToken);
+		if (result) {
+			marker.done(markerType);
+		}
+		else {
+			marker.rollbackTo();
+		}
+		return result;
+	}
+
 	/**
 	 *
 	 * TODO Rewind builder with a marker on failure?
@@ -313,6 +335,28 @@ public class SilverStripeBaseParser implements PsiParser {
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * Consumes all tokens of the types listed in tokens.
+	 * Stops at the first token that does not match.
+	 * Returns true if this token matches endToken.
+	 * @param builder the builder for the parser.
+	 * @param tokens the list of tokens to consume.
+	 * @param endToken The ending token.
+	 * @return
+	 */
+	private boolean consumeAllTokens(PsiBuilder builder, TokenSet tokens, IElementType endToken) {
+		IElementType token = builder.getTokenType();
+		while(tokens.contains(token)) {
+			consumeToken(builder, token);
+			token = builder.getTokenType();
+		}
+		if (token == endToken) {
+			consumeToken(builder, token);
+			return true;
+		}
+		return false;
 	}
 
 	/**
