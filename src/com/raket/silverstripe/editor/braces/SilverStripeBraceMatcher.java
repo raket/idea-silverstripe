@@ -34,6 +34,12 @@ public class SilverStripeBraceMatcher implements BraceMatcher {
 		SS_COMMENT_END
 	);
 
+	private static final TokenSet ALWAYS_BRACES = TokenSet.create(
+			SS_SIMPLE_KEYWORD,
+			SS_IF_KEYWORD,
+			SS_BAD_BLOCK_STATEMENT
+	);
+
 	/*
 	static {
 		LEFT_BRACES.add(HbTokenTypes.OPEN);
@@ -75,7 +81,7 @@ public class SilverStripeBraceMatcher implements BraceMatcher {
 				break;
 			}
 
-			if (tokenType == SS_START_KEYWORD || tokenType == SS_SIMPLE_KEYWORD || tokenType == SS_IF_KEYWORD) {
+			if (tokenType == SS_START_KEYWORD || ALWAYS_BRACES.contains(tokenType)) {
 				isLBraceToken = true;
 			}
 		}
@@ -114,7 +120,7 @@ public class SilverStripeBraceMatcher implements BraceMatcher {
 				break;
 			}
 
-			if (tokenType == SS_END_KEYWORD || tokenType == SS_SIMPLE_KEYWORD || tokenType == SS_IF_KEYWORD) {
+			if (tokenType == SS_END_KEYWORD || ALWAYS_BRACES.contains(tokenType)) {
 				// the first open token we encountered was a simple opener (i.e. didn't start a block)
 				// or the close brace of a close block 'stache for some open block.  Definitely a right brace.
 				isRBraceToken = true;

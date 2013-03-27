@@ -241,6 +241,10 @@ public class SilverStripeBaseParser implements PsiParser {
 			IElementType[] tokensToConsume = {SS_BLOCK_SIMPLE_START, SS_SIMPLE_KEYWORD, SS_BLOCK_VAR, SS_BLOCK_END};
             result = createBlock(builder, SS_BLOCK_SIMPLE_STATEMENT, tokensToConsume, TokenSet.create(SS_BLOCK_VAR));
         }
+		else if (nextToken == SS_BAD_BLOCK_STATEMENT) {
+			IElementType[] tokensToConsume = {SS_BLOCK_START, SS_BAD_BLOCK_STATEMENT, SS_BLOCK_END};
+			result = createBlock(builder, SS_BAD_BLOCK, tokensToConsume, TokenSet.create());
+		}
 		else if (builder.getTokenType() == SS_COMMENT_START) {
 			IElementType[] tokensToConsume = {SS_COMMENT_START, SS_COMMENT_END};
 			result = createBlock(builder, SS_COMMENT_STATEMENT, tokensToConsume, TokenSet.create());
