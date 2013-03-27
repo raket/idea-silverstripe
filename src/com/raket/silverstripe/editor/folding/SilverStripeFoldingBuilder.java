@@ -8,6 +8,8 @@ import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import static com.raket.silverstripe.psi.SilverStripeTypes.*;
+
+import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,6 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SilverStripeFoldingBuilder implements FoldingBuilder, DumbAware {
+
+	private static final TokenSet START_STATEMENTS = TokenSet.create(
+			SS_BLOCK_START_STATEMENT,
+			SS_IF_STATEMENT
+	);
 
 	@NotNull
 	@Override
@@ -81,7 +88,7 @@ public class SilverStripeFoldingBuilder implements FoldingBuilder, DumbAware {
 
 	private ASTNode getOpenBlockCloseElement(ASTNode node) {
 		ASTNode contentNode = node.getFirstChildNode();
-		if (contentNode == null || contentNode.getElementType() != SS_BLOCK_START_STATEMENT) {
+		if (contentNode == null || !START_STATEMENTS.contains(contentNode.getElementType())) {
 			return null;
 		}
 

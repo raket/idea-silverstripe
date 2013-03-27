@@ -79,7 +79,7 @@
                              implementationClass="com.raket.silverstripe.editor.folding.SilverStripeFoldingBuilder"/>
         <lang.formatter language="SilverStripe"
                         implementationClass="com.raket.silverstripe.format.SilverStripeFormattingModelBuilder"/>
-        <braceMatcher filetype="SilverStripe"
+       <braceMatcher filetype="SilverStripe"
                       implementationClass="com.raket.silverstripe.editor.braces.SilverStripeBraceMatcher"/>
     </extensions>
 </idea-plugin>

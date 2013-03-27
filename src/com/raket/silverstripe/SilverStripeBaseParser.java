@@ -215,16 +215,21 @@ public class SilverStripeBaseParser implements PsiParser {
 		if (nextToken == SS_START_KEYWORD) {
 			IElementType varToken = builder.lookAhead(2);
 			builder.remapCurrentToken(SS_BLOCK_START_START);
-			IElementType[] tokensToConsume = {SS_BLOCK_START_START, SS_START_KEYWORD, varToken, SS_BLOCK_END};
+			IElementType[] tokensToConsume = {SS_BLOCK_START_START, nextToken, varToken, SS_BLOCK_END};
 			result = createBlock(builder, SS_BLOCK_START_STATEMENT, tokensToConsume, TokenSet.create());
         }
 		else if (nextToken == SS_IF_KEYWORD) {
-			IElementType[] tokensToConsume = {SS_BLOCK_START, SS_IF_KEYWORD, SS_BLOCK_END};
-			result = createBlock(builder, SS_BLOCK_CONTINUE_STATEMENT, tokensToConsume, TokenSet.create());
+			IElementType varToken = builder.lookAhead(2);
+			IElementType[] tokensToConsume = {SS_BLOCK_START, nextToken, varToken, SS_BLOCK_END};
+			result = createBlock(builder, SS_IF_STATEMENT, tokensToConsume, TokenSet.create());
+		}
+		else if (nextToken == SS_ELSE_KEYWORD) {
+			IElementType[] tokensToConsume = {SS_BLOCK_START, nextToken, SS_BLOCK_END};
+			result = createBlock(builder, SS_ELSE_STATEMENT, tokensToConsume, TokenSet.create());
 		}
         else if (nextToken == SS_END_KEYWORD) {
 			builder.remapCurrentToken(SS_BLOCK_END_START);
-			IElementType[] tokensToConsume = {SS_BLOCK_END_START, SS_END_KEYWORD, SS_BLOCK_END};
+			IElementType[] tokensToConsume = {SS_BLOCK_END_START, nextToken, SS_BLOCK_END};
             result = createBlock(builder, SS_BLOCK_END_STATEMENT, tokensToConsume, TokenSet.create());
 
 			// Was this end block expected? If not it needs to be marked as an error

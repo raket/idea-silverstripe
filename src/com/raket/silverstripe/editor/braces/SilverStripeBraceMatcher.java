@@ -21,23 +21,35 @@ import org.jetbrains.annotations.Nullable;
  */
 public class SilverStripeBraceMatcher implements BraceMatcher {
 	private static final TokenSet LEFT_BRACES = TokenSet.create(
-		SS_BLOCK_START,
-		SS_BLOCK_START_START,
-		SS_BLOCK_SIMPLE_START,
+		SS_BLOCK_START
+	);
+
+	private static final TokenSet ALWAYS_LEFT = TokenSet.create(
 		SS_VAR_START_DELIMITER,
 		SS_COMMENT_START
 	);
 
 	private static final TokenSet RIGHT_BRACES = TokenSet.create(
-		SS_BLOCK_END,
+		SS_BLOCK_END
+	);
+
+	private static final TokenSet ALWAYS_RIGHT = TokenSet.create(
 		SS_VAR_END_DELIMITER,
 		SS_COMMENT_END
 	);
 
 	private static final TokenSet ALWAYS_BRACES = TokenSet.create(
-			SS_SIMPLE_KEYWORD,
-			SS_IF_KEYWORD,
-			SS_BAD_BLOCK_STATEMENT
+		SS_SIMPLE_KEYWORD,
+		SS_ELSE_KEYWORD,
+		SS_BAD_BLOCK_STATEMENT,
+		SS_TRANSLATION_STATEMENT
+	);
+
+	private static final TokenSet ALL_BRACES = TokenSet.orSet(
+		LEFT_BRACES,
+		RIGHT_BRACES,
+		ALWAYS_LEFT,
+		ALWAYS_RIGHT
 	);
 
 	/*
@@ -53,15 +65,16 @@ public class SilverStripeBraceMatcher implements BraceMatcher {
 
 	@Override
 	public boolean isPairBraces(IElementType tokenType1, IElementType tokenType2) {
-		return LEFT_BRACES.contains(tokenType1) && RIGHT_BRACES.contains(tokenType2)
-				|| RIGHT_BRACES.contains(tokenType1) && LEFT_BRACES.contains(tokenType2);
+		TokenSet myTokens = ALL_BRACES;
+		return ALL_BRACES.contains(tokenType1) && ALL_BRACES.contains(tokenType2)
+				|| ALL_BRACES.contains(tokenType1) && ALL_BRACES.contains(tokenType2);
 	}
 
 	@Override
 	public boolean isLBraceToken(HighlighterIterator iterator, CharSequence fileText, FileType fileType) {
-		// Comments are never nested blocks
-
-		if (iterator.getTokenType() == SS_COMMENT_START) return true;
+		boolean start = false;
+		// These braces are always self contained
+		if (ALWAYS_LEFT.contains(iterator.getTokenType())) return true;
 		if (!LEFT_BRACES.contains(iterator.getTokenType())) {
 			// definitely not a left brace
 			return false;
@@ -70,19 +83,22 @@ public class SilverStripeBraceMatcher implements BraceMatcher {
 		boolean isLBraceToken = false;
 		int iteratorAdvanceCount = 0;
 		while (true) {
+
 			iterator.advance();
 			iteratorAdvanceCount++;
-			IElementType tokenType = iterator.getTokenType();
 			if (iterator.atEnd()) {
 				break;
 			}
+			IElementType tokenType = iterator.getTokenType();
 
-			if (iterator.getTokenType() == SS_END_KEYWORD) {
+			// This means we've reached the end of this block
+			if (iterator.getTokenType() == SS_BLOCK_END) {
 				break;
 			}
 
-			if (tokenType == SS_START_KEYWORD || ALWAYS_BRACES.contains(tokenType)) {
+			if (tokenType == SS_START_KEYWORD || tokenType == SS_IF_KEYWORD || ALWAYS_BRACES.contains(tokenType)) {
 				isLBraceToken = true;
+				break;
 			}
 		}
 
@@ -96,8 +112,8 @@ public class SilverStripeBraceMatcher implements BraceMatcher {
 
 	@Override
 	public boolean isRBraceToken(HighlighterIterator iterator, CharSequence fileText, FileType fileType) {
-		// Comments are never nested blocks
-		if (iterator.getTokenType() == SS_COMMENT_END) return true;
+		// These braces are always self contained
+		if (ALWAYS_RIGHT.contains(iterator.getTokenType())) return true;
 		if (!RIGHT_BRACES.contains(iterator.getTokenType())) {
 			// definitely not a right brace
 			return false;
@@ -108,12 +124,14 @@ public class SilverStripeBraceMatcher implements BraceMatcher {
 		while (true) {
 			iterator.retreat();
 			iteratorRetreatCount++;
-			IElementType tokenType = iterator.getTokenType();
+
 			if (iterator.atEnd()) {
 				break;
 			}
+			IElementType tokenType = iterator.getTokenType();
 
-			if (tokenType == SS_START_KEYWORD) {
+			// This means we've reached the beginning of this block
+			if (tokenType == SS_BLOCK_START) {
 				// the first open type token we encountered is a block opener,
 				// so this is not a close brace (the paired close brace for these tokens
 				// is at the end of the corresponding block close 'stache)
@@ -124,6 +142,7 @@ public class SilverStripeBraceMatcher implements BraceMatcher {
 				// the first open token we encountered was a simple opener (i.e. didn't start a block)
 				// or the close brace of a close block 'stache for some open block.  Definitely a right brace.
 				isRBraceToken = true;
+				break;
 			}
 		}
 
