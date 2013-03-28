@@ -6,9 +6,9 @@ The primary focus is PHPStorm since SilverStripe is a PHP framework but the plug
 ## Installing
 
 * To install the latest release (and get automatic updates), install this plugin using your IDE's plugin manager:
-  * In Settings->Plugins, choose "Browse repositories". Search for "SilverStripe" or find "SilverStripe template language support" on the list, right-click, and select "Download and Install"
+  * In `Settings->Plugins`, choose "Browse repositories". Search for "SilverStripe" or find "SilverStripe template language support" in the list, right-click, and select "Download and Install"
 * To install the most bleeding edge version, download or clone this repo and install this plugin using your IDE's plugin manager:
-  * In Settings->Plugins, choose "Install plugin from disk...".  Point it to the SilverStripe.jar file and restart the IDE.
+  * In `Settings->Plugins`, choose "Install plugin from disk...".  Point it to the `idea-silverstripe.jar` file and restart the IDE.
   * If you want to update either do a git pull if you've cloned the repo or download the repo again and simply reinstall the plugin.
 * If you have already added `*.ss` files to your file types manually you need to remove it for the plugin to work. Go to `Settings->File Types` and remove `*.ss` from the file type you added it to (most likely html).
 
