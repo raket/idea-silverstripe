@@ -37,28 +37,7 @@ public class SilverStripeFoldingBuilder implements FoldingBuilder, DumbAware {
 			return;
 		}
 
-		if (SS_BLOCK_STATEMENT == node.getElementType()) {
-
-			ASTNode endOpenBlockStache = getOpenBlockCloseElement(node.getFirstChildNode());
-			ASTNode endCloseBlockStache = getCloseBlockCloseElement(node.getLastChildNode());
-
-			// if we've got a well formed block with the open and close elems we need, define a region to fold
-			if (endOpenBlockStache != null && endCloseBlockStache != null) {
-				int endOfFirstOpenStacheLine
-						= document.getLineEndOffset(document.getLineNumber(node.getTextRange().getStartOffset()));
-
-				// we set the start of the text we'll fold to be just before the close braces of the open stache,
-				//     or, if the open stache spans multiple lines, to the end of the first line
-				int foldingRangeStartOffset = Math.min(endOpenBlockStache.getTextRange().getStartOffset(), endOfFirstOpenStacheLine);
-				// we set the end of the text we'll fold to be just before the final close braces in this block
-				int foldingRangeEndOffset = endCloseBlockStache.getTextRange().getStartOffset();
-
-				TextRange range = new TextRange(foldingRangeStartOffset, foldingRangeEndOffset);
-
-				descriptors.add(new FoldingDescriptor(node, range));
-			}
-		}
-		else if (SS_COMMENT_STATEMENT == node.getElementType()) {
+		if (SS_BLOCK_STATEMENT == node.getElementType() || SS_COMMENT_STATEMENT == node.getElementType()) {
 			ASTNode endOpenBlockStache = node.getFirstChildNode();
 			ASTNode endCloseBlockStache = node.getLastChildNode();
 

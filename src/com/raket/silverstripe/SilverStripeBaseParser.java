@@ -180,7 +180,7 @@ public class SilverStripeBaseParser implements PsiParser {
 	}
 
 	/**
-	 * This method will build an error statement. It will roll
+	 * This method will build an error statement and mark the current marker as an error.
 	 * @param elementToMark
 	 * @param errorMessage
 	 */
@@ -207,13 +207,13 @@ public class SilverStripeBaseParser implements PsiParser {
 	 * @return the ParseResult which contains the marker and whether the parsing was successful or not.
 	 */
     private ParseResult parseStatementBlock(PsiBuilder builder, String tokenValue) {
-        PsiBuilder.Marker marker = builder.mark();
+        //PsiBuilder.Marker marker = builder.mark();
         IElementType nextToken = builder.lookAhead(1);
-	    ParseResult parseResult = new ParseResult();
+	    //ParseResult parseResult = new ParseResult();
 		boolean markAsError = false;
 		String errorMessage = "";
 
-        boolean result = false;
+		ParseResult result = new ParseResult();
 
 		if (nextToken == SS_START_KEYWORD) {
 			IElementType varToken = builder.lookAhead(2);
@@ -264,16 +264,16 @@ public class SilverStripeBaseParser implements PsiParser {
 			result = createBlock(builder, SS_COMMENT_STATEMENT, tokensToConsume, TokenSet.create());
 		}
 
-	    parseResult.set(marker, result);
-		if (result) {
-            marker.done(new SilverStripeCompositeElementType(nextToken.toString()));
+	    //parseResult.set(marker, result);
+		if (result.success) {
+            //marker.done(new SilverStripeCompositeElementType(nextToken.toString()));
 			if (markAsError)
-				buildErrorStatement(parseResult, errorMessage);
-        }
+				buildErrorStatement(result, errorMessage);
+        } /*
         else {
             marker.rollbackTo();
-        }
-        return parseResult;
+        }*/
+        return result;
     }
 
 	/**
@@ -287,7 +287,7 @@ public class SilverStripeBaseParser implements PsiParser {
 	 * @param exclude a TokenSet of tokens that are optional.
 	 * @return true if block creation is successful
 	 */
-    private boolean createBlock(PsiBuilder builder, IElementType markerType, IElementType[] tokens, TokenSet exclude) {
+    private ParseResult createBlock(PsiBuilder builder, IElementType markerType, IElementType[] tokens, TokenSet exclude) {
         PsiBuilder.Marker marker = builder.mark();
         boolean result;
         result = consumeTokens(builder, tokens, exclude);
@@ -297,10 +297,11 @@ public class SilverStripeBaseParser implements PsiParser {
         else {
             marker.rollbackTo();
         }
-        return result;
+		ParseResult parseResult = new ParseResult().set(marker, result);
+        return parseResult;
     }
 
-	private boolean createBlock(PsiBuilder builder, IElementType markerType, TokenSet tokens, IElementType endToken) {
+	private ParseResult createBlock(PsiBuilder builder, IElementType markerType, TokenSet tokens, IElementType endToken) {
 		PsiBuilder.Marker marker = builder.mark();
 		boolean result;
 		result = consumeAllTokens(builder, tokens, endToken);
@@ -310,7 +311,8 @@ public class SilverStripeBaseParser implements PsiParser {
 		else {
 			marker.rollbackTo();
 		}
-		return result;
+		ParseResult parseResult = new ParseResult().set(marker, result);
+		return parseResult;
 	}
 
 	/**

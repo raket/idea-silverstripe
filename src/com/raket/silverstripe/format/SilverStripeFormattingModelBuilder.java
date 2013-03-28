@@ -13,6 +13,8 @@ import com.intellij.psi.formatter.xml.SyntheticBlock;
 import com.intellij.psi.templateLanguages.SimpleTemplateLanguageFormattingModelBuilder;
 import com.intellij.psi.tree.IElementType;
 import static com.raket.silverstripe.psi.SilverStripeTypes.*;
+
+import com.raket.silverstripe.psi.SilverStripePsiUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -150,38 +152,37 @@ public class SilverStripeFormattingModelBuilder extends TemplateLanguageFormatti
 		 */
 		@Override
 		public Indent getIndent() {
-			return Indent.getNoneIndent();
-			/*
+
 			// ignore whitespace
 			if (myNode.getText().trim().length() == 0) {
 				return Indent.getNoneIndent();
 			}
 
-			if (HbPsiUtil.isNonRootStatementsElement(myNode.getPsi())) {
+			if (SilverStripePsiUtil.isNonRootStatementsElement(myNode.getPsi())) {
 				// we're computing the indent for a non-root STATEMENTS:
 				//      if it's not contained in a foreign block, indent!
-				if (hasOnlyHbLanguageParents()) {
+				if (hasOnlySilverStripeLanguageParents()) {
 					return Indent.getNormalIndent();
 				}
 			}
 
 			if (myNode.getTreeParent() != null
-					&& HbPsiUtil.isNonRootStatementsElement(myNode.getTreeParent().getPsi())) {
+					&& SilverStripePsiUtil.isNonRootStatementsElement(myNode.getTreeParent().getPsi())) {
 				// we're computing the indent for a direct descendant of a non-root STATEMENTS:
 				//      if its Block parent (i.e. not HB AST Tree parent) is a Handlebars block
 				//      which has NOT been indented, then have the element provide the indent itself
-				if (getParent() instanceof HandlebarsBlock
-						&& ((HandlebarsBlock) getParent()).getIndent() == Indent.getNoneIndent()) {
+				if (getParent() instanceof SilverStripeBlock
+						&& ((SilverStripeBlock) getParent()).getIndent() == Indent.getNoneIndent()) {
 					return Indent.getNormalIndent();
 				}
 			}
 
 			// any element that is the direct descendant of a foreign block gets an indent
 			if (getRealBlockParent() instanceof DataLanguageBlockWrapper) {
-				return Indent.getNormalIndent();
+				return Indent.getNoneIndent();
 			}
 
-			return Indent.getNoneIndent();*/
+			return Indent.getNoneIndent();
 		}
 
 		/**
