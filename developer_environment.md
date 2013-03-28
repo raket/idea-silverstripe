@@ -39,7 +39,7 @@ git pull --tags
 ![ProjectSettings](markdown_images/sdk_setup_1.png)
 
 ## Ready to go
-And that's it!  At this point, you should automatically have an `idea-handlebars` Run Configuration in IDEA (if not, create one of type "Plugin" and you should be good to go). If you Run/Debug this configuration, it will launch the Community Edition with your build of the plugin installed.
+And that's it!  At this point, you should automatically have an `idea-silverstripe` Run Configuration in IDEA (if not, create one of type "Plugin" and you should be good to go). If you Run/Debug this configuration, it will launch the Community Edition with your build of the plugin installed.
 
 ## Tips
 * **Enable Internal Tools:** add `-Didea.is.internal=true` to the VM Options of your plugin Run Configurations to add various internal IDEA-development tools to your menu options.  Many of these look interesting, but the one you absolutely need is `Tools -> View PSI Structure of Current File...`
