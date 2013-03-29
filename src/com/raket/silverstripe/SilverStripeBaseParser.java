@@ -222,7 +222,7 @@ public class SilverStripeBaseParser implements PsiParser {
 					SS_AND_OR_OPERATOR, SS_COMPARISON_OPERATOR,SS_STRING);
 
 
-			if (nextToken == SS_ELSE_IF_KEYWORD) {
+			if (nextToken == SS_ELSE_IF_KEYWORD && endingToken == SS_BLOCK_END) {
 				if (blockLevelStack.peek().hasContent)
 					blockLevelStack.peek().statements.done(SS_STATEMENTS);
 
@@ -234,7 +234,7 @@ public class SilverStripeBaseParser implements PsiParser {
 				result = createBlock(builder, buildType, tokensToConsume, SS_BLOCK_END);
 			}
 		}
-		else if (nextToken == SS_ELSE_KEYWORD) {
+		else if (nextToken == SS_ELSE_KEYWORD && endingToken == SS_BLOCK_END) {
 			IElementType[] tokensToConsume = {SS_BLOCK_START, nextToken, SS_BLOCK_END};
 
 			if (blockLevelStack.peek().hasContent)
