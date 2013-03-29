@@ -19,6 +19,7 @@ public interface SilverStripeTypes {
 	IElementType SS_ELSE_IF_STATEMENT = new SilverStripeElementType("SS_ELSE_IF_STATEMENT");
 	IElementType SS_ELSE_STATEMENT = new SilverStripeElementType("SS_ELSE_STATEMENT");
 	IElementType SS_TRANSLATION_STATEMENT = new SilverStripeElementType("SS_TRANSLATION_STATEMENT");
+	IElementType SS_STATEMENTS = new SilverStripeElementType("SS_STATEMENTS");
 
 	IElementType COMMENT = new SilverStripeTokenType("COMMENT");
 	IElementType CONTENT = new SilverStripeTokenType("CONTENT");

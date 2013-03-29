@@ -52,16 +52,21 @@ public class SilverStripeBaseParser implements PsiParser {
 		public PsiBuilder.Marker level;
 		public ParseResult levelResult;
 		private PsiBuilder.Marker error;
+		private PsiBuilder builder;
+		public PsiBuilder.Marker statements;
+		public boolean hasContent = false;
 
 		/**
 		 * @param currentLevelType the type of level being started. "if", "loop", "with" or "control".
 		 * @param currentLevelResult the block tag which gets wrapped in the block level.
 		 */
-		public BlockLevel(String currentLevelType, ParseResult currentLevelResult) {
+		public BlockLevel(PsiBuilder builder, String currentLevelType, ParseResult currentLevelResult) {
+			this.builder = builder;
 			levelType = currentLevelType;
 			level = currentLevelResult.marker.precede();
 			levelResult = currentLevelResult;
 			error = buildErrorStatement(levelResult, message("ss.parsing.unclosed.block", currentLevelType));
+			statements = builder.mark();
 		}
 
 		public void done(IElementType type) {
@@ -70,7 +75,13 @@ public class SilverStripeBaseParser implements PsiParser {
 		}
 
 		public void drop() {
+			statements.drop();
 			level.drop();
+		}
+
+		public void finishStatements() {
+			statements.done(SS_STATEMENTS);
+			statements = builder.mark();
 		}
 
 		public String toString() {
@@ -94,7 +105,7 @@ public class SilverStripeBaseParser implements PsiParser {
         // Process all tokens
 		parseTree(builder);
 
-        wrapperMarker.done(OUTER_WRAPPER);
+        wrapperMarker.done(SS_STATEMENTS);
         rootMarker.done(root);
 		ASTNode tree = builder.getTreeBuilt();
         return tree;
@@ -165,7 +176,7 @@ public class SilverStripeBaseParser implements PsiParser {
 			return;
 		// Starts the statements block
 		if (Arrays.asList(startStatements).contains(tokenValue)) {
-			blockLevelStack.push(new BlockLevel(tokenValue, parseResult));
+			blockLevelStack.push(new BlockLevel(builder, tokenValue, parseResult ));
 		}
 		// We have an ending statement
 		else if (!blockLevelStack.empty() && tokenValue.contains(blockLevelStack.peek().toString())) {
@@ -179,25 +190,7 @@ public class SilverStripeBaseParser implements PsiParser {
 		}
 	}
 
-	/**
-	 * This method will build an error statement and mark the current marker as an error.
-	 * @param elementToMark
-	 * @param errorMessage
-	 */
-	private PsiBuilder.Marker buildErrorStatement(ParseResult elementToMark, String errorMessage) {
-		PsiBuilder.Marker errorMarker = elementToMark.marker.precede();
-		errorMarker.error(errorMessage);
-		return errorMarker;
-	}
 
-	private String getNextTokenValue(PsiBuilder builder) {
-		String returnString;
-		PsiBuilder.Marker rb = builder.mark();
-		builder.advanceLexer();
-		returnString = builder.getTokenText();
-		rb.rollbackTo();
-		return returnString;
-	}
 
 	/**
 	 * TODO Remove token remapping. Brace matcher does its magic before the parser is invoked.
@@ -209,6 +202,7 @@ public class SilverStripeBaseParser implements PsiParser {
     private ParseResult parseStatementBlock(PsiBuilder builder, String tokenValue) {
         //PsiBuilder.Marker marker = builder.mark();
         IElementType nextToken = builder.lookAhead(1);
+		IElementType endingToken = builder.lookAhead(2);
 	    //ParseResult parseResult = new ParseResult();
 		boolean markAsError = false;
 		String errorMessage = "";
@@ -226,15 +220,39 @@ public class SilverStripeBaseParser implements PsiParser {
 
 			TokenSet tokensToConsume = TokenSet.create(SS_BLOCK_START, nextToken, SS_BLOCK_VAR,
 					SS_AND_OR_OPERATOR, SS_COMPARISON_OPERATOR,SS_STRING);
-			result = createBlock(builder, buildType, tokensToConsume, SS_BLOCK_END);
+
+
+			if (nextToken == SS_ELSE_IF_KEYWORD) {
+				if (blockLevelStack.peek().hasContent)
+					blockLevelStack.peek().statements.done(SS_STATEMENTS);
+
+				result = createBlock(builder, buildType, tokensToConsume, SS_BLOCK_END);
+				if (result.success)
+					blockLevelStack.peek().statements = builder.mark();
+			}
+			else {
+				result = createBlock(builder, buildType, tokensToConsume, SS_BLOCK_END);
+			}
 		}
 		else if (nextToken == SS_ELSE_KEYWORD) {
 			IElementType[] tokensToConsume = {SS_BLOCK_START, nextToken, SS_BLOCK_END};
+
+			if (blockLevelStack.peek().hasContent)
+				blockLevelStack.peek().statements.done(SS_STATEMENTS);
+
 			result = createBlock(builder, SS_ELSE_STATEMENT, tokensToConsume, TokenSet.create());
+			if (result.success)
+				blockLevelStack.peek().statements = builder.mark();
 		}
-        else if (nextToken == SS_END_KEYWORD) {
+        else if (nextToken == SS_END_KEYWORD && endingToken == SS_BLOCK_END) {
 			//builder.remapCurrentToken(SS_BLOCK_END_START);
 			IElementType[] tokensToConsume = {SS_BLOCK_START, nextToken, SS_BLOCK_END};
+			if (!blockLevelStack.isEmpty()) {
+				if (blockLevelStack.peek().hasContent)
+					blockLevelStack.peek().statements.done(SS_STATEMENTS);
+				else
+					blockLevelStack.peek().statements.drop();
+			}
             result = createBlock(builder, SS_BLOCK_END_STATEMENT, tokensToConsume, TokenSet.create());
 
 			// Was this end block expected? If not it needs to be marked as an error
@@ -316,6 +334,26 @@ public class SilverStripeBaseParser implements PsiParser {
 	}
 
 	/**
+	 * This method will build an error statement and mark the current marker as an error.
+	 * @param elementToMark
+	 * @param errorMessage
+	 */
+	private PsiBuilder.Marker buildErrorStatement(ParseResult elementToMark, String errorMessage) {
+		PsiBuilder.Marker errorMarker = elementToMark.marker.precede();
+		errorMarker.error(errorMessage);
+		return errorMarker;
+	}
+
+	private String getNextTokenValue(PsiBuilder builder) {
+		String returnString;
+		PsiBuilder.Marker rb = builder.mark();
+		builder.advanceLexer();
+		returnString = builder.getTokenText();
+		rb.rollbackTo();
+		return returnString;
+	}
+
+	/**
 	 *
 	 * TODO Rewind builder with a marker on failure?
 	 * @param builder the builder for the parser.
@@ -377,6 +415,9 @@ public class SilverStripeBaseParser implements PsiParser {
 		}
 		else {
 			builder.advanceLexer();
+		}
+		if (!blockLevelStack.isEmpty()) {
+			blockLevelStack.peek().hasContent = true;
 		}
 	}
 }

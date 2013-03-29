@@ -164,6 +164,7 @@ public class SilverStripeFormattingModelBuilder extends TemplateLanguageFormatti
 				if (hasOnlySilverStripeLanguageParents()) {
 					return Indent.getNormalIndent();
 				}
+				//return Indent.getNormalIndent();
 			}
 
 			if (myNode.getTreeParent() != null
@@ -179,7 +180,7 @@ public class SilverStripeFormattingModelBuilder extends TemplateLanguageFormatti
 
 			// any element that is the direct descendant of a foreign block gets an indent
 			if (getRealBlockParent() instanceof DataLanguageBlockWrapper) {
-				return Indent.getNoneIndent();
+				return Indent.getNormalIndent();
 			}
 
 			return Indent.getNoneIndent();
@@ -226,7 +227,7 @@ public class SilverStripeFormattingModelBuilder extends TemplateLanguageFormatti
 					//      and com.dmarcotte.handlebars.format.HbFormatOnEnterTest#testSimpleBlockInDiv8
 					//      but isn't really based on solid logic (why do these checks work?), so when there's inevitably a
 					//      format-on-enter bug, this is the first bit of code to be suspicious of
-					// && (myNode.getElementType() != HbTokenTypes.STATEMENTS || myNode.getTreeNext() instanceof PsiErrorElement)
+					 && (myNode.getElementType() != SS_STATEMENTS || myNode.getTreeNext() instanceof PsiErrorElement)
 					)) {
 				return new ChildAttributes(Indent.getNormalIndent(), null);
 			} else {
@@ -241,7 +242,11 @@ public class SilverStripeFormattingModelBuilder extends TemplateLanguageFormatti
 			while (parent != null) {
 				if (parent instanceof DataLanguageBlockWrapper) {
 					hasOnlyHbLanguageParents = false;
+					DataLanguageBlockWrapper realParent = (DataLanguageBlockWrapper)parent;
 					break;
+				}
+				else {
+					hasOnlyHbLanguageParents = true;
 				}
 				parent = parent.getParent();
 			}

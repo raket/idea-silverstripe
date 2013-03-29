@@ -79,12 +79,12 @@ public class SilverStripePsiUtil {
 			public boolean value(PsiElement element) {
 				return element != null
 						&& element.getNode() != null
-						&& element.getNode().getElementType() == SS_BLOCK_STATEMENT;
+						&& element.getNode().getElementType() == SS_STATEMENTS;
 			}
 		});
 
 		// we're a non-root statements if we're of type statements, and we have a statements parent
-		return element.getNode().getElementType() == SS_BLOCK_STATEMENT
+		return element.getNode().getElementType() == SS_STATEMENTS
 				&& statementsParent != null;
 	}
 }
