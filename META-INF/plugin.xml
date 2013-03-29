@@ -7,13 +7,18 @@
     <description><![CDATA[
       <a href="http://www.silverstripe.org/">SilverStripe</a> template language support<br>
       <br>
-      <br>
       Issues, feature requests and contributions welcome: <a href="https://github.com/raket/idea-silverstripe">https://github.com/raket/idea-silverstripe</a>
       ]]>
     </description>
     <category>Custom Languages</category>
     <change-notes>
         <![CDATA[
+        <strong>Version 0.2</strong>
+        <ul>
+            <li><b>Features</b></li>
+            <li>Code formatting for both HTML and the SilverStripe template language.</li>
+            <li>Proper parsing of if/else_if statements</li>
+        </ul>
         <strong>Version 0.1</strong>
         <br>
         First version of the plugin. It brings basic tag recognition, syntax highlighting, brace matching and code folding.

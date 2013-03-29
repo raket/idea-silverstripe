@@ -174,13 +174,28 @@ public class SilverStripeBaseParser implements PsiParser {
 	private void buildStatementsBlock(PsiBuilder builder, String tokenValue, ParseResult parseResult) {
 		if (!Arrays.asList(startStatements).contains(tokenValue) && !Arrays.asList(endStatements).contains(tokenValue))
 			return;
+
+
 		// Starts the statements block
 		if (Arrays.asList(startStatements).contains(tokenValue)) {
 			blockLevelStack.push(new BlockLevel(builder, tokenValue, parseResult ));
 		}
 		// We have an ending statement
-		else if (!blockLevelStack.empty() && tokenValue.contains(blockLevelStack.peek().toString())) {
-			blockLevelStack.pop().done(SS_BLOCK_STATEMENT);
+		else if (!blockLevelStack.empty() && Arrays.asList(endStatements).contains(tokenValue)) {
+			if (tokenValue.contains(blockLevelStack.peek().toString())) {
+				blockLevelStack.pop().done(SS_BLOCK_STATEMENT);
+			}
+			// Current level does not match let's have a look upwards
+			/*
+			else {
+				while(!blockLevelStack.isEmpty()) {
+					BlockLevel currentLevel = blockLevelStack.pop();
+					if (tokenValue.contains(currentLevel.toString()))
+						currentLevel.done(SS_BLOCK_STATEMENT);
+					else
+						currentLevel.drop();
+				}
+			}*/
 		}
 		// No match, it's an error - we drop the block statement and mark the offending element
 		else if (!blockLevelStack.empty()) {

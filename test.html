@@ -33,6 +33,9 @@ Variable $Var
 <% if $Var %>
 <% end_if %>
 $Var
+<% if $Foo %>
+<% loop $Bar %>
+<% end_if %>
 <script>
 	window.FBUserStatus = false;
 	window.fbAsyncInit = function() {
