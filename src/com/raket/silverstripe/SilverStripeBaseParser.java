@@ -185,6 +185,10 @@ public class SilverStripeBaseParser implements PsiParser {
 			if (tokenValue.contains(blockLevelStack.peek().toString())) {
 				blockLevelStack.pop().done(SS_BLOCK_STATEMENT);
 			}
+			else {
+				BlockLevel currentLevel = blockLevelStack.pop();
+				currentLevel.drop();
+			}
 			// Current level does not match let's have a look upwards
 			/*
 			else {
@@ -429,7 +433,9 @@ public class SilverStripeBaseParser implements PsiParser {
 			errorMarker.error(ERROR_TOKEN_MESSAGES.get(token));
 		}
 		else {
+			PsiBuilder.Marker tokenMarker = builder.mark();
 			builder.advanceLexer();
+			tokenMarker.done(token);
 		}
 		if (!blockLevelStack.isEmpty()) {
 			blockLevelStack.peek().hasContent = true;

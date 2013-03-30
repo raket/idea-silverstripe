@@ -86,5 +86,7 @@
                         implementationClass="com.raket.silverstripe.format.SilverStripeFormattingModelBuilder"/>
        <braceMatcher filetype="SilverStripe"
                       implementationClass="com.raket.silverstripe.editor.braces.SilverStripeBraceMatcher"/>
+        <typedHandler implementation="com.raket.silverstripe.editor.actions.SilverStripeTypedHandler"/>
+        <enterHandlerDelegate implementation="com.raket.silverstripe.editor.actions.SilverStripeEnterHandler"/>
     </extensions>
 </idea-plugin>
