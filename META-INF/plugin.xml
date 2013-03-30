@@ -1,7 +1,7 @@
 <idea-plugin version="2" url="https://github.com/raket/idea-silverstripe">
     <id>com.raket.silverstripe</id>
     <name>SilverStripe Template Language Support</name>
-    <version>0.1</version>
+    <version>0.2</version>
     <vendor logo="/icons/raket.png" email="marcus@raket.nu" url="http://www.raket.nu">Raket Webbyrå</vendor>
 
     <description><![CDATA[
@@ -16,8 +16,11 @@
         <strong>Version 0.2</strong>
         <ul>
             <li><b>Features</b></li>
+            <li>Code completion for block statements Writing out the opening statement will autocomplete the closing statement</li>
+            <li>Automatic placing of caret when pressing enter between start and close block</li>
             <li>Code formatting for both HTML and the SilverStripe template language.</li>
             <li>Proper parsing of if/else_if statements</li>
+            <li>Basic support of <%t %></li>
         </ul>
         <strong>Version 0.1</strong>
         <br>
