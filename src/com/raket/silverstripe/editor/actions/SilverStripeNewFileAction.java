@@ -5,6 +5,7 @@ import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
+
 import static com.raket.silverstripe.SilverStripeBundle.message;
 
 /**

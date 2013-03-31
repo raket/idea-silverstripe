@@ -1,10 +1,11 @@
-package com.raket.silverstripe;
+package com.raket.silverstripe.editor.colors;
 
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.options.colors.AttributesDescriptor;
 import com.intellij.openapi.options.colors.ColorDescriptor;
 import com.intellij.openapi.options.colors.ColorSettingsPage;
+import com.raket.silverstripe.editor.highlighting.SilverStripeSyntaxHighlighter;
 import com.raket.silverstripe.file.SilverStripeFileType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

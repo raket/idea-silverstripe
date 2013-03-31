@@ -20,7 +20,6 @@ import com.raket.silverstripe.psi.SilverStripePsiUtil;
 import org.jetbrains.annotations.NotNull;
 
 import static com.raket.silverstripe.psi.SilverStripeTypes.*;
-import static com.raket.silverstripe.psi.SilverStripeTypes.SS_BLOCK_END_STATEMENT;
 
 /**
  * Created with IntelliJ IDEA.

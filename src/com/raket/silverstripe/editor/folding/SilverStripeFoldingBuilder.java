@@ -7,14 +7,14 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
-import static com.raket.silverstripe.psi.SilverStripeTypes.*;
-
 import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.raket.silverstripe.psi.SilverStripeTypes.*;
 
 public class SilverStripeFoldingBuilder implements FoldingBuilder, DumbAware {
 

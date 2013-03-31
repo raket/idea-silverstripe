@@ -1,12 +1,13 @@
 package com.raket.silverstripe;
 
-import java.util.HashMap;
-import java.util.Map;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 
-import static com.raket.silverstripe.psi.SilverStripeTypes.*;
+import java.util.HashMap;
+import java.util.Map;
+
 import static com.raket.silverstripe.SilverStripeBundle.message;
+import static com.raket.silverstripe.psi.SilverStripeTypes.*;
 
 /**
  * Created with IntelliJ IDEA.

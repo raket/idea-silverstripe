@@ -12,13 +12,13 @@ import com.intellij.psi.formatter.DocumentBasedFormattingModel;
 import com.intellij.psi.formatter.xml.SyntheticBlock;
 import com.intellij.psi.templateLanguages.SimpleTemplateLanguageFormattingModelBuilder;
 import com.intellij.psi.tree.IElementType;
-import static com.raket.silverstripe.psi.SilverStripeTypes.*;
-
 import com.raket.silverstripe.psi.SilverStripePsiUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+
+import static com.raket.silverstripe.psi.SilverStripeTypes.*;
 
 /**
  * Created with IntelliJ IDEA.

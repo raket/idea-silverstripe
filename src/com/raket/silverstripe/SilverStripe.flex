@@ -14,6 +14,7 @@ import com.intellij.util.containers.Stack;
 %%
 
 %unicode
+%public
 %class SilverStripeLexer
 %implements FlexLexer
 %function advance
@@ -75,7 +76,9 @@ SS_ELSE_KEYWORD= else
 SS_COMPARISON_OPERATOR= "==" | "!=" | "=" | "not"
 SS_AND_OR_OPERATOR= "&&" | "||"
 SS_STRING= \"[^\"]*\" | \'[^\']*\'
-SS_SIMPLE_KEYWORD= include | base_tag
+SS_SIMPLE_KEYWORD= base_tag
+SS_INCLUDE_KEYWORD= include
+SS_INCLUDE_FILE= [a-zA-Z\-_]+
 SS_END_KEYWORD= end_loop | end_if | end_with | end_control
 SS_BLOCK_VAR=(\$?[a-zA-Z]+)((\((\"|\')?[a-zA-Z]+(\"|\')?\))|\.|([a-zA-Z]+))*
 SS_COMMENT_START= <%--
@@ -91,6 +94,7 @@ SS_TRANSLATION_START= <%t
 %state SS_COMMENT
 %state SS_TRANSLATION
 %state SS_IF_STATEMENT
+%state SS_INCLUDE_STATEMENT
 %%
 
 <YYINITIAL> {
@@ -121,6 +125,7 @@ SS_TRANSLATION_START= <%t
     {WHITE_SPACE}+                      { yybegin(SS_BLOCK_START); return TokenType.WHITE_SPACE; }
 	{SS_BLOCK_START}                    { yybegin(SS_BLOCK_START); return SilverStripeTypes.SS_BLOCK_START; }
 	{SS_START_KEYWORD}                  { yybegin(SS_BLOCK_VAR); return SilverStripeTypes.SS_START_KEYWORD; }
+	{SS_INCLUDE_KEYWORD}                { yybegin(SS_INCLUDE_STATEMENT); return SilverStripeTypes.SS_INCLUDE_KEYWORD; }
 	{SS_SIMPLE_KEYWORD}                 { yybegin(SS_BLOCK_VAR); return SilverStripeTypes.SS_SIMPLE_KEYWORD; }
 	{SS_TRANSLATION_START}              { yybegin(SS_TRANSLATION); return SilverStripeTypes.SS_BLOCK_START; }
 	{SS_COMMENT_START}                  { yybegin(SS_COMMENT); return SilverStripeTypes.SS_COMMENT_START; }
@@ -130,6 +135,12 @@ SS_TRANSLATION_START= <%t
 	{SS_END_KEYWORD}                    { yybegin(SS_BLOCK_START); return SilverStripeTypes.SS_END_KEYWORD; }
     {SS_BLOCK_END}                      { yybegin(YYINITIAL); return SilverStripeTypes.SS_BLOCK_END; }
 	.                                   { yybegin(SS_BAD_BLOCK_STATEMENT); yypushback(1); }
+}
+
+<SS_INCLUDE_STATEMENT> {
+    {WHITE_SPACE}+                     { yybegin(SS_INCLUDE_STATEMENT); return TokenType.WHITE_SPACE; }
+    {SS_INCLUDE_FILE}                  { yybegin(SS_INCLUDE_STATEMENT); return SilverStripeTypes.SS_INCLUDE_FILE; }
+    {SS_BLOCK_END}                     { yybegin(YYINITIAL); return SilverStripeTypes.SS_BLOCK_END; }
 }
 
 <SS_IF_STATEMENT> {

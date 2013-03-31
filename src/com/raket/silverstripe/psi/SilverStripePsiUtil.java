@@ -4,6 +4,7 @@ import com.intellij.openapi.util.Condition;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.TokenSet;
 import com.intellij.psi.util.PsiTreeUtil;
+
 import static com.raket.silverstripe.psi.SilverStripeTypes.*;
 
 /**

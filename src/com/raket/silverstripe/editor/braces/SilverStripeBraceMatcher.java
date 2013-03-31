@@ -1,16 +1,15 @@
 package com.raket.silverstripe.editor.braces;
 
 import com.intellij.codeInsight.highlighting.BraceMatcher;
-import com.intellij.codeInsight.template.LiveTemplateBuilder;
-import com.intellij.lang.impl.PsiBuilderImpl;
 import com.intellij.openapi.editor.highlighter.HighlighterIterator;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
-import static com.raket.silverstripe.psi.SilverStripeTypes.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import static com.raket.silverstripe.psi.SilverStripeTypes.*;
 
 /**
  * Created with IntelliJ IDEA.

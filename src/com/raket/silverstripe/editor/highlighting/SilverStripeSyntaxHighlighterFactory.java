@@ -1,6 +1,5 @@
-package com.raket.silverstripe;
+package com.raket.silverstripe.editor.highlighting;
 
-import com.intellij.ide.highlighter.HtmlFileHighlighter;
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterFactory;
 import com.intellij.openapi.project.Project;

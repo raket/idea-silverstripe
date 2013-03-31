@@ -1,4 +1,5 @@
 package com.raket.silverstripe.file;
+
 import com.intellij.openapi.editor.colors.EditorColorsScheme;
 import com.intellij.openapi.editor.highlighter.EditorHighlighter;
 import com.intellij.openapi.fileTypes.*;
@@ -6,10 +7,10 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.raket.silverstripe.SilverStripeLanguage;
-import com.raket.silverstripe.SilverStripeTemplateHighlighter;
+import com.raket.silverstripe.editor.highlighting.SilverStripeTemplateHighlighter;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.NonNls;
 
 import javax.swing.*;
 

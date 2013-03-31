@@ -1,4 +1,4 @@
-package com.raket.silverstripe;
+package com.raket.silverstripe.parser;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
@@ -11,9 +11,10 @@ import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.TokenType;
-import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.TokenSet;
+import com.raket.silverstripe.SilverStripeLanguage;
+import com.raket.silverstripe.SilverStripeLexer;
 import com.raket.silverstripe.psi.SilverStripeFile;
 import com.raket.silverstripe.psi.SilverStripePsiElement;
 import com.raket.silverstripe.psi.SilverStripeTypes;

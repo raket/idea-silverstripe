@@ -1,4 +1,4 @@
-package com.raket.silverstripe;
+package com.raket.silverstripe.parser;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.PsiBuilder;
@@ -6,16 +6,14 @@ import com.intellij.lang.PsiParser;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 import com.intellij.util.containers.Stack;
-import com.raket.silverstripe.psi.SilverStripeCompositeElementType;
 import org.jetbrains.annotations.NotNull;
-import static com.raket.silverstripe.psi.SilverStripeTypes.*;
-import static com.raket.silverstripe.SSErrorTokenTypes.ERROR_TOKEN_MESSAGES;
-import static com.raket.silverstripe.SSErrorTokenTypes.ERROR_TOKENS;
-import static com.raket.silverstripe.SilverStripeBundle.message;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+
+import static com.raket.silverstripe.SSErrorTokenTypes.ERROR_TOKENS;
+import static com.raket.silverstripe.SSErrorTokenTypes.ERROR_TOKEN_MESSAGES;
+import static com.raket.silverstripe.SilverStripeBundle.message;
+import static com.raket.silverstripe.psi.SilverStripeTypes.*;
 
 /**
  * TODO Decide if different parse levels (tokens, elements and blocks) should be moved out to separate classes.
@@ -29,6 +27,7 @@ public class SilverStripeBaseParser implements PsiParser {
 	Stack<BlockLevel> blockLevelStack = new Stack<BlockLevel>();
 	String[] startStatements = {"if", "loop", "with", "control"};
 	String[] endStatements = {"end_if", "end_loop", "end_with", "end_control"};
+	String[] statementContainers = {"if", "loop", "with", "control", "else_if", "else"};
 
 	private class ParseResult {
 		public boolean success = false;
@@ -66,7 +65,6 @@ public class SilverStripeBaseParser implements PsiParser {
 			level = currentLevelResult.marker.precede();
 			levelResult = currentLevelResult;
 			error = buildErrorStatement(levelResult, message("ss.parsing.unclosed.block", currentLevelType));
-			statements = builder.mark();
 		}
 
 		public void done(IElementType type) {
@@ -80,8 +78,15 @@ public class SilverStripeBaseParser implements PsiParser {
 		}
 
 		public void finishStatements() {
-			statements.done(SS_STATEMENTS);
+			if (hasContent)
+				statements.done(SS_STATEMENTS);
+			else
+				statements.drop();
+		}
+
+		public void startStatements() {
 			statements = builder.mark();
+			hasContent = false;
 		}
 
 		public String toString() {
@@ -107,8 +112,7 @@ public class SilverStripeBaseParser implements PsiParser {
 
         wrapperMarker.done(SS_STATEMENTS);
         rootMarker.done(root);
-		ASTNode tree = builder.getTreeBuilt();
-        return tree;
+        return builder.getTreeBuilt();
     }
 
 	// Tries to parse the whole tree
@@ -172,14 +176,23 @@ public class SilverStripeBaseParser implements PsiParser {
 	 *                    expecting either finished start or end block.
 	 */
 	private void buildStatementsBlock(PsiBuilder builder, String tokenValue, ParseResult parseResult) {
-		if (!Arrays.asList(startStatements).contains(tokenValue) && !Arrays.asList(endStatements).contains(tokenValue))
+		if (
+				!Arrays.asList(startStatements).contains(tokenValue) &&
+				!Arrays.asList(endStatements).contains(tokenValue) &&
+				!Arrays.asList(statementContainers).contains(tokenValue)
+			)
 			return;
 
 
 		// Starts the statements block
 		if (Arrays.asList(startStatements).contains(tokenValue)) {
-			blockLevelStack.push(new BlockLevel(builder, tokenValue, parseResult ));
+			blockLevelStack.push(new BlockLevel(builder, tokenValue, parseResult));
 		}
+
+		// Starts a statements block inside a block level
+		if (Arrays.asList(statementContainers).contains(tokenValue))
+			blockLevelStack.peek().startStatements();
+
 		// We have an ending statement
 		else if (!blockLevelStack.empty() && Arrays.asList(endStatements).contains(tokenValue)) {
 			if (tokenValue.contains(blockLevelStack.peek().toString())) {
@@ -240,39 +253,25 @@ public class SilverStripeBaseParser implements PsiParser {
 			TokenSet tokensToConsume = TokenSet.create(SS_BLOCK_START, nextToken, SS_BLOCK_VAR,
 					SS_AND_OR_OPERATOR, SS_COMPARISON_OPERATOR,SS_STRING);
 
+		   	if (!blockLevelStack.isEmpty() && nextToken == SS_ELSE_IF_KEYWORD)
+				blockLevelStack.peek().finishStatements();
 
-			if (nextToken == SS_ELSE_IF_KEYWORD && endingToken == SS_BLOCK_END) {
-				if (blockLevelStack.peek().hasContent)
-					blockLevelStack.peek().statements.done(SS_STATEMENTS);
-
-				result = createBlock(builder, buildType, tokensToConsume, SS_BLOCK_END);
-				if (result.success)
-					blockLevelStack.peek().statements = builder.mark();
-			}
-			else {
-				result = createBlock(builder, buildType, tokensToConsume, SS_BLOCK_END);
-			}
+			result = createBlock(builder, buildType, tokensToConsume, SS_BLOCK_END);
 		}
 		else if (nextToken == SS_ELSE_KEYWORD && endingToken == SS_BLOCK_END) {
 			IElementType[] tokensToConsume = {SS_BLOCK_START, nextToken, SS_BLOCK_END};
 
 			if (!blockLevelStack.isEmpty()) {
-				if (blockLevelStack.peek().hasContent)
-					blockLevelStack.peek().statements.done(SS_STATEMENTS);
+				blockLevelStack.peek().finishStatements();
 
 				result = createBlock(builder, SS_ELSE_STATEMENT, tokensToConsume, TokenSet.create());
-				if (result.success)
-					blockLevelStack.peek().statements = builder.mark();
 			}
 		}
         else if (nextToken == SS_END_KEYWORD && endingToken == SS_BLOCK_END) {
 			//builder.remapCurrentToken(SS_BLOCK_END_START);
 			IElementType[] tokensToConsume = {SS_BLOCK_START, nextToken, SS_BLOCK_END};
 			if (!blockLevelStack.isEmpty()) {
-				if (blockLevelStack.peek().hasContent)
-					blockLevelStack.peek().statements.done(SS_STATEMENTS);
-				else
-					blockLevelStack.peek().statements.drop();
+				blockLevelStack.peek().finishStatements();
 			}
             result = createBlock(builder, SS_BLOCK_END_STATEMENT, tokensToConsume, TokenSet.create());
 
@@ -424,7 +423,7 @@ public class SilverStripeBaseParser implements PsiParser {
 	 *
 	 * Consumes a single token by advancing the lexer.
 	 * Is error token aware and will error mark these tokens.
-	 * Uses {@link SSErrorTokenTypes.ERROR_TOKENS} to determine bad tokens and {@link SSErrorTokenTypes.ERROR_TOKEN_MESSAGES} for error messages.
+	 * Uses {@link com.raket.silverstripe.SSErrorTokenTypes.ERROR_TOKENS} to determine bad tokens and {@link com.raket.silverstripe.SSErrorTokenTypes.ERROR_TOKEN_MESSAGES} for error messages.
 	 * @param builder the builder for the parser.
 	 * @param token the token to be consumed.
 	 */

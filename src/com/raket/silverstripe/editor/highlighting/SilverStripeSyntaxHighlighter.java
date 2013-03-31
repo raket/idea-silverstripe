@@ -1,4 +1,4 @@
-package com.raket.silverstripe;
+package com.raket.silverstripe.editor.highlighting;
 
 import com.intellij.lexer.FlexAdapter;
 import com.intellij.lexer.Lexer;
@@ -8,9 +8,8 @@ import com.intellij.openapi.editor.markup.TextAttributes;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
-import static com.raket.silverstripe.psi.SilverStripeTypes.*;
-
 import com.intellij.psi.tree.TokenSet;
+import com.raket.silverstripe.SilverStripeLexer;
 import com.raket.silverstripe.psi.SilverStripeTypes;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,6 +17,7 @@ import java.awt.*;
 import java.io.Reader;
 
 import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey;
+import static com.raket.silverstripe.psi.SilverStripeTypes.*;
 
 public class SilverStripeSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey SEPARATOR = createTextAttributesKey("SS_SEPARATOR", SyntaxHighlighterColors.OPERATION_SIGN);
@@ -48,9 +48,9 @@ public class SilverStripeSyntaxHighlighter extends SyntaxHighlighterBase {
 			SS_VAR_END_DELIMITER
 	);
 
-	private static final TokenSet VARS = TokenSet.create(SS_BLOCK_VAR, SS_VAR, SilverStripeTypes.SS_STRING);
+	private static final TokenSet VARS = TokenSet.create(SS_BLOCK_VAR, SS_VAR, SilverStripeTypes.SS_STRING, SS_INCLUDE_FILE);
 	private static final TokenSet KEYWORDS = TokenSet.create(SS_START_KEYWORD, SS_END_KEYWORD, SS_IF_KEYWORD
-			, SS_ELSE_IF_KEYWORD, SS_ELSE_KEYWORD, SS_SIMPLE_KEYWORD);
+			, SS_ELSE_IF_KEYWORD, SS_ELSE_KEYWORD, SS_SIMPLE_KEYWORD, SS_INCLUDE_KEYWORD);
 	private static final TokenSet SEPARATORS = TokenSet.create(SS_COMPARISON_OPERATOR, SS_AND_OR_OPERATOR);
 
     @NotNull

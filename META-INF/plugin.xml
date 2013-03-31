@@ -80,10 +80,10 @@
         <!-- Add your extensions here -->
         <fileTypeFactory implementation="com.raket.silverstripe.file.SilverStripeFileTypeFactory"/>
         <lang.parserDefinition language="SilverStripe"
-                               implementationClass="com.raket.silverstripe.SilverStripeParserDefinition"/>
+                               implementationClass="com.raket.silverstripe.parser.SilverStripeParserDefinition"/>
         <lang.formatter language="SilverStripe"
                         implementationClass="com.raket.silverstripe.format.SilverStripeFormattingModelBuilder"/>
-        <colorSettingsPage implementation="com.raket.silverstripe.SilverStripeColorSettingsPage"/>
+        <colorSettingsPage implementation="com.raket.silverstripe.editor.colors.SilverStripeColorSettingsPage"/>
         <lang.fileViewProviderFactory language="SilverStripe"
                                       implementationClass="com.raket.silverstripe.file.SilverStripeFileViewProviderFactory"/>
         <braceMatcher filetype="SilverStripe"
@@ -93,7 +93,7 @@
         <typedHandler implementation="com.raket.silverstripe.editor.actions.SilverStripeTypedHandler"/>
         <enterHandlerDelegate implementation="com.raket.silverstripe.editor.actions.SilverStripeEnterHandler"/>
         <!--
-        <lang.syntaxHighlighterFactory key="SilverStripe" implementationClass="com.raket.silverstripe.SilverStripeSyntaxHighlighterFactory"/>
+        <lang.syntaxHighlighterFactory key="SilverStripe" implementationClass="com.raket.silverstripe.editor.highlighting.SilverStripeSyntaxHighlighterFactory"/>
         -->
         <codeInsight.lineMarkerProvider language="SilverStripe" implementationClass="com.raket.silverstripe.editor.lines.SilverStripeLineMarkerProvider"/>
     </extensions>

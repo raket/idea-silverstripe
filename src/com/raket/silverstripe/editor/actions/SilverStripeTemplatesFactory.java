@@ -8,6 +8,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileFactory;
 import com.intellij.util.IncorrectOperationException;
 import com.raket.silverstripe.file.SilverStripeFileType;
+
 import static com.raket.silverstripe.SilverStripeBundle.message;
 
 /**

@@ -1,4 +1,4 @@
-package com.raket.silverstripe;
+package com.raket.silverstripe.references;
 
 import com.intellij.patterns.StandardPatterns;
 import com.intellij.psi.PsiElement;

@@ -1,4 +1,4 @@
-package com.raket.silverstripe;
+package com.raket.silverstripe.references;
 
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.project.Project;

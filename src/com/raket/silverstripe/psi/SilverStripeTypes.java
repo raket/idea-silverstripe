@@ -1,8 +1,7 @@
 package com.raket.silverstripe.psi;
 
 import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.PsiElement;
-import com.intellij.lang.ASTNode;
+
 
 public interface SilverStripeTypes {
 	IElementType OUTER_WRAPPER = new SilverStripeElementType("OUTER_WRAPPER");
@@ -43,8 +42,12 @@ public interface SilverStripeTypes {
 	IElementType SS_STRING = new SilverStripeTokenType("SS_STRING");
 
 	IElementType SS_SIMPLE_KEYWORD = new SilverStripeTokenType("SS_SIMPLE_KEYWORD");
+	IElementType SS_INCLUDE_KEYWORD = new SilverStripeTokenType("SS_INCLUDE_KEYWORD");
+	IElementType SS_INCLUDE_FILE = new SilverStripeTokenType("SS_INCLUDE_FILE");
 	IElementType SS_START_KEYWORD = new SilverStripeTokenType("SS_START_KEYWORD");
 	IElementType SS_VAR = new SilverStripeTokenType("SS_VAR");
 	IElementType SS_VAR_END_DELIMITER = new SilverStripeTokenType("SS_VAR_END_DELIMITER");
 	IElementType SS_VAR_START_DELIMITER = new SilverStripeTokenType("SS_VAR_START_DELIMITER");
+
+	//SimpleEntry<IElementType, SilverStripeTokenType>
 }
