@@ -37,14 +37,14 @@ public class SilverStripeIncludeAnnotator implements Annotator {
 				String fullFileName = fileName + "." + fileExtension;
 				List<SilverStripeFile> properties = SilverStripeFileUtil.findFiles(project, fullFileName);
 				TextRange range = new TextRange(element.getTextRange().getStartOffset(),
-						element.getTextRange().getEndOffset());
-				/*if (properties.size() >= 1) {
-					Annotation annotation = holder.createInfoAnnotation(range, null);
-					annotation.setTextAttributes(SyntaxHighlighterColors.LINE_COMMENT);
-				} */
+						element.getTextRange().getStartOffset());
+				if (properties.size() >= 1) {
+					Annotation annotation = holder.createInfoAnnotation(ssElement.getNode(), null);
+					//annotation.setTextAttributes(SyntaxHighlighterColors.LINE_COMMENT);
+				}
 				if (properties.size() == 0) {
 					Annotation annotation = holder.createErrorAnnotation(ssElement.getNode(), message("ss.annotations.file.not.found", fullFileName));
-					//annotation.setTextAttributes(CodeInsightColors.WARNINGS_ATTRIBUTES);
+					annotation.setTextAttributes(CodeInsightColors.NOT_USED_ELEMENT_ATTRIBUTES);
 				}
 			}
 		}
