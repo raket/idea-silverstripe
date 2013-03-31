@@ -96,5 +96,6 @@
         <lang.syntaxHighlighterFactory key="SilverStripe" implementationClass="com.raket.silverstripe.editor.highlighting.SilverStripeSyntaxHighlighterFactory"/>
         -->
         <codeInsight.lineMarkerProvider language="SilverStripe" implementationClass="com.raket.silverstripe.editor.lines.SilverStripeLineMarkerProvider"/>
+        <annotator language="SilverStripe" implementationClass="com.raket.silverstripe.editor.annotations.SilverStripeIncludeAnnotator"/>
     </extensions>
 </idea-plugin>
