@@ -256,12 +256,14 @@ public class SilverStripeBaseParser implements PsiParser {
 		else if (nextToken == SS_ELSE_KEYWORD && endingToken == SS_BLOCK_END) {
 			IElementType[] tokensToConsume = {SS_BLOCK_START, nextToken, SS_BLOCK_END};
 
-			if (blockLevelStack.peek().hasContent)
-				blockLevelStack.peek().statements.done(SS_STATEMENTS);
+			if (!blockLevelStack.isEmpty()) {
+				if (blockLevelStack.peek().hasContent)
+					blockLevelStack.peek().statements.done(SS_STATEMENTS);
 
-			result = createBlock(builder, SS_ELSE_STATEMENT, tokensToConsume, TokenSet.create());
-			if (result.success)
-				blockLevelStack.peek().statements = builder.mark();
+				result = createBlock(builder, SS_ELSE_STATEMENT, tokensToConsume, TokenSet.create());
+				if (result.success)
+					blockLevelStack.peek().statements = builder.mark();
+			}
 		}
         else if (nextToken == SS_END_KEYWORD && endingToken == SS_BLOCK_END) {
 			//builder.remapCurrentToken(SS_BLOCK_END_START);

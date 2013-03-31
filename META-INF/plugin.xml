@@ -70,6 +70,10 @@
 
     <actions>
         <!-- Add your actions here -->
+        <action id="SilverStripe.NewFile" class="com.raket.silverstripe.editor.actions.SilverStripeNewFileAction" text="New SS Template"
+                description="Add a new SilverStripe Template File">
+            <add-to-group group-id="NewGroup" anchor="after" relative-to-action="NewFile"/>
+        </action>
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
@@ -77,19 +81,20 @@
         <fileTypeFactory implementation="com.raket.silverstripe.file.SilverStripeFileTypeFactory"/>
         <lang.parserDefinition language="SilverStripe"
                                implementationClass="com.raket.silverstripe.SilverStripeParserDefinition"/>
-        <!--
-        <lang.syntaxHighlighterFactory key="SilverStripe" implementationClass="com.raket.silverstripe.SilverStripeSyntaxHighlighterFactory"/>
-        -->
+        <lang.formatter language="SilverStripe"
+                        implementationClass="com.raket.silverstripe.format.SilverStripeFormattingModelBuilder"/>
         <colorSettingsPage implementation="com.raket.silverstripe.SilverStripeColorSettingsPage"/>
         <lang.fileViewProviderFactory language="SilverStripe"
                                       implementationClass="com.raket.silverstripe.file.SilverStripeFileViewProviderFactory"/>
+        <braceMatcher filetype="SilverStripe"
+                      implementationClass="com.raket.silverstripe.editor.braces.SilverStripeBraceMatcher"/>
         <lang.foldingBuilder language="SilverStripe"
                              implementationClass="com.raket.silverstripe.editor.folding.SilverStripeFoldingBuilder"/>
-        <lang.formatter language="SilverStripe"
-                        implementationClass="com.raket.silverstripe.format.SilverStripeFormattingModelBuilder"/>
-       <braceMatcher filetype="SilverStripe"
-                      implementationClass="com.raket.silverstripe.editor.braces.SilverStripeBraceMatcher"/>
         <typedHandler implementation="com.raket.silverstripe.editor.actions.SilverStripeTypedHandler"/>
         <enterHandlerDelegate implementation="com.raket.silverstripe.editor.actions.SilverStripeEnterHandler"/>
+        <!--
+        <lang.syntaxHighlighterFactory key="SilverStripe" implementationClass="com.raket.silverstripe.SilverStripeSyntaxHighlighterFactory"/>
+        -->
+        <codeInsight.lineMarkerProvider language="SilverStripe" implementationClass="com.raket.silverstripe.editor.lines.SilverStripeLineMarkerProvider"/>
     </extensions>
 </idea-plugin>

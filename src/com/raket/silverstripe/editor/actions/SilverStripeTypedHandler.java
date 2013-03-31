@@ -46,7 +46,7 @@ public class SilverStripeTypedHandler extends TypedHandlerDelegate {
 			// if we're looking at a close stache, we may have some business too attend to
 			if (c == '>' && previousChar.equals("%")) {
 				autoInsertCloseTag(project, offset, editor, provider);
-				//adjustMustacheFormatting(project, offset, editor, file, provider);
+				adjustMustacheFormatting(project, offset, editor, file, provider);
 			}
 		}
 
@@ -64,8 +64,6 @@ public class SilverStripeTypedHandler extends TypedHandlerDelegate {
 		PsiElement elementAtCaret = provider.findElementAt(offset - 1, SilverStripeLanguage.class);
 
 		PsiElement openTag = SilverStripePsiUtil.findParentOpenTagElement(elementAtCaret);
-		PsiElement[] children = openTag.getChildren();
-		PsiElement firstCHild = openTag.getFirstChild();
 		if (openTag != null && openTag.getChildren().length > 1) {
 			// we've got an open block type stache... find its ID
 			SilverStripePsiElement idElem = (SilverStripePsiElement) openTag.getChildren()[1];
@@ -89,10 +87,9 @@ public class SilverStripeTypedHandler extends TypedHandlerDelegate {
 		PsiElement closeOrSimpleInverseParent = PsiTreeUtil.findFirstParent(elementAtCaret, true, new Condition<PsiElement>() {
 			@Override
 			public boolean value(PsiElement element) {
+				if (element == null || element.getNode() == null) return false;
 				IElementType nodeType = element.getNode().getElementType();
-				return element != null
-						&& element.getNode() != null
-						&& (nodeType == SS_ELSE_IF_STATEMENT
+				return (nodeType == SS_ELSE_IF_STATEMENT
 						|| nodeType == SS_ELSE_STATEMENT
 						|| nodeType == SS_BLOCK_END_STATEMENT);
 			}
