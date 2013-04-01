@@ -13,6 +13,14 @@
     <category>Custom Languages</category>
     <change-notes>
         <![CDATA[
+        <strong>Version 0.3</strong>
+        <ul>
+            <li><b>Features</b></li>
+            <li>Code completion for include statement. It will show a list of possible include files in the current project</li>
+            <li>Annotation and quickfix of missinge include files. A missing file will be annotated and can be quickfixed to automatically create the file</li>
+            <li>Goto include file. Correct include statement shows a marker in the gutter that when clicked leads to the file</li>
+            <li>Comments support. The plugin now supports the Code -> Comment shortcuts and will create an SS shortcut around the selected text</li>
+        </ul>
         <strong>Version 0.2</strong>
         <ul>
             <li><b>Features</b></li>

@@ -79,3 +79,17 @@ $Var
 </script>
 </body>
 </html>
+<% if $foo %>
+<% with $var %>
+$V
+<% end_with %>
+<% end_if %>
+<% if $Foo %>
+<% else_if $var %>
+<% else %>
+<% include test %>
+<% base_tag %>
+<% include Marcus %>
+<% include  Marcus %>
+<% include boom %>
+<% end_if %>

@@ -67,6 +67,7 @@ $Var
 		</ul>
 	</li>
 </ul>
+<% if $var %>
 // This is a comment
 <%-- This is a comment --%>
 // Simple string translation
