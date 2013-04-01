@@ -3,6 +3,7 @@ package com.raket.silverstripe.editor.highlighting;
 import com.intellij.lexer.FlexAdapter;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.SyntaxHighlighterColors;
+import com.intellij.openapi.editor.XmlHighlighterColors;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.editor.markup.TextAttributes;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
@@ -18,12 +19,13 @@ import java.io.Reader;
 
 import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey;
 import static com.raket.silverstripe.psi.SilverStripeTypes.*;
+import static com.raket.silverstripe.psi.SilverStripeTypes.COMMENT;
 
 public class SilverStripeSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey SEPARATOR = createTextAttributesKey("SS_SEPARATOR", SyntaxHighlighterColors.OPERATION_SIGN);
     public static final TextAttributesKey KEY = createTextAttributesKey("SS_KEY", SyntaxHighlighterColors.KEYWORD);
     public static final TextAttributesKey VALUE = createTextAttributesKey("SS_VALUE", SyntaxHighlighterColors.STRING);
-    public static final TextAttributesKey COMMENT = createTextAttributesKey("SS_COMMENT", SyntaxHighlighterColors.LINE_COMMENT);
+    public static final TextAttributesKey COMMENT = createTextAttributesKey("SS_COMMENT", XmlHighlighterColors.HTML_COMMENT);
     public static final TextAttributesKey SS_BLOCK = createTextAttributesKey("SS_BLOCK", SyntaxHighlighterColors.BRACES);
     public static final TextAttributesKey SS_KEYWORD = createTextAttributesKey("SS_KEYWORD", SyntaxHighlighterColors.KEYWORD);
     public static final TextAttributesKey SS_BLOCK_VAR_KEY = createTextAttributesKey("SS_BLOCK_VAR", SyntaxHighlighterColors.STRING);
@@ -42,10 +44,13 @@ public class SilverStripeSyntaxHighlighter extends SyntaxHighlighterBase {
 	private static final TokenSet BRACES = TokenSet.create(
 			SS_BLOCK_START,
 			SS_BLOCK_END,
-			SS_COMMENT_START,
-			SS_COMMENT_END,
 			SS_VAR_START_DELIMITER,
 			SS_VAR_END_DELIMITER
+	);
+	private static final TokenSet COMMENTS = TokenSet.create(
+			SS_COMMENT_START,
+			SilverStripeTypes.COMMENT,
+			SS_COMMENT_END
 	);
 
 	private static final TokenSet VARS = TokenSet.create(SS_BLOCK_VAR, SS_VAR, SilverStripeTypes.SS_STRING, SS_INCLUDE_FILE);
@@ -70,7 +75,7 @@ public class SilverStripeSyntaxHighlighter extends SyntaxHighlighterBase {
             return SS_KEYWORD_KEYS;
         } else if (SEPARATORS.contains(tokenType)) {
 			return SEPARATOR_KEYS;
-		} else if (tokenType.equals(COMMENT)) {
+		} else if (COMMENTS.contains(tokenType)) {
 			return COMMENT_KEYS;
 		} else if (tokenType.equals(TokenType.BAD_CHARACTER)) {
             return BAD_CHAR_KEYS;

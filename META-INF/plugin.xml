@@ -99,5 +99,6 @@
         <codeInsight.lineMarkerProvider language="SilverStripe" implementationClass="com.raket.silverstripe.editor.lines.SilverStripeLineMarkerProvider"/>
         <completion.contributor language="SilverStripe" implementationClass="com.raket.silverstripe.editor.completions.SilverStripeCompletionContributor"/>
         <annotator language="SilverStripe" implementationClass="com.raket.silverstripe.editor.annotations.SilverStripeIncludeAnnotator"/>
+        <lang.commenter language="SilverStripe" implementationClass="com.raket.silverstripe.editor.comments.SilverStripeCommenter"/>
     </extensions>
 </idea-plugin>
