@@ -41,6 +41,11 @@ public class SilverStripeFoldingBuilder implements FoldingBuilder, DumbAware {
 			ASTNode endOpenBlockStache = node.getFirstChildNode();
 			ASTNode endCloseBlockStache = node.getLastChildNode();
 
+			if (SS_BLOCK_STATEMENT == node.getElementType()) {
+				endOpenBlockStache = endOpenBlockStache.getLastChildNode();
+				endCloseBlockStache = endCloseBlockStache.getLastChildNode();
+			}
+
 			// if we've got a well formed block with the open and close elems we need, define a region to fold
 			if (endOpenBlockStache != null && endCloseBlockStache != null) {
 				int endOfFirstOpenStacheLine
