@@ -284,13 +284,17 @@ public class SilverStripeBaseParser implements PsiParser {
 					errorMessage = message("ss.parsing.unexpected.end.statement");
 			}
         }
+		else if (nextToken == SS_INCLUDE_KEYWORD) {
+			IElementType[] tokensToConsume = {SS_BLOCK_START, nextToken, SS_INCLUDE_FILE, SS_BLOCK_END};
+			result = createBlock(builder, SS_INCLUDE_STATEMENT, tokensToConsume, TokenSet.create());
+		}
+
         else if (nextToken == SS_SIMPLE_KEYWORD) {
-			//builder.remapCurrentToken(SS_BLOCK_SIMPLE_START);
-			IElementType[] tokensToConsume = {SS_BLOCK_START, SS_SIMPLE_KEYWORD, SS_BLOCK_VAR, SS_BLOCK_END};
+			IElementType[] tokensToConsume = {SS_BLOCK_START, nextToken, SS_BLOCK_VAR, SS_BLOCK_END};
             result = createBlock(builder, SS_BLOCK_SIMPLE_STATEMENT, tokensToConsume, TokenSet.create(SS_BLOCK_VAR));
         }
 		else if (nextToken == SS_BAD_BLOCK_STATEMENT) {
-			IElementType[] tokensToConsume = {SS_BLOCK_START, SS_BAD_BLOCK_STATEMENT, SS_BLOCK_END};
+			IElementType[] tokensToConsume = {SS_BLOCK_START, nextToken, SS_BLOCK_END};
 			result = createBlock(builder, SS_BAD_BLOCK, tokensToConsume, TokenSet.create());
 		}
 		else if (nextToken == SS_TRANSLATION_CONTENT) {
@@ -434,9 +438,9 @@ public class SilverStripeBaseParser implements PsiParser {
 			errorMarker.error(ERROR_TOKEN_MESSAGES.get(token));
 		}
 		else {
-			PsiBuilder.Marker tokenMarker = builder.mark();
+//			PsiBuilder.Marker tokenMarker = builder.mark();
 			builder.advanceLexer();
-			tokenMarker.done(token);
+//			tokenMarker.done(token);
 		}
 		if (!blockLevelStack.isEmpty()) {
 			blockLevelStack.peek().hasContent = true;

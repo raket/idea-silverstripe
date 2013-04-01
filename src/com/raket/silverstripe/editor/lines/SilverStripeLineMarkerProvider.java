@@ -10,7 +10,6 @@ import com.intellij.psi.tree.IElementType;
 import com.raket.silverstripe.file.SilverStripeFileType;
 import com.raket.silverstripe.file.SilverStripeFileUtil;
 import com.raket.silverstripe.psi.SilverStripeFile;
-import com.raket.silverstripe.psi.SilverStripePsiElement;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -21,13 +20,13 @@ import static com.raket.silverstripe.psi.SilverStripeTypes.SS_INCLUDE_FILE;
 public class SilverStripeLineMarkerProvider extends RelatedItemLineMarkerProvider {
 	@Override
 	protected void collectNavigationMarkers(@NotNull PsiElement element, Collection<? super RelatedItemLineMarkerInfo> result) {
-		if (element instanceof SilverStripePsiElement) {
-			SilverStripePsiElement ssElement = (SilverStripePsiElement) element;
-			IElementType nodeType = ssElement.getNode().getElementType();
+		if (element instanceof PsiElement) {
+			//SilverStripePsiElement ssElement = (SilverStripePsiElement) element;
+			IElementType nodeType = element.getNode().getElementType();
 			if (nodeType == SS_INCLUDE_FILE) {
-				String fileName = ssElement.getText();
+				String fileName = element.getText();
 				Project project = element.getProject();
-				PsiFile currentFile = ssElement.getContainingFile();
+				PsiFile currentFile = element.getContainingFile();
 				String fileExtension = currentFile.getFileType().getDefaultExtension();
 				final List<SilverStripeFile> properties = SilverStripeFileUtil.findFiles(project, fileName+"."+fileExtension);
 				if (properties.size() > 0) {

@@ -1,10 +1,9 @@
 // This is a generated file. Not intended for manual editing.
 package com.raket.silverstripe.psi;
 
-import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.PsiElement;
 import com.intellij.lang.ASTNode;
-import com.raket.silverstripe.psi.impl.*;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.tree.IElementType;
 
 public interface SilverStripeTypes {
 

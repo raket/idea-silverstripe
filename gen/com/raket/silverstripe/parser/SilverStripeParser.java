@@ -1,17 +1,16 @@
 // This is a generated file. Not intended for manual editing.
 package com.raket.silverstripe.parser;
 
-import org.jetbrains.annotations.*;
-import com.intellij.lang.LighterASTNode;
+import com.intellij.lang.ASTNode;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiBuilder.Marker;
-import com.intellij.openapi.diagnostic.Logger;
-import static com.raket.silverstripe.psi.SilverStripeTypes.*;
-import static com.raket.silverstripe.parser.GeneratedParserUtilBase.*;
-import com.intellij.psi.tree.IElementType;
-import com.intellij.lang.ASTNode;
-import com.intellij.psi.tree.TokenSet;
 import com.intellij.lang.PsiParser;
+import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.psi.tree.IElementType;
+import org.jetbrains.annotations.NotNull;
+
+import static com.raket.silverstripe.parser.GeneratedParserUtilBase.*;
+import static com.raket.silverstripe.psi.SilverStripeTypes.*;
 
 @SuppressWarnings({"SimplifiableIfStatement", "UnusedAssignment"})
 public class SilverStripeParser implements PsiParser {

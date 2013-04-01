@@ -15,22 +15,14 @@ import java.util.List;
 
 public class SilverStripeFileUtil {
 	public static List<SilverStripeFile> findFiles(Project project, String key) {
-		List<SilverStripeFile> result = null;
-		Collection<VirtualFile> virtualFiles = FileBasedIndex.getInstance().getContainingFiles(FileTypeIndex.NAME, SilverStripeFileType.INSTANCE,
-				GlobalSearchScope.allScope(project));
-		for (VirtualFile virtualFile : virtualFiles) {
-			SilverStripeFile simpleFile = (SilverStripeFile) PsiManager.getInstance(project).findFile(virtualFile);
-			String fileName = simpleFile.getName();
-			if (simpleFile != null) {
-				if (result == null) {
-					result = new ArrayList<SilverStripeFile>();
-				}
-				if (simpleFile.getName().matches(key)) {
-					result.add(simpleFile);
-				}
+		List<SilverStripeFile> result =  new ArrayList<SilverStripeFile>();
+		List<SilverStripeFile> files = findFiles(project);
+		for (SilverStripeFile file : files) {
+			if (file.getName().matches(key)) {
+				result.add(file);
 			}
 		}
-		return result != null ? result : Collections.<SilverStripeFile>emptyList();
+		return result;
 	}
 
 	public static List<SilverStripeFile> findFiles(Project project) {
@@ -45,4 +37,16 @@ public class SilverStripeFileUtil {
 		}
 		return result;
 	}
+
+	public static List<SilverStripeFile> findFilesByDir(Project project, String key) {
+		List<SilverStripeFile> result =  new ArrayList<SilverStripeFile>();
+		List<SilverStripeFile> files = findFiles(project);
+		for (SilverStripeFile file : files) {
+			if (file.getContainingDirectory().getName().matches(key)) {
+				result.add(file);
+			}
+		}
+		return result;
+	}
+
 }

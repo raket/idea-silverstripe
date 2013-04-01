@@ -39,6 +39,7 @@ public class SilverStripeBraceMatcher implements BraceMatcher {
 
 	private static final TokenSet ALWAYS_BRACES = TokenSet.create(
 		SS_SIMPLE_KEYWORD,
+		SS_INCLUDE_KEYWORD,
 		SS_ELSE_KEYWORD,
 		SS_BAD_BLOCK_STATEMENT,
 		SS_TRANSLATION_CONTENT,

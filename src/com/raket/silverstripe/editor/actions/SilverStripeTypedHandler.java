@@ -29,6 +29,20 @@ import static com.raket.silverstripe.psi.SilverStripeTypes.*;
  * To change this template use File | Settings | File Templates.
  */
 public class SilverStripeTypedHandler extends TypedHandlerDelegate {
+	/*
+	@Override
+	public Result checkAutoPopup(char charTyped, Project project, Editor editor, PsiFile file) {
+		//if (!(file instanceof SilverStripeFile)) return Result.CONTINUE;
+		int offset = editor.getCaretModel().getOffset();
+
+		String isInclude = editor.getDocument().getText(new TextRange(offset - 9, offset -1));
+		if (isInclude.equals("include")) {
+			CompletionAutoPopupHandler.invokeCompletion(CompletionType.BASIC, true, project, editor, 0, false);
+			return Result.STOP;
+		}
+
+		return Result.CONTINUE;
+	}*/
 
 	@Override
 	public TypedHandlerDelegate.Result charTyped(char c, Project project, Editor editor, @NotNull PsiFile file) {
@@ -40,6 +54,7 @@ public class SilverStripeTypedHandler extends TypedHandlerDelegate {
 		}
 
 		String previousChar = editor.getDocument().getText(new TextRange(offset - 2, offset - 1));
+		String isInclude = editor.getDocument().getText(new TextRange(offset - 8, offset - 1));
 
 		if (file.getViewProvider() instanceof SilverStripeFileViewProvider) {
 			// if we're looking at a close stache, we may have some business too attend to
@@ -47,6 +62,17 @@ public class SilverStripeTypedHandler extends TypedHandlerDelegate {
 				autoInsertCloseTag(project, offset, editor, provider);
 				adjustMustacheFormatting(project, offset, editor, file, provider);
 			}
+
+			if (c == '%' && previousChar.equals("<")) {
+
+			}
+			if (isInclude.equals("include")) { /*
+				ReadonlyStatusHandler.getInstance(project).ensureFilesWritable(file.getVirtualFile());
+				CodeCompletionHandlerBase codeCompleter = new CodeCompletionHandlerBase(CompletionType.BASIC);
+				codeCompleter.invokeCompletion(project, editor); */
+			}
+			/*
+			EditorEventMulticaster.add  */
 		}
 
 		return TypedHandlerDelegate.Result.CONTINUE;

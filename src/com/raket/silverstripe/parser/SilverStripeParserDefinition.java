@@ -11,6 +11,7 @@ import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.TokenType;
+import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.TokenSet;
 import com.raket.silverstripe.SilverStripeLanguage;
@@ -18,6 +19,7 @@ import com.raket.silverstripe.SilverStripeLexer;
 import com.raket.silverstripe.psi.SilverStripeFile;
 import com.raket.silverstripe.psi.SilverStripePsiElement;
 import com.raket.silverstripe.psi.SilverStripeTypes;
+import com.raket.silverstripe.psi.impl.SilverStripeIncludeImpl;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Reader;
@@ -70,22 +72,10 @@ public class SilverStripeParserDefinition implements ParserDefinition{
 
     @NotNull
     public PsiElement createElement(ASTNode node) {
-       /*
-         return SilverStripeTypes.Factory.createElement(node);
         IElementType type = node.getElementType();
-        if (type == SilverStripeTypes.OUTER_WRAPPER) {
-            return new SilverStripeOuterWrapperImpl(node);
+        if (type == SilverStripeTypes.SS_INCLUDE_STATEMENT) {
+            return new SilverStripeIncludeImpl(node);
         }
-        else if (type == SilverStripeTypes.SS_BLOCK_END_STATEMENT) {
-            return new SilverStripeSsBlockEndStatementImpl(node);
-        }
-        else if (type == SilverStripeTypes.SS_BLOCK_SIMPLE_STATEMENT) {
-            return new SilverStripeSsBlockSimpleStatementImpl(node);
-        }
-        else if (type == SilverStripeTypes.SS_BLOCK_START_STATEMENT) {
-            return new SilverStripeSsBlockStartStatementImpl(node);
-        }
-       */
         return new SilverStripePsiElement(node);
     }
 }
