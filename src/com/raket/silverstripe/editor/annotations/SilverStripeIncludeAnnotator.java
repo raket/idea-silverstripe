@@ -30,12 +30,12 @@ public class SilverStripeIncludeAnnotator implements Annotator {
 			TextRange range = new TextRange(element.getTextRange().getStartOffset(),
 					element.getTextRange().getStartOffset());
 			if (properties.size() >= 1) {
-				Annotation annotation = holder.createInfoAnnotation(ssElement.getNode(), null);
+				Annotation annotation = holder.createInfoAnnotation(ssElement, null);
 				//annotation.setTextAttributes(SyntaxHighlighterColors.LINE_COMMENT);
 			}
 			if (properties.size() == 0) {
 				Annotation annotation = holder
-						.createErrorAnnotation(ssElement.getNameIdentifier(), message("ss.annotations.file.not.found", fullFileName));
+						.createErrorAnnotation(ssElement, message("ss.annotations.file.not.found", fullFileName));
 				annotation.setTextAttributes(CodeInsightColors.NOT_USED_ELEMENT_ATTRIBUTES);
 				annotation.registerFix(new CreateIncludeQuickFix(fileName));
 			}
