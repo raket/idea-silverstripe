@@ -1,7 +1,7 @@
 <idea-plugin version="2" url="https://github.com/raket/idea-silverstripe">
     <id>com.raket.silverstripe</id>
     <name>SilverStripe Template Language Support</name>
-    <version>0.3</version>
+    <version>0.4</version>
     <vendor logo="/icons/raket.png" email="marcus@raket.nu" url="http://www.raket.nu">Raket Webbyrå</vendor>
 
     <description><![CDATA[
@@ -13,11 +13,18 @@
     <category>Custom Languages</category>
     <change-notes>
         <![CDATA[
+        <strong>Version 0.4</strong>
+        <ul>
+            <li><b>Features</b></li>
+            <li>Proper file resolution for include statements. It's now possible to ctrl+click or command+click include statements directly to navigate to the correct file. We're keeping the icon in the gutter for clarity</li>
+            <li>Bugfix for autocomplete of block statements. This both fixes a bug that missed the autocomplete and caused an exception when searching for files in some cases</li>
+        </ul>
+
         <strong>Version 0.3</strong>
         <ul>
             <li><b>Features</b></li>
             <li>Code completion for include statement. It will show a list of possible include files in the current project</li>
-            <li>Annotation and quickfix of missinge include files. A missing file will be annotated and can be quickfixed to automatically create the file</li>
+            <li>Annotation and quickfix of missing include files. A missing file will be annotated and can be quickfixed to automatically create the file</li>
             <li>Goto include file. Correct include statement shows a marker in the gutter that when clicked leads to the file</li>
             <li>Comments support. The plugin now supports the Code -> Comment shortcuts and will create an SS shortcut around the selected text</li>
         </ul>
