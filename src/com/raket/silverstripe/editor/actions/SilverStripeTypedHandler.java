@@ -1,22 +1,22 @@
 package com.raket.silverstripe.editor.actions;
 
 import com.intellij.codeInsight.editorActions.TypedHandlerDelegate;
+import com.intellij.lang.ASTNode;
 import com.intellij.openapi.editor.CaretModel;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.FileViewProvider;
-import com.intellij.psi.PsiDocumentManager;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
+import com.intellij.psi.*;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.tree.TokenSet;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.raket.silverstripe.SilverStripeLanguage;
 import com.raket.silverstripe.file.SilverStripeFileViewProvider;
 import com.raket.silverstripe.psi.SilverStripePsiElement;
 import com.raket.silverstripe.psi.SilverStripePsiUtil;
+import com.raket.silverstripe.psi.SilverStripeTokenType;
 import org.jetbrains.annotations.NotNull;
 
 import static com.raket.silverstripe.psi.SilverStripeTypes.*;
@@ -89,15 +89,10 @@ public class SilverStripeTypedHandler extends TypedHandlerDelegate {
 		PsiElement elementAtCaret = provider.findElementAt(offset - 1, SilverStripeLanguage.class);
 
 		PsiElement openTag = SilverStripePsiUtil.findParentOpenTagElement(elementAtCaret);
-		if (openTag != null && openTag.getChildren().length > 1) {
-			// we've got an open block type stache... find its ID
-			SilverStripePsiElement idElem = (SilverStripePsiElement) openTag.getChildren()[1];
-			IElementType nodeType = idElem.getNode().getElementType();
-			if (idElem != null
-					&& (nodeType == SS_START_KEYWORD || nodeType == SS_IF_KEYWORD)) {
-				// insert the corresponding close tag
-				editor.getDocument().insertString(offset, "<% end_" + idElem.getText() + " %>");
-			}
+		if (openTag != null) {
+			ASTNode targetNode = openTag.getNode().findChildByType(TokenSet.create(SS_START_KEYWORD, SS_IF_KEYWORD));
+			if (targetNode != null)
+				editor.getDocument().insertString(offset, "<% end_" + targetNode.getText() + " %>");
 		}
 	}
 
