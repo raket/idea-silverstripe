@@ -2,12 +2,14 @@ package com.raket.silverstripe.psi.references;
 
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
+import com.intellij.lang.ASTNode;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import com.raket.silverstripe.file.SilverStripeFileType;
 import com.raket.silverstripe.file.SilverStripeFileUtil;
 import com.raket.silverstripe.psi.SilverStripeFile;
+import com.raket.silverstripe.psi.SilverStripeTypes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,7 +32,6 @@ public class SilverStripeReference extends PsiReferenceBase<PsiElement> implemen
 	@NotNull
 	@Override
 	public ResolveResult[] multiResolve(boolean incompleteCode) {
-
 		Project project = myElement.getProject();
 		final List<SilverStripeFile> properties = SilverStripeFileUtil.findFiles(project, key+".ss");
 		List<ResolveResult> results = new ArrayList<ResolveResult>();
@@ -47,9 +48,25 @@ public class SilverStripeReference extends PsiReferenceBase<PsiElement> implemen
 		return resolveResults.length == 1 ? resolveResults[0].getElement() : null;
 	}
 
+	@Override
+	public TextRange getRangeInElement() {
+		TextRange origRange = super.getRangeInElement();
+		ASTNode parentNode = this.getElement().getNode();
+		ASTNode includeKeyword = parentNode.findChildByType(SilverStripeTypes.SS_INCLUDE_KEYWORD);
+		ASTNode includeFile = parentNode.findChildByType(SilverStripeTypes.SS_INCLUDE_FILE);
+		int startOffset = includeKeyword.getPsi().getStartOffsetInParent()+includeKeyword.getPsi().getTextLength();
+		if (includeFile != null) {
+			return new TextRange(includeFile.getPsi().getStartOffsetInParent(),
+					includeFile.getPsi().getStartOffsetInParent()+includeFile.getPsi().getTextLength());
+		}
+		return new TextRange(startOffset, origRange.getEndOffset());
+	}
+
 	@NotNull
 	@Override
 	public Object[] getVariants() {
+		return EMPTY_ARRAY;
+		/*
 		Project project = myElement.getProject();
 		List<SilverStripeFile> properties = SilverStripeFileUtil.findFiles(project);
 		List<LookupElement> variants = new ArrayList<LookupElement>();
@@ -59,6 +76,6 @@ public class SilverStripeReference extends PsiReferenceBase<PsiElement> implemen
 					withTypeText(property.getContainingFile().getName())
 			);
 		}
-		return variants.toArray();
+		return variants.toArray();*/
 	}
 }
