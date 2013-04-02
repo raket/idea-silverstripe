@@ -102,11 +102,11 @@
         <enterHandlerDelegate implementation="com.raket.silverstripe.editor.actions.SilverStripeEnterHandler"/>
         <!--
         <lang.syntaxHighlighterFactory key="SilverStripe" implementationClass="com.raket.silverstripe.editor.highlighting.SilverStripeSyntaxHighlighterFactory"/>
-        <psi.referenceContributor language="SilverStripe" implementation="com.raket.silverstripe.references.SilverStripeReferenceContributor"/>
        -->
         <codeInsight.lineMarkerProvider language="SilverStripe" implementationClass="com.raket.silverstripe.editor.lines.SilverStripeLineMarkerProvider"/>
         <completion.contributor language="SilverStripe" implementationClass="com.raket.silverstripe.editor.completions.SilverStripeCompletionContributor"/>
         <annotator language="SilverStripe" implementationClass="com.raket.silverstripe.editor.annotations.SilverStripeIncludeAnnotator"/>
         <lang.commenter language="SilverStripe" implementationClass="com.raket.silverstripe.editor.comments.SilverStripeCommenter"/>
+        <psi.referenceContributor language="SilverStripe" implementation="com.raket.silverstripe.references.SilverStripeReferenceContributor"/>
     </extensions>
 </idea-plugin>

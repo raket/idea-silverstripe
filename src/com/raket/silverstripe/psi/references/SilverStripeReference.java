@@ -17,14 +17,14 @@ import java.util.List;
 public class SilverStripeReference extends PsiReferenceBase<PsiElement> implements PsiPolyVariantReference {
 	private String key;
 
-	public SilverStripeReference(@NotNull PsiElement element, TextRange textRange) {
+	public SilverStripeReference(@NotNull PsiNamedElement element, TextRange textRange) {
 		super(element, textRange);
-		key = element.getText();
+		key = element.getName();
 	}
 
-	public SilverStripeReference(@NotNull PsiElement element) {
+	public SilverStripeReference(@NotNull PsiNamedElement element) {
 		super(element);
-		key = element.getText();
+		key = element.getName();
 	}
 
 	@NotNull

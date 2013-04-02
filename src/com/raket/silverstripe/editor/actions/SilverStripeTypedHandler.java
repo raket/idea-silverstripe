@@ -53,10 +53,10 @@ public class SilverStripeTypedHandler extends TypedHandlerDelegate {
 			return TypedHandlerDelegate.Result.CONTINUE;
 		}
 
-		String previousChar = editor.getDocument().getText(new TextRange(offset - 2, offset - 1));
-		String isInclude = editor.getDocument().getText(new TextRange(offset - 8, offset - 1));
 
 		if (file.getViewProvider() instanceof SilverStripeFileViewProvider) {
+			String previousChar = editor.getDocument().getText(new TextRange(offset - 2, offset - 1));
+			String isInclude = editor.getDocument().getText(new TextRange(offset - 8, offset - 1));
 			// if we're looking at a close stache, we may have some business too attend to
 			if (c == '>' && previousChar.equals("%")) {
 				autoInsertCloseTag(project, offset, editor, provider);
