@@ -66,18 +66,6 @@ public class SilverStripeIncludeImpl extends SilverStripeNamedElementImpl implem
 
 	@Override
 	public PsiReference[] getReferences() {
-	/*
-		Project project = getProject();
-		String key = this.getName();
-		final List<SilverStripeFile> properties = SilverStripeFileUtil.findFiles(project, key+"."+ SilverStripeFileType.DEFAULT_EXTENSION);
-		List<PsiReference> results = new ArrayList<PsiReference>();
-		for (SilverStripeFile property : properties) {
-			results.add(new SilverStripeReference(property, new TextRange(0, property.getTextLength())));
-		}
-		PsiReference[] returnValues = results.toArray(new PsiReference[results.size()]);
-		return results.toArray(new PsiReference[results.size()]);
-		*/
-
 		return ReferenceProvidersRegistry.getReferencesFromProviders(this);
 	}
 
@@ -85,21 +73,5 @@ public class SilverStripeIncludeImpl extends SilverStripeNamedElementImpl implem
 	public PsiReference getReference() {
 		PsiReference[] references = getReferences();
 		return references.length == 0 ? null : references[0];
-
-		/*
-		Project project = getProject();
-		String key = this.getName();
-		final List<SilverStripeFile> properties = SilverStripeFileUtil.findFiles(project, key + "." + SilverStripeFileType.DEFAULT_EXTENSION);
-		List<PsiReference> results = new ArrayList<PsiReference>();
-		for (SilverStripeFile property : properties) {
-			results.add(new SilverStripeReference(property, new TextRange(1, property.getTextLength()-1)));
-		}
-
-		PsiReference[] returnValues = results.toArray(new PsiReference[results.size()]);
-		results.toArray(new PsiReference[results.size()]);
-
-		PsiReference[] resolveResults = results.toArray(new PsiReference[results.size()]);
-		return resolveResults.length > 0 ? resolveResults[0] : null;
-		*/
 	}
 }
