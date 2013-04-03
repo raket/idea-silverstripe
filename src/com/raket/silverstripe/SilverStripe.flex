@@ -64,7 +64,7 @@ END_OF_LINE_COMMENT=("#"|"!")[^\r\n]*
 SEPARATOR=[:=]
 KEY_CHARACTER=[^:=\ \n\r\t\f\\] | "\\"{CRLF} | "\\".
 
-SS_VAR= (\$[a-zA-Z]+)((\((\"|\')?[a-zA-Z]+(\"|\')?\))|\.|([a-zA-Z]+))*
+SS_VAR= (\$[a-zA-Z]+)((\((\"|\')?[a-zA-Z0-9]+(\"|\')?\))|\.|([a-zA-Z]+))*
 SS_VAR_START_DELIMITER= \{
 SS_VAR_END_DELIMITER= \}
 SS_BLOCK_START= <%
@@ -80,7 +80,7 @@ SS_SIMPLE_KEYWORD= base_tag
 SS_INCLUDE_KEYWORD= include
 SS_INCLUDE_FILE= [a-zA-Z\-_]+
 SS_END_KEYWORD= end_loop | end_if | end_with | end_control
-SS_BLOCK_VAR=(\$?[a-zA-Z]+)((\((\"|\')?[a-zA-Z]+(\"|\')?\))|\.|([a-zA-Z]+))*
+SS_BLOCK_VAR=(\$?[a-zA-Z]+)((\((\"|\')?[a-zA-Z0-9]+(\"|\')?\))|\.|([a-zA-Z]+))*
 SS_COMMENT_START= <%--
 SS_COMMENT_END= --%>
 SS_TRANSLATION_START= <%t
@@ -149,7 +149,7 @@ SS_TRANSLATION_START= <%t
     {SS_AND_OR_OPERATOR}               { yybegin(SS_IF_STATEMENT); return SilverStripeTypes.SS_AND_OR_OPERATOR; }
     {SS_STRING}                        { yybegin(SS_IF_STATEMENT); return SilverStripeTypes.SS_STRING; }
 	{SS_BLOCK_VAR} {
-        yybegin(SS_IF_STATEMENT); return checkBlockVariable(SilverStripeTypes.SS_BLOCK_VAR, SilverStripeTypes.SS_BAD_VAR);
+        yybegin(SS_IF_STATEMENT); return SilverStripeTypes.SS_BLOCK_VAR; //checkBlockVariable(SilverStripeTypes.SS_BLOCK_VAR, SilverStripeTypes.SS_BAD_VAR);
 	}
     {SS_BLOCK_END}                     { yybegin(YYINITIAL); return SilverStripeTypes.SS_BLOCK_END; }
 }
@@ -161,7 +161,7 @@ SS_TRANSLATION_START= <%t
 <SS_BLOCK_VAR> {
     {WHITE_SPACE}+                                          { yybegin(SS_BLOCK_VAR); return TokenType.WHITE_SPACE; }
     {SS_BLOCK_VAR} {
-        yybegin(SS_BLOCK_VAR); return checkBlockVariable(SilverStripeTypes.SS_BLOCK_VAR, SilverStripeTypes.SS_BAD_VAR);
+        yybegin(SS_BLOCK_VAR); return SilverStripeTypes.SS_BLOCK_VAR; //checkBlockVariable(SilverStripeTypes.SS_BLOCK_VAR, SilverStripeTypes.SS_BAD_VAR);
 	}
     {SS_BLOCK_END}                                          { yybegin(YYINITIAL); return SilverStripeTypes.SS_BLOCK_END; }
     {SS_COMMENT_END}                                        { yybegin(YYINITIAL); return SilverStripeTypes.SS_COMMENT_END; }
