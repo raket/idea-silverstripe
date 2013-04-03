@@ -64,7 +64,7 @@ END_OF_LINE_COMMENT=("#"|"!")[^\r\n]*
 SEPARATOR=[:=]
 KEY_CHARACTER=[^:=\ \n\r\t\f\\] | "\\"{CRLF} | "\\".
 
-SS_VAR= (\$[a-zA-Z]+)((\((\"|\')?[^\"\']+(\"|\')?\))|\.|([a-zA-Z]+))*
+SS_VAR= (\$[a-zA-Z]+)((\(((\')[^\']+(\')|(\")[^\"]+(\")|[a-zA-Z0-9,\ \t\f]+)\))|\.|([a-zA-Z]+))*
 SS_VAR_START_DELIMITER= \{
 SS_VAR_END_DELIMITER= \}
 SS_BLOCK_START= <%
@@ -80,7 +80,7 @@ SS_SIMPLE_KEYWORD= base_tag
 SS_INCLUDE_KEYWORD= include
 SS_INCLUDE_FILE= [a-zA-Z\-_]+
 SS_END_KEYWORD= end_loop | end_if | end_with | end_control
-SS_BLOCK_VAR=(\$?[a-zA-Z]+)((\((\"|\')?[^\"\']+(\"|\')?\))|\.|([a-zA-Z]+))*
+SS_BLOCK_VAR=(\$?[a-zA-Z]+)((\(((\')[^\']+(\')|(\")[^\"]+(\")|[a-zA-Z0-9,\ \t\f]+)\))|\.|([a-zA-Z]+))*
 SS_COMMENT_START= <%--
 SS_COMMENT_END= --%>
 SS_TRANSLATION_START= <%t
