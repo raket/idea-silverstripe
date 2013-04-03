@@ -123,6 +123,8 @@ public class SilverStripeBaseParser implements PsiParser {
 
 		while(!builder.eof()) {
 			type = builder.getTokenType();
+//			consumeToken(builder, type);
+//			continue;
 			parseResult = new ParseResult();
 			if (type == SS_BLOCK_START || type == SS_COMMENT_START) {
 				tokenValue = getNextTokenValue(builder);

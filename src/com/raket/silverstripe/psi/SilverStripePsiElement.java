@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class SilverStripePsiElement extends ASTWrapperPsiElement {
     public SilverStripePsiElement(@NotNull ASTNode astNode) {
+
         super(astNode);
     }
 

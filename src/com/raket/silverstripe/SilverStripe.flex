@@ -25,9 +25,13 @@ import com.intellij.util.containers.Stack;
 %{
     private Stack<Integer> stack = new Stack<Integer>();
 
-    public void yypushState(int newState) {
+    public void yypushstate(int newState) {
       stack.push(yystate());
       yybegin(newState);
+    }
+
+    public void yypopstate() {
+      yybegin(stack.pop());
     }
 
  	public IElementType checkVariable(IElementType success, IElementType fail) {
@@ -49,21 +53,17 @@ import com.intellij.util.containers.Stack;
            return fail;
         }
  	}
-
-    public void yypopState() {
-      yybegin(stack.pop());
-    }
-
 %}
 
 CRLF= \n|\r|\r\n
 WHITE_SPACE=[\ \t\f]
-FIRST_VALUE_CHARACTER=[^ \n\r\f\\] | "\\"{CRLF} | "\\".
-VALUE_CHARACTER=[^\n\r\f\\] | "\\"{CRLF} | "\\".
-END_OF_LINE_COMMENT=("#"|"!")[^\r\n]*
-SEPARATOR=[:=]
-KEY_CHARACTER=[^:=\ \n\r\t\f\\] | "\\"{CRLF} | "\\".
-
+COMMA= ,
+LEFT_PAREN= \(
+RIGHT_PAREN= \)
+DOT= \.
+NUMBER=[0-9]+
+VAR= \$?[a-zA-Z]+([a-zA-Z0-9])*
+BLOCK_VAR=\$?[a-zA-Z]+([a-zA-Z0-9])*
 SS_VAR= (\$[a-zA-Z]+)((\(((\')[^\']+(\')|(\")[^\"]+(\")|[a-zA-Z0-9,\ \t\f]+)\))|\.|([a-zA-Z]+))*
 SS_VAR_START_DELIMITER= \{
 SS_VAR_END_DELIMITER= \}
@@ -95,18 +95,19 @@ SS_TRANSLATION_START= <%t
 %state SS_TRANSLATION
 %state SS_IF_STATEMENT
 %state SS_INCLUDE_STATEMENT
+%state SS_METHOD_ARGUMENTS
 %%
 
 <YYINITIAL> {
     !([^]*("<%"|\$[a-zA-Z]+|"{$")[^]*)                {
         if (yylength() > 0 && yytext().subSequence(yylength() - 1, yylength()).toString().equals("<")) {
             yypushback(1);
-            yypushState(SS_BLOCK_START);
+            yypushstate(SS_BLOCK_START);
         }
         if (yylength() > 0 && yytext().subSequence(yylength() - 1, yylength()).toString().equals("$") ||
             yylength() > 0 && yytext().subSequence(yylength() - 1, yylength()).toString().equals("{") ) {
             yypushback(1);
-            yybegin(SS_VAR);
+            yypushstate(SS_VAR);
         }
 
         // we stray from the Handlebars grammar a bit here since we need our WHITE_SPACE more clearly delineated
@@ -176,11 +177,26 @@ SS_TRANSLATION_START= <%t
 }
 
 <SS_VAR> {
-	{SS_VAR} {
-        yybegin(YYINITIAL); return SilverStripeTypes.SS_VAR; //checkVariable(SilverStripeTypes.SS_VAR, SilverStripeTypes.SS_BAD_VAR);
-	}
-	{SS_VAR_START_DELIMITER}                                       { yybegin(SS_WITH_DELIMITER); return SilverStripeTypes.SS_VAR_START_DELIMITER; }
+	{SS_VAR_START_DELIMITER} { return SilverStripeTypes.SS_VAR_START_DELIMITER; }
+	{VAR} { return SilverStripeTypes.SS_VAR; }
+	{DOT} { return SilverStripeTypes.DOT; }
+	{WHITE_SPACE}+  { return TokenType.WHITE_SPACE; }
+    {LEFT_PAREN} { yypushstate(SS_METHOD_ARGUMENTS); return SilverStripeTypes.LEFT_PAREN; }
+
+	{SS_VAR_END_DELIMITER} { yypopstate(); return SilverStripeTypes.SS_VAR_END_DELIMITER; }
+	. { yypopstate(); yypushback(1); }
 }
+
+<SS_METHOD_ARGUMENTS> {
+	{COMMA}  { return SilverStripeTypes.COMMA; }
+	{VAR} { return SilverStripeTypes.SS_VAR; }
+	{DOT} { return SilverStripeTypes.DOT; }
+	{SS_STRING} { return SilverStripeTypes.SS_STRING; }
+	{NUMBER} { return SilverStripeTypes.NUMBER; }
+	{WHITE_SPACE}+  { return TokenType.WHITE_SPACE; }
+    {RIGHT_PAREN} { yypopstate(); return SilverStripeTypes.RIGHT_PAREN; }
+}
+
 <SS_WITH_DELIMITER> {
 	{SS_VAR} {
         yybegin(SS_WITH_DELIMITER); return SilverStripeTypes.SS_VAR; //checkVariable(SilverStripeTypes.SS_VAR, SilverStripeTypes.SS_BAD_VAR);

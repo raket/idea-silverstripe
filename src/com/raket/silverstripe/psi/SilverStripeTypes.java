@@ -1,6 +1,8 @@
 package com.raket.silverstripe.psi;
 
+import com.intellij.openapi.fileTypes.PlainTextLanguage;
 import com.intellij.psi.tree.IElementType;
+import com.raket.silverstripe.SilverStripeLanguage;
 
 
 public interface SilverStripeTypes {
@@ -21,9 +23,19 @@ public interface SilverStripeTypes {
 	IElementType SS_STATEMENTS = new SilverStripeElementType("SS_STATEMENTS");
 	IElementType SS_INCLUDE_STATEMENT = new SilverStripeElementType("SS_INCLUDE_STATEMENT");
 
+
+
 	IElementType COMMENT = new SilverStripeTokenType("COMMENT");
 	IElementType CONTENT = new SilverStripeTokenType("CONTENT");
+	IElementType COMMA = new SilverStripeTokenType("Comma");
 	IElementType CRLF = new SilverStripeTokenType("CRLF");
+	IElementType NUMBER = new SilverStripeTokenType("Number");
+	IElementType LEFT_PAREN = new SilverStripeTokenType("(");
+	IElementType RIGHT_PAREN = new SilverStripeTokenType(")");
+	IElementType DOT = new SilverStripeTokenType("Dot");
+	IElementType SS_STRING = new SilverStripeTokenType("String");
+	IElementType SS_VAR = new SilverStripeTokenType("Variable");
+
 	IElementType SS_BAD_VAR = new SilverStripeTokenType("SS_BAD_VAR");
 	IElementType SS_BLOCK_END = new SilverStripeTokenType("SS_BLOCK_END");
 	IElementType SS_BLOCK_END_START = new SilverStripeTokenType("SS_BLOCK_END_START");
@@ -40,13 +52,11 @@ public interface SilverStripeTypes {
 	IElementType SS_COMPARISON_OPERATOR = new SilverStripeTokenType("SS_COMPARISON_OPERATOR");
 	IElementType SS_AND_OR_OPERATOR = new SilverStripeTokenType("SS_AND_OR_OPERATOR");
 	IElementType SS_TRANSLATION_CONTENT = new SilverStripeTokenType("SS_TRANSLATION_CONTENT");
-	IElementType SS_STRING = new SilverStripeTokenType("SS_STRING");
 
 	IElementType SS_SIMPLE_KEYWORD = new SilverStripeTokenType("SS_SIMPLE_KEYWORD");
 	IElementType SS_INCLUDE_KEYWORD = new SilverStripeTokenType("SS_INCLUDE_KEYWORD");
 	IElementType SS_INCLUDE_FILE = new SilverStripeTokenType("SS_INCLUDE_FILE");
 	IElementType SS_START_KEYWORD = new SilverStripeTokenType("SS_START_KEYWORD");
-	IElementType SS_VAR = new SilverStripeTokenType("SS_VAR");
 	IElementType SS_VAR_END_DELIMITER = new SilverStripeTokenType("SS_VAR_END_DELIMITER");
 	IElementType SS_VAR_START_DELIMITER = new SilverStripeTokenType("SS_VAR_START_DELIMITER");
 

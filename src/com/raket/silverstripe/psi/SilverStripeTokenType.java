@@ -13,13 +13,7 @@ import org.jetbrains.annotations.NotNull;
  * To change this template use File | Settings | File Templates.
  */
 public class SilverStripeTokenType extends IElementType {
-
     public SilverStripeTokenType(@NotNull @NonNls String debugName) {
         super(debugName, SilverStripeLanguage.INSTANCE);
-    }
-
-    @Override
-    public String toString() {
-        return "SilverStripeTokenType." + super.toString();
     }
 }
