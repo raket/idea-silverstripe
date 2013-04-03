@@ -63,7 +63,6 @@ RIGHT_PAREN= \)
 DOT= \.
 NUMBER=[0-9]+
 VAR= \$?[a-zA-Z]+([a-zA-Z0-9])*
-BLOCK_VAR=\$?[a-zA-Z]+([a-zA-Z0-9])*
 SS_VAR= (\$[a-zA-Z]+)((\(((\')[^\']+(\')|(\")[^\"]+(\")|[a-zA-Z0-9,\ \t\f]+)\))|\.|([a-zA-Z]+))*
 SS_VAR_START_DELIMITER= \{
 SS_VAR_END_DELIMITER= \}

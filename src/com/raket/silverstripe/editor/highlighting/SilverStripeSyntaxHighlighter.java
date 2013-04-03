@@ -2,10 +2,10 @@ package com.raket.silverstripe.editor.highlighting;
 
 import com.intellij.lexer.FlexAdapter;
 import com.intellij.lexer.Lexer;
-import com.intellij.openapi.editor.SyntaxHighlighterColors;
+import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
+import com.intellij.openapi.editor.HighlighterColors;
 import com.intellij.openapi.editor.XmlHighlighterColors;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
-import com.intellij.openapi.editor.markup.TextAttributes;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
@@ -14,24 +14,21 @@ import com.raket.silverstripe.SilverStripeLexer;
 import com.raket.silverstripe.psi.SilverStripeTypes;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
 import java.io.Reader;
 
 import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey;
 import static com.raket.silverstripe.psi.SilverStripeTypes.*;
-import static com.raket.silverstripe.psi.SilverStripeTypes.COMMENT;
 
 public class SilverStripeSyntaxHighlighter extends SyntaxHighlighterBase {
-    public static final TextAttributesKey SEPARATOR = createTextAttributesKey("SS_SEPARATOR", SyntaxHighlighterColors.OPERATION_SIGN);
-    public static final TextAttributesKey KEY = createTextAttributesKey("SS_KEY", SyntaxHighlighterColors.KEYWORD);
-    public static final TextAttributesKey VALUE = createTextAttributesKey("SS_VALUE", SyntaxHighlighterColors.STRING);
+    public static final TextAttributesKey SEPARATOR = createTextAttributesKey("SS_SEPARATOR", DefaultLanguageHighlighterColors.OPERATION_SIGN);
+    public static final TextAttributesKey KEY = createTextAttributesKey("SS_KEY", DefaultLanguageHighlighterColors.KEYWORD);
+    public static final TextAttributesKey VALUE = createTextAttributesKey("SS_VALUE", DefaultLanguageHighlighterColors.STRING);
     public static final TextAttributesKey COMMENT = createTextAttributesKey("SS_COMMENT", XmlHighlighterColors.HTML_COMMENT);
-    public static final TextAttributesKey SS_BLOCK = createTextAttributesKey("SS_BLOCK", SyntaxHighlighterColors.BRACES);
-    public static final TextAttributesKey SS_KEYWORD = createTextAttributesKey("SS_KEYWORD", SyntaxHighlighterColors.KEYWORD);
-    public static final TextAttributesKey SS_BLOCK_VAR_KEY = createTextAttributesKey("SS_BLOCK_VAR", SyntaxHighlighterColors.STRING);
+    public static final TextAttributesKey SS_BLOCK = createTextAttributesKey("SS_BLOCK", DefaultLanguageHighlighterColors.BRACES);
+    public static final TextAttributesKey SS_KEYWORD = createTextAttributesKey("SS_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD);
+    public static final TextAttributesKey SS_BLOCK_VAR_KEY = createTextAttributesKey("SS_BLOCK_VAR", DefaultLanguageHighlighterColors.STRING);
 
-    static final TextAttributesKey BAD_CHARACTER = createTextAttributesKey("SS_BAD_CHARACTER",
-            new TextAttributes(Color.RED, null, null, null, Font.BOLD));
+    static final TextAttributesKey BAD_CHARACTER = createTextAttributesKey("SS_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER);
 
 	private static final TextAttributesKey[] SEPARATOR_KEYS = new TextAttributesKey[]{SEPARATOR};
 	private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHARACTER};
