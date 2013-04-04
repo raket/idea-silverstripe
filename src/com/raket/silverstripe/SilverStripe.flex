@@ -78,7 +78,8 @@ SS_STRING= \"[^\"]*\" | \'[^\']*\'
 SS_SIMPLE_KEYWORD= base_tag
 SS_INCLUDE_KEYWORD= include
 SS_INCLUDE_FILE= [a-zA-Z\-_]+
-SS_END_KEYWORD= end_loop | end_if | end_with | end_control
+SS_CACHED_KEYWORD= cached
+SS_END_KEYWORD= end_loop | end_if | end_with | end_control | end_cached
 SS_BLOCK_VAR=(\$?[a-zA-Z]+)((\(((\')[^\']+(\')|(\")[^\"]+(\")|[a-zA-Z0-9,\ \t\f]+)\))|\.|([a-zA-Z]+))*
 SS_COMMENT_START= <%--
 SS_COMMENT_END= --%>
@@ -88,13 +89,13 @@ SS_TRANSLATION_START= <%t
 %state SS_WITH_DELIMITER
 %state SS_BLOCK_START
 %state SS_BLOCK_VAR
-%state SS_BAD_VAR
 %state SS_BAD_BLOCK_STATEMENT
 %state SS_COMMENT
 %state SS_TRANSLATION
 %state SS_IF_STATEMENT
 %state SS_INCLUDE_STATEMENT
 %state SS_METHOD_ARGUMENTS
+%state SS_CACHED_STATEMENT
 %%
 
 <YYINITIAL> {
@@ -126,6 +127,7 @@ SS_TRANSLATION_START= <%t
 	{SS_BLOCK_START}                    { yybegin(SS_BLOCK_START); return SilverStripeTypes.SS_BLOCK_START; }
 	{SS_START_KEYWORD}                  { yybegin(SS_BLOCK_VAR); return SilverStripeTypes.SS_START_KEYWORD; }
 	{SS_INCLUDE_KEYWORD}                { yybegin(SS_INCLUDE_STATEMENT); return SilverStripeTypes.SS_INCLUDE_KEYWORD; }
+	{SS_CACHED_KEYWORD}                 { yypushstate(SS_CACHED_STATEMENT); return SilverStripeTypes.SS_CACHED_KEYWORD; }
 	{SS_SIMPLE_KEYWORD}                 { yybegin(SS_BLOCK_VAR); return SilverStripeTypes.SS_SIMPLE_KEYWORD; }
 	{SS_TRANSLATION_START}              { yybegin(SS_TRANSLATION); return SilverStripeTypes.SS_BLOCK_START; }
 	{SS_COMMENT_START}                  { yybegin(SS_COMMENT); return SilverStripeTypes.SS_COMMENT_START; }
@@ -173,6 +175,14 @@ SS_TRANSLATION_START= <%t
 
 <SS_COMMENT> {
 	~"--%>"  { yybegin(SS_BLOCK_VAR); yypushback(4); return SilverStripeTypes.COMMENT; }
+}
+
+<SS_CACHED_STATEMENT> {
+	{VAR} { yypushstate(SS_VAR); return SilverStripeTypes.SS_VAR; }
+	{COMMA}  { return SilverStripeTypes.COMMA; }
+	{SS_STRING} { return SilverStripeTypes.SS_STRING; }
+	{WHITE_SPACE}+  { return TokenType.WHITE_SPACE; }
+	. { yypopstate(); yypushback(1); }
 }
 
 <SS_VAR> {

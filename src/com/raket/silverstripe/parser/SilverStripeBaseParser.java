@@ -25,9 +25,10 @@ import static com.raket.silverstripe.psi.SilverStripeTypes.*;
 
 public class SilverStripeBaseParser implements PsiParser {
 	Stack<BlockLevel> blockLevelStack = new Stack<BlockLevel>();
-	String[] startStatements = {"if", "loop", "with", "control"};
-	String[] endStatements = {"end_if", "end_loop", "end_with", "end_control"};
-	String[] statementContainers = {"if", "loop", "with", "control", "else_if", "else"};
+	String[] startStatements = {"if", "loop", "with", "control", "cached"};
+	String[] endStatements = {"end_if", "end_loop", "end_with", "end_control", "end_cached"};
+	String[] statementContainers = {"if", "loop", "with", "control", "else_if", "else", "cached"};
+	TokenSet varTokens = TokenSet.create(SS_VAR, DOT, COMMA, LEFT_PAREN, RIGHT_PAREN, NUMBER, SS_STRING);
 
 	private class ParseResult {
 		public boolean success = false;
@@ -290,7 +291,10 @@ public class SilverStripeBaseParser implements PsiParser {
 			IElementType[] tokensToConsume = {SS_BLOCK_START, nextToken, SS_INCLUDE_FILE, SS_BLOCK_END};
 			result = createBlock(builder, SS_INCLUDE_STATEMENT, tokensToConsume, TokenSet.create());
 		}
-
+		else if (nextToken == SS_CACHED_KEYWORD) {
+			TokenSet tokensToConsume = TokenSet.orSet(TokenSet.create(SS_BLOCK_START, nextToken), varTokens);
+			result = createBlock(builder, SS_CACHED_STATEMENT, tokensToConsume, SS_BLOCK_END);
+		}
         else if (nextToken == SS_SIMPLE_KEYWORD) {
 			IElementType[] tokensToConsume = {SS_BLOCK_START, nextToken, SS_BLOCK_VAR, SS_BLOCK_END};
             result = createBlock(builder, SS_BLOCK_SIMPLE_STATEMENT, tokensToConsume, TokenSet.create(SS_BLOCK_VAR));

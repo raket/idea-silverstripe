@@ -22,11 +22,12 @@ public interface SilverStripeTypes {
 	IElementType SS_TRANSLATION_STATEMENT = new SilverStripeElementType("SS_TRANSLATION_STATEMENT");
 	IElementType SS_STATEMENTS = new SilverStripeElementType("SS_STATEMENTS");
 	IElementType SS_INCLUDE_STATEMENT = new SilverStripeElementType("SS_INCLUDE_STATEMENT");
+	IElementType SS_CACHED_STATEMENT = new SilverStripeElementType("Cache statement");
 
 
 
-	IElementType COMMENT = new SilverStripeTokenType("COMMENT");
-	IElementType CONTENT = new SilverStripeTokenType("CONTENT");
+	IElementType COMMENT = new SilverStripeTokenType("Comment");
+	IElementType CONTENT = new SilverStripeTokenType("Content");
 	IElementType COMMA = new SilverStripeTokenType("Comma");
 	IElementType CRLF = new SilverStripeTokenType("CRLF");
 	IElementType NUMBER = new SilverStripeTokenType("Number");
@@ -35,6 +36,7 @@ public interface SilverStripeTypes {
 	IElementType DOT = new SilverStripeTokenType("Dot");
 	IElementType SS_STRING = new SilverStripeTokenType("String");
 	IElementType SS_VAR = new SilverStripeTokenType("Variable");
+	IElementType SS_CACHED_KEYWORD = new SilverStripeTokenType("Cached keyword");
 
 	IElementType SS_BAD_VAR = new SilverStripeTokenType("SS_BAD_VAR");
 	IElementType SS_BLOCK_END = new SilverStripeTokenType("SS_BLOCK_END");

@@ -85,7 +85,7 @@
 
     <actions>
         <!-- Add your actions here -->
-        <action id="SilverStripe.NewFile" class="com.raket.silverstripe.editor.actions.SilverStripeNewFileAction" text="New SS Template"
+        <action id="SilverStripe.NewFile" class="com.raket.silverstripe.editor.actions.SilverStripeNewFileAction" text="SilverStripe Template"
                 description="Add a new SilverStripe Template File">
             <add-to-group group-id="NewGroup" anchor="after" relative-to-action="NewFile"/>
         </action>
@@ -98,7 +98,6 @@
                                implementationClass="com.raket.silverstripe.parser.SilverStripeParserDefinition"/>
         <lang.fileViewProviderFactory language="SilverStripe"
                                       implementationClass="com.raket.silverstripe.file.SilverStripeFileViewProviderFactory"/>
-       <!--
        <lang.formatter language="SilverStripe"
                        implementationClass="com.raket.silverstripe.format.SilverStripeFormattingModelBuilder"/>
        <colorSettingsPage implementation="com.raket.silverstripe.editor.colors.SilverStripeColorSettingsPage"/>
@@ -108,8 +107,7 @@
                             implementationClass="com.raket.silverstripe.editor.folding.SilverStripeFoldingBuilder"/>
        <typedHandler implementation="com.raket.silverstripe.editor.actions.SilverStripeTypedHandler"/>
        <enterHandlerDelegate implementation="com.raket.silverstripe.editor.actions.SilverStripeEnterHandler"/>
-       <lang.syntaxHighlighterFactory key="SilverStripe" implementationClass="com.raket.silverstripe.editor.highlighting.SilverStripeSyntaxHighlighterFactory"/>
-       <spellchecker.support language="SilverStripe" implementationClass="com.int"
+       <spellchecker.support language="SilverStripe" implementationClass="com.intellij.spellchecker.tokenizer.SpellcheckingStrategy"/>
        <codeInsight.lineMarkerProvider language="SilverStripe" implementationClass="com.raket.silverstripe.editor.lines.SilverStripeLineMarkerProvider"/>
        <completion.contributor language="SilverStripe" implementationClass="com.raket.silverstripe.editor.completions.SilverStripeCompletionContributor"/>
        <completion.confidence language="SilverStripe" implementationClass="com.raket.silverstripe.editor.completions.SilverStripeCompletionConfidence"/>
@@ -117,6 +115,8 @@
        <lang.commenter language="SilverStripe" implementationClass="com.raket.silverstripe.editor.comments.SilverStripeCommenter"/>
        <psi.referenceContributor language="SilverStripe" implementation="com.raket.silverstripe.references.SilverStripeReferenceContributor"/>
        <spellchecker.support language="SilverStripe" implementationClass="com.intellij.spellchecker.tokenizer.SpellcheckingStrategy"/>
-      -->
+        <!--
+       <lang.syntaxHighlighterFactory key="SilverStripe" implementationClass="com.raket.silverstripe.editor.highlighting.SilverStripeSyntaxHighlighterFactory"/>
+       -->
     </extensions>
 </idea-plugin>
