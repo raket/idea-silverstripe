@@ -253,8 +253,8 @@ public class SilverStripeBaseParser implements PsiParser {
 		else if (nextToken == SS_IF_KEYWORD || nextToken == SS_ELSE_IF_KEYWORD) {
 			IElementType buildType = (nextToken == SS_IF_KEYWORD) ? SS_IF_STATEMENT : SS_ELSE_IF_STATEMENT;
 
-			TokenSet tokensToConsume = TokenSet.create(SS_BLOCK_START, nextToken, SS_BLOCK_VAR,
-					SS_AND_OR_OPERATOR, SS_COMPARISON_OPERATOR,SS_STRING);
+			TokenSet tokensToConsume = TokenSet.orSet(TokenSet.create(SS_BLOCK_START, nextToken, SS_AND_OR_OPERATOR,
+					SS_COMPARISON_OPERATOR,SS_STRING), varTokens);
 
 		   	if (!blockLevelStack.isEmpty() && nextToken == SS_ELSE_IF_KEYWORD)
 				blockLevelStack.peek().finishStatements();
@@ -288,8 +288,9 @@ public class SilverStripeBaseParser implements PsiParser {
 			}
         }
 		else if (nextToken == SS_INCLUDE_KEYWORD) {
-			IElementType[] tokensToConsume = {SS_BLOCK_START, nextToken, SS_INCLUDE_FILE, SS_BLOCK_END};
-			result = createBlock(builder, SS_INCLUDE_STATEMENT, tokensToConsume, TokenSet.create());
+			TokenSet tokensToConsume = TokenSet.orSet(TokenSet.create(SS_BLOCK_START, nextToken, SS_INCLUDE_FILE,
+					COMMA, SS_COMPARISON_OPERATOR), varTokens);
+			result = createBlock(builder, SS_INCLUDE_STATEMENT, tokensToConsume, SS_BLOCK_END);
 		}
 		else if (nextToken == SS_CACHED_KEYWORD) {
 			TokenSet tokensToConsume = TokenSet.orSet(TokenSet.create(SS_BLOCK_START, nextToken), varTokens);

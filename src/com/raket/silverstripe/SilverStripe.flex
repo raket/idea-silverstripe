@@ -86,7 +86,6 @@ SS_COMMENT_END= --%>
 SS_TRANSLATION_START= <%t
 
 %state SS_VAR
-%state SS_WITH_DELIMITER
 %state SS_BLOCK_START
 %state SS_BLOCK_VAR
 %state SS_BAD_BLOCK_STATEMENT
@@ -96,6 +95,7 @@ SS_TRANSLATION_START= <%t
 %state SS_INCLUDE_STATEMENT
 %state SS_METHOD_ARGUMENTS
 %state SS_CACHED_STATEMENT
+%state SS_INCLUDE_VARS
 %%
 
 <YYINITIAL> {
@@ -123,78 +123,69 @@ SS_TRANSLATION_START= <%t
 }
 
 <SS_BLOCK_START> {
-    {WHITE_SPACE}+                      { yybegin(SS_BLOCK_START); return TokenType.WHITE_SPACE; }
-	{SS_BLOCK_START}                    { yybegin(SS_BLOCK_START); return SilverStripeTypes.SS_BLOCK_START; }
-	{SS_START_KEYWORD}                  { yybegin(SS_BLOCK_VAR); return SilverStripeTypes.SS_START_KEYWORD; }
-	{SS_INCLUDE_KEYWORD}                { yybegin(SS_INCLUDE_STATEMENT); return SilverStripeTypes.SS_INCLUDE_KEYWORD; }
+	{SS_BLOCK_START}                    { return SilverStripeTypes.SS_BLOCK_START; }
+	{SS_START_KEYWORD}                  { yypushstate(SS_BLOCK_VAR); return SilverStripeTypes.SS_START_KEYWORD; }
+	{SS_SIMPLE_KEYWORD}                 { yypushstate(SS_BLOCK_VAR); return SilverStripeTypes.SS_SIMPLE_KEYWORD; }
+	{SS_INCLUDE_KEYWORD}                { yypushstate(SS_INCLUDE_STATEMENT); return SilverStripeTypes.SS_INCLUDE_KEYWORD; }
 	{SS_CACHED_KEYWORD}                 { yypushstate(SS_CACHED_STATEMENT); return SilverStripeTypes.SS_CACHED_KEYWORD; }
-	{SS_SIMPLE_KEYWORD}                 { yybegin(SS_BLOCK_VAR); return SilverStripeTypes.SS_SIMPLE_KEYWORD; }
-	{SS_TRANSLATION_START}              { yybegin(SS_TRANSLATION); return SilverStripeTypes.SS_BLOCK_START; }
-	{SS_COMMENT_START}                  { yybegin(SS_COMMENT); return SilverStripeTypes.SS_COMMENT_START; }
-	{SS_IF_KEYWORD}                     { yybegin(SS_IF_STATEMENT); return SilverStripeTypes.SS_IF_KEYWORD; }
-	{SS_ELSE_IF_KEYWORD}                { yybegin(SS_IF_STATEMENT); return SilverStripeTypes.SS_ELSE_IF_KEYWORD; }
-	{SS_ELSE_KEYWORD}                   { yybegin(SS_BLOCK_START); return SilverStripeTypes.SS_ELSE_KEYWORD; }
-	{SS_END_KEYWORD}                    { yybegin(SS_BLOCK_START); return SilverStripeTypes.SS_END_KEYWORD; }
-    {SS_BLOCK_END}                      { yybegin(YYINITIAL); return SilverStripeTypes.SS_BLOCK_END; }
-	.                                   { yybegin(SS_BAD_BLOCK_STATEMENT); yypushback(1); }
+	{SS_TRANSLATION_START}              { yypushstate(SS_TRANSLATION); return SilverStripeTypes.SS_BLOCK_START; }
+	{SS_COMMENT_START}                  { yypushstate(SS_COMMENT); return SilverStripeTypes.SS_COMMENT_START; }
+	{SS_IF_KEYWORD}                     { yypushstate(SS_IF_STATEMENT); return SilverStripeTypes.SS_IF_KEYWORD; }
+	{SS_ELSE_IF_KEYWORD}                { yypushstate(SS_IF_STATEMENT); return SilverStripeTypes.SS_ELSE_IF_KEYWORD; }
+	{SS_ELSE_KEYWORD}                   { return SilverStripeTypes.SS_ELSE_KEYWORD; }
+	{SS_END_KEYWORD}                    { return SilverStripeTypes.SS_END_KEYWORD; }
+    {SS_COMMENT_END}                    { yypopstate(); return SilverStripeTypes.SS_COMMENT_END; }
+    {SS_BLOCK_END}                      { yypopstate(); return SilverStripeTypes.SS_BLOCK_END; }
+	{WHITE_SPACE}+                      { return TokenType.WHITE_SPACE; }
+	.                                   { yypushstate(SS_BAD_BLOCK_STATEMENT); yypushback(yylength()); }
 }
 
 <SS_INCLUDE_STATEMENT> {
-    {WHITE_SPACE}+                     { yybegin(SS_INCLUDE_STATEMENT); return TokenType.WHITE_SPACE; }
-    {SS_INCLUDE_FILE}                  { yybegin(SS_INCLUDE_STATEMENT); return SilverStripeTypes.SS_INCLUDE_FILE; }
-    {SS_BLOCK_END}                     { yybegin(YYINITIAL); return SilverStripeTypes.SS_BLOCK_END; }
+    {SS_INCLUDE_FILE}                   { yypushstate(SS_INCLUDE_VARS); return SilverStripeTypes.SS_INCLUDE_FILE; }
+}
+
+<SS_INCLUDE_VARS> {
+	{VAR}                               { yypushstate(SS_VAR); return SilverStripeTypes.SS_VAR; }
+	{COMMA}                             { return SilverStripeTypes.COMMA; }
+    {SS_COMPARISON_OPERATOR}            { return SilverStripeTypes.SS_COMPARISON_OPERATOR; }
 }
 
 <SS_IF_STATEMENT> {
-    {WHITE_SPACE}+                     { yybegin(SS_IF_STATEMENT); return TokenType.WHITE_SPACE; }
-    {SS_COMPARISON_OPERATOR}           { yybegin(SS_IF_STATEMENT); return SilverStripeTypes.SS_COMPARISON_OPERATOR; }
-    {SS_AND_OR_OPERATOR}               { yybegin(SS_IF_STATEMENT); return SilverStripeTypes.SS_AND_OR_OPERATOR; }
-    {SS_STRING}                        { yybegin(SS_IF_STATEMENT); return SilverStripeTypes.SS_STRING; }
-	{SS_BLOCK_VAR} {
-        yybegin(SS_IF_STATEMENT); return SilverStripeTypes.SS_BLOCK_VAR; //checkBlockVariable(SilverStripeTypes.SS_BLOCK_VAR, SilverStripeTypes.SS_BAD_VAR);
-	}
-    {SS_BLOCK_END}                     { yybegin(YYINITIAL); return SilverStripeTypes.SS_BLOCK_END; }
+    {SS_COMPARISON_OPERATOR}           { return SilverStripeTypes.SS_COMPARISON_OPERATOR; }
+    {SS_AND_OR_OPERATOR}               { return SilverStripeTypes.SS_AND_OR_OPERATOR; }
+    {SS_STRING}                        { return SilverStripeTypes.SS_STRING; }
+	{VAR}                              { yypushstate(SS_VAR); return SilverStripeTypes.SS_VAR; }
 }
 
 <SS_TRANSLATION> {
-    ~"%>"  { yybegin(SS_BLOCK_START); yypushback(2); return SilverStripeTypes.SS_TRANSLATION_CONTENT; }
+    ~"%>"                              { yypopstate(); yypushback(2); return SilverStripeTypes.SS_TRANSLATION_CONTENT; }
 }
 
 <SS_BLOCK_VAR> {
-    {WHITE_SPACE}+                                          { yybegin(SS_BLOCK_VAR); return TokenType.WHITE_SPACE; }
-    {SS_BLOCK_VAR} {
-        yybegin(SS_BLOCK_VAR); return SilverStripeTypes.SS_BLOCK_VAR; //checkBlockVariable(SilverStripeTypes.SS_BLOCK_VAR, SilverStripeTypes.SS_BAD_VAR);
-	}
-    {SS_BLOCK_END}                                          { yybegin(YYINITIAL); return SilverStripeTypes.SS_BLOCK_END; }
-    {SS_COMMENT_END}                                        { yybegin(YYINITIAL); return SilverStripeTypes.SS_COMMENT_END; }
+    {VAR}                              { yypushstate(SS_VAR); return SilverStripeTypes.SS_VAR; }
 }
 
 <SS_BAD_BLOCK_STATEMENT> {
-    ~"%>"  { yybegin(SS_BLOCK_VAR); yypushback(2); return SilverStripeTypes.SS_BAD_BLOCK_STATEMENT; }
+    ~"%>"  { yypopstate(); yypushback(2); return SilverStripeTypes.SS_BAD_BLOCK_STATEMENT; }
 }
 
 <SS_COMMENT> {
-	~"--%>"  { yybegin(SS_BLOCK_VAR); yypushback(4); return SilverStripeTypes.COMMENT; }
+	~"--%>"  { yypopstate(); yypushback(4); return SilverStripeTypes.COMMENT; }
 }
 
 <SS_CACHED_STATEMENT> {
 	{VAR} { yypushstate(SS_VAR); return SilverStripeTypes.SS_VAR; }
 	{COMMA}  { return SilverStripeTypes.COMMA; }
 	{SS_STRING} { return SilverStripeTypes.SS_STRING; }
-	{WHITE_SPACE}+  { return TokenType.WHITE_SPACE; }
-	. { yypopstate(); yypushback(1); }
 }
 
 <SS_VAR> {
 	{SS_VAR_START_DELIMITER} { return SilverStripeTypes.SS_VAR_START_DELIMITER; }
 	{VAR} { return SilverStripeTypes.SS_VAR; }
 	{DOT} { return SilverStripeTypes.DOT; }
-	{WHITE_SPACE}+  { return TokenType.WHITE_SPACE; }
     {LEFT_PAREN} { yypushstate(SS_METHOD_ARGUMENTS); return SilverStripeTypes.LEFT_PAREN; }
 
 	{SS_VAR_END_DELIMITER} { yypopstate(); return SilverStripeTypes.SS_VAR_END_DELIMITER; }
-	. { yypopstate(); yypushback(yylength()); }
-	{CRLF} { yypopstate(); yypushback(yylength()); }
 }
 
 <SS_METHOD_ARGUMENTS> {
@@ -203,17 +194,23 @@ SS_TRANSLATION_START= <%t
 	{DOT} { return SilverStripeTypes.DOT; }
 	{SS_STRING} { return SilverStripeTypes.SS_STRING; }
 	{NUMBER} { return SilverStripeTypes.NUMBER; }
-	{WHITE_SPACE}+  { return TokenType.WHITE_SPACE; }
     {RIGHT_PAREN} { yypopstate(); return SilverStripeTypes.RIGHT_PAREN; }
 }
 
-<SS_WITH_DELIMITER> {
-	{SS_VAR} {
-        yybegin(SS_WITH_DELIMITER); return SilverStripeTypes.SS_VAR; //checkVariable(SilverStripeTypes.SS_VAR, SilverStripeTypes.SS_BAD_VAR);
+{WHITE_SPACE}+                                              { return TokenType.WHITE_SPACE; }
+{CRLF}
+{
+	if (!stack.isEmpty()) {
+	   yypopstate(); yypushback(yylength());
+	} else {
+		return SilverStripeTypes.CRLF;
 	}
-	{SS_VAR_END_DELIMITER}                                       { yybegin(YYINITIAL); return SilverStripeTypes.SS_VAR_END_DELIMITER; }
 }
-
-{CRLF}                                                      { yybegin(YYINITIAL); return SilverStripeTypes.CRLF; }
-{WHITE_SPACE}+                                              { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
-.                                                           { return TokenType.BAD_CHARACTER; }
+.
+{
+	if (!stack.isEmpty()) {
+	   yypopstate(); yypushback(yylength());
+	} else {
+		return TokenType.BAD_CHARACTER;
+	}
+}
