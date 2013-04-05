@@ -17,14 +17,13 @@ The primary focus is PHPStorm since SilverStripe is a PHP framework but the plug
 * Basic syntax error highlighting with wanrings for mismatching blocks and unclosed blocks.
 * Code folding for if, with, loop and control blocks.
 * Full highlighting of the basic SilverStripe template language.
+* Resolving of files in include statements.
+* Basic error checking in translation and include tags.
 * By default, files matching `*.ss` are handled by this plugin.  Configure other file patterns in `Settings->File Types`.
 
 ## Future directions
 
-* Make the parser better. It parses the basic syntax but there's still alot to do.
-  * Handle operators in var statements.
-  * The translation tag.
-  * else_if and else needs to be handled properly.
+* Make the parser even better.
 * Code completion.
 * Custom method and variable resolutions. IE for example resolving $ThemeDir to the actual dir in the project. Figure out variable scope etc.
 * Everything else.

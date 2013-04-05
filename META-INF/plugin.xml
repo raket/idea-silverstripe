@@ -1,7 +1,7 @@
 <idea-plugin version="2" url="https://github.com/raket/idea-silverstripe">
     <id>com.raket.silverstripe</id>
     <name>SilverStripe Template Language Support</name>
-    <version>0.4</version>
+    <version>0.5</version>
     <vendor logo="/icons/raket.png" email="marcus@raket.nu" url="http://www.raket.nu">Raket Webbyrå</vendor>
 
     <description><![CDATA[
@@ -13,6 +13,18 @@
     <category>Custom Languages</category>
     <change-notes>
         <![CDATA[
+        <strong>Version 0.5</strong>
+        <ul>
+            <li><b>Features</b></li>
+            <li>Added the cached tag</li>
+            <li>Proper parsing of translation tags</li>
+            <li>Custom error messages for translation tag</li>
+            <li>Parse advanced include statments</li>
+            <li>Proper parsing of var statements</li>
+            <li>Basic spellchecking</li>
+            <li>Auto focus for autocomplete</li>
+            <li>Bug fix in formatter</li>
+        </ul>
         <strong>Version 0.4</strong>
         <ul>
             <li><b>Features</b></li>
@@ -68,7 +80,7 @@
     </change-notes>
 
     <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Build+Number+Ranges for description -->
-    <idea-version since-build="107.105"/>
+    <idea-version since-build="110.000"/>
 
     <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
          on how to target different products -->

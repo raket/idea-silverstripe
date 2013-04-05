@@ -50,14 +50,13 @@ public class SilverStripeTypedHandler extends TypedHandlerDelegate {
 		int offset = editor.getCaretModel().getOffset();
 		FileViewProvider provider = file.getViewProvider();
 
-		if (offset < 2 || offset > editor.getDocument().getTextLength()) {
-			return TypedHandlerDelegate.Result.CONTINUE;
-		}
-
-
 		if (file.getViewProvider() instanceof SilverStripeFileViewProvider) {
+			if (offset < 2 || offset > editor.getDocument().getTextLength()) {
+				return TypedHandlerDelegate.Result.CONTINUE;
+			}
+
 			String previousChar = editor.getDocument().getText(new TextRange(offset - 2, offset - 1));
-			String isInclude = editor.getDocument().getText(new TextRange(offset - 8, offset - 1));
+			//String isInclude = editor.getDocument().getText(new TextRange(offset - 8, offset - 1));
 			// if we're looking at a close stache, we may have some business too attend to
 			if (c == '>' && previousChar.equals("%")) {
 				autoInsertCloseTag(project, offset, editor, provider);
@@ -67,11 +66,11 @@ public class SilverStripeTypedHandler extends TypedHandlerDelegate {
 			if (c == '%' && previousChar.equals("<")) {
 
 			}
-			if (isInclude.equals("include")) { /*
+			/*if (isInclude.equals("include")) { *//*
 				ReadonlyStatusHandler.getInstance(project).ensureFilesWritable(file.getVirtualFile());
 				CodeCompletionHandlerBase codeCompleter = new CodeCompletionHandlerBase(CompletionType.BASIC);
-				codeCompleter.invokeCompletion(project, editor); */
-			}
+				codeCompleter.invokeCompletion(project, editor); *//*
+			}*/
 			/*
 			EditorEventMulticaster.add  */
 		}
