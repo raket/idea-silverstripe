@@ -18,7 +18,8 @@ public class SilverStripePsiUtil {
 
 	private static TokenSet START_TOKENS = TokenSet.create(
 			SS_BLOCK_START_STATEMENT,
-			SS_IF_STATEMENT
+			SS_IF_STATEMENT,
+			SS_CACHED_STATEMENT
 	);
 
 	private static TokenSet END_TOKENS = TokenSet.create(

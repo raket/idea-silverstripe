@@ -193,7 +193,8 @@ SS_TRANSLATION_START= <%t
     {LEFT_PAREN} { yypushstate(SS_METHOD_ARGUMENTS); return SilverStripeTypes.LEFT_PAREN; }
 
 	{SS_VAR_END_DELIMITER} { yypopstate(); return SilverStripeTypes.SS_VAR_END_DELIMITER; }
-	. { yypopstate(); yypushback(1); }
+	. { yypopstate(); yypushback(yylength()); }
+	{CRLF} { yypopstate(); yypushback(yylength()); }
 }
 
 <SS_METHOD_ARGUMENTS> {

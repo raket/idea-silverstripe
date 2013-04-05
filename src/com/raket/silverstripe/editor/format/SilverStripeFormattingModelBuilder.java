@@ -1,4 +1,4 @@
-package com.raket.silverstripe.format;
+package com.raket.silverstripe.editor.format;
 
 import com.intellij.formatting.*;
 import com.intellij.formatting.templateLanguages.*;

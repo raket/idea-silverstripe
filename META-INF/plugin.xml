@@ -99,7 +99,7 @@
         <lang.fileViewProviderFactory language="SilverStripe"
                                       implementationClass="com.raket.silverstripe.file.SilverStripeFileViewProviderFactory"/>
        <lang.formatter language="SilverStripe"
-                       implementationClass="com.raket.silverstripe.format.SilverStripeFormattingModelBuilder"/>
+                       implementationClass="com.raket.silverstripe.editor.format.SilverStripeFormattingModelBuilder"/>
        <colorSettingsPage implementation="com.raket.silverstripe.editor.colors.SilverStripeColorSettingsPage"/>
        <braceMatcher filetype="SilverStripe"
                      implementationClass="com.raket.silverstripe.editor.braces.SilverStripeBraceMatcher"/>
