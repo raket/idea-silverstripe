@@ -112,6 +112,7 @@
        <completion.contributor language="SilverStripe" implementationClass="com.raket.silverstripe.editor.completions.SilverStripeCompletionContributor"/>
        <completion.confidence language="SilverStripe" implementationClass="com.raket.silverstripe.editor.completions.SilverStripeCompletionConfidence"/>
        <annotator language="SilverStripe" implementationClass="com.raket.silverstripe.editor.annotations.SilverStripeIncludeAnnotator"/>
+        <annotator language="SilverStripe" implementationClass="com.raket.silverstripe.editor.annotations.SilverStripeTranslationAnnotator"/>
        <lang.commenter language="SilverStripe" implementationClass="com.raket.silverstripe.editor.comments.SilverStripeCommenter"/>
        <psi.referenceContributor language="SilverStripe" implementation="com.raket.silverstripe.references.SilverStripeReferenceContributor"/>
        <spellchecker.support language="SilverStripe" implementationClass="com.intellij.spellchecker.tokenizer.SpellcheckingStrategy"/>

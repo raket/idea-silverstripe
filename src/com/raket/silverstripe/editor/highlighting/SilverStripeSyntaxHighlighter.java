@@ -61,8 +61,9 @@ public class SilverStripeSyntaxHighlighter extends SyntaxHighlighterBase {
 
 	private static final TokenSet VARS = TokenSet.create(SS_BLOCK_VAR, SS_VAR, SS_INCLUDE_FILE);
 	private static final TokenSet KEYWORDS = TokenSet.create(SS_START_KEYWORD, SS_END_KEYWORD, SS_IF_KEYWORD
-			, SS_ELSE_IF_KEYWORD, SS_ELSE_KEYWORD, SS_SIMPLE_KEYWORD, SS_INCLUDE_KEYWORD, SS_CACHED_KEYWORD);
+			, SS_ELSE_IF_KEYWORD, SS_ELSE_KEYWORD, SS_SIMPLE_KEYWORD, SS_INCLUDE_KEYWORD, SS_CACHED_KEYWORD, SS_TRANSLATION_KEYWORD);
 	private static final TokenSet SEPARATORS = TokenSet.create(SS_COMPARISON_OPERATOR, SS_AND_OR_OPERATOR);
+	private static final TokenSet STRINGS = TokenSet.create(SS_STRING, SS_DOUBLE_LEFT, SS_DOUBLE_RIGHT, SS_SINGLE_LEFT, SS_SINGLE_RIGHT);
 
     @NotNull
     @Override
@@ -91,7 +92,7 @@ public class SilverStripeSyntaxHighlighter extends SyntaxHighlighterBase {
 			return DOT_KEYS;
 		} else if (tokenType.equals(SilverStripeTypes.COMMA)) {
 			return COMMA_KEYS;
-		} else if (tokenType.equals(SilverStripeTypes.SS_STRING)) {
+		} else if (STRINGS.contains(tokenType)) {
 			return STRING_KEYS;
 		} else if (tokenType.equals(LEFT_PAREN) || tokenType.equals(RIGHT_PAREN)) {
 			return PAREN_KEYS;

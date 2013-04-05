@@ -1,8 +1,6 @@
 package com.raket.silverstripe.psi;
 
-import com.intellij.openapi.fileTypes.PlainTextLanguage;
 import com.intellij.psi.tree.IElementType;
-import com.raket.silverstripe.SilverStripeLanguage;
 
 
 public interface SilverStripeTypes {
@@ -37,6 +35,12 @@ public interface SilverStripeTypes {
 	IElementType SS_STRING = new SilverStripeTokenType("String");
 	IElementType SS_VAR = new SilverStripeTokenType("Variable");
 	IElementType SS_CACHED_KEYWORD = new SilverStripeTokenType("Cached keyword");
+	IElementType SS_TRANSLATION_KEYWORD = new SilverStripeTokenType("Translation keyword");
+	IElementType SS_TRANSLATION_IDENTIFIER = new SilverStripeTokenType("Translation identifier");
+	IElementType SS_DOUBLE_LEFT = new SilverStripeTokenType("Left double quote");
+	IElementType SS_DOUBLE_RIGHT = new SilverStripeTokenType("Right double quote");
+	IElementType SS_SINGLE_LEFT = new SilverStripeTokenType("Left single quote");
+	IElementType SS_SINGLE_RIGHT = new SilverStripeTokenType("Right single quote");
 
 	IElementType SS_BAD_VAR = new SilverStripeTokenType("SS_BAD_VAR");
 	IElementType SS_BLOCK_END = new SilverStripeTokenType("SS_BLOCK_END");

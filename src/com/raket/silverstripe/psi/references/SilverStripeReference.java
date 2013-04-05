@@ -1,12 +1,9 @@
 package com.raket.silverstripe.psi.references;
 
-import com.intellij.codeInsight.lookup.LookupElement;
-import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
-import com.raket.silverstripe.file.SilverStripeFileType;
 import com.raket.silverstripe.file.SilverStripeFileUtil;
 import com.raket.silverstripe.psi.SilverStripeFile;
 import com.raket.silverstripe.psi.SilverStripeTypes;

@@ -44,7 +44,7 @@ public class SilverStripeBraceMatcher implements BraceMatcher {
 		SS_INCLUDE_KEYWORD,
 		SS_ELSE_KEYWORD,
 		SS_BAD_BLOCK_STATEMENT,
-		SS_TRANSLATION_CONTENT,
+		SS_TRANSLATION_KEYWORD,
 		SS_ELSE_IF_KEYWORD
 	);
 

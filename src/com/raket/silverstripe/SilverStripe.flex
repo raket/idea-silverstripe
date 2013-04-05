@@ -75,6 +75,8 @@ SS_ELSE_KEYWORD= else
 SS_COMPARISON_OPERATOR= "==" | "!=" | "=" | "not"
 SS_AND_OR_OPERATOR= "&&" | "||"
 SS_STRING= \"[^\"]*\" | \'[^\']*\'
+SS_DOUBLE_WITH_VAR= [^\"{]*
+SS_SINGLE_WITH_VAR= [^\'{]*
 SS_SIMPLE_KEYWORD= base_tag
 SS_INCLUDE_KEYWORD= include
 SS_INCLUDE_FILE= [a-zA-Z\-_]+
@@ -84,6 +86,9 @@ SS_BLOCK_VAR=(\$?[a-zA-Z]+)((\(((\')[^\']+(\')|(\")[^\"]+(\")|[a-zA-Z0-9,\ \t\f]
 SS_COMMENT_START= <%--
 SS_COMMENT_END= --%>
 SS_TRANSLATION_START= <%t
+SS_DOUBLE=\"
+SS_SINGLE=\'
+SS_TRANSLATION_IDENTIFIER= [a-zA-Z]+\.[a-zA-Z]+
 
 %state SS_VAR
 %state SS_BLOCK_START
@@ -96,6 +101,9 @@ SS_TRANSLATION_START= <%t
 %state SS_METHOD_ARGUMENTS
 %state SS_CACHED_STATEMENT
 %state SS_INCLUDE_VARS
+%state SS_STRING
+%state SS_DOUBLE
+%state SS_SINGLE
 %%
 
 <YYINITIAL> {
@@ -128,7 +136,7 @@ SS_TRANSLATION_START= <%t
 	{SS_SIMPLE_KEYWORD}                 { yypushstate(SS_BLOCK_VAR); return SilverStripeTypes.SS_SIMPLE_KEYWORD; }
 	{SS_INCLUDE_KEYWORD}                { yypushstate(SS_INCLUDE_STATEMENT); return SilverStripeTypes.SS_INCLUDE_KEYWORD; }
 	{SS_CACHED_KEYWORD}                 { yypushstate(SS_CACHED_STATEMENT); return SilverStripeTypes.SS_CACHED_KEYWORD; }
-	{SS_TRANSLATION_START}              { yypushstate(SS_TRANSLATION); return SilverStripeTypes.SS_BLOCK_START; }
+	{SS_TRANSLATION_START}              { yypushstate(SS_TRANSLATION);  yypushback(3); return SilverStripeTypes.SS_BLOCK_START; }
 	{SS_COMMENT_START}                  { yypushstate(SS_COMMENT); return SilverStripeTypes.SS_COMMENT_START; }
 	{SS_IF_KEYWORD}                     { yypushstate(SS_IF_STATEMENT); return SilverStripeTypes.SS_IF_KEYWORD; }
 	{SS_ELSE_IF_KEYWORD}                { yypushstate(SS_IF_STATEMENT); return SilverStripeTypes.SS_ELSE_IF_KEYWORD; }
@@ -157,8 +165,26 @@ SS_TRANSLATION_START= <%t
 	{VAR}                              { yypushstate(SS_VAR); return SilverStripeTypes.SS_VAR; }
 }
 
+<SS_DOUBLE> {
+	{SS_VAR_START_DELIMITER}            { yypushstate(SS_VAR); return SilverStripeTypes.SS_VAR_START_DELIMITER; }
+    {SS_DOUBLE_WITH_VAR}                { return SilverStripeTypes.SS_STRING; }
+    {SS_DOUBLE}                         { yypopstate(); return SilverStripeTypes.SS_DOUBLE_RIGHT; }
+}
+
+<SS_SINGLE> {
+	{SS_VAR_START_DELIMITER}            { yypushstate(SS_VAR); return SilverStripeTypes.SS_VAR_START_DELIMITER; }
+    {SS_SINGLE_WITH_VAR}                { return SilverStripeTypes.SS_STRING; }
+    {SS_SINGLE}                         { yypopstate(); return SilverStripeTypes.SS_SINGLE_RIGHT; }
+}
+
 <SS_TRANSLATION> {
-    ~"%>"                              { yypopstate(); yypushback(2); return SilverStripeTypes.SS_TRANSLATION_CONTENT; }
+	{SS_BLOCK_START}                    { return SilverStripeTypes.SS_BLOCK_START; }
+	"t"                                 { return SilverStripeTypes.SS_TRANSLATION_KEYWORD; }
+    {SS_DOUBLE}                         { yypushstate(SS_DOUBLE); return SilverStripeTypes.SS_DOUBLE_LEFT; }
+    {SS_SINGLE}                         { yypushstate(SS_SINGLE); return SilverStripeTypes.SS_SINGLE_LEFT; }
+    {SS_TRANSLATION_IDENTIFIER}         { return SilverStripeTypes.SS_TRANSLATION_IDENTIFIER; }
+	{VAR}                               { yypushstate(SS_VAR); return SilverStripeTypes.SS_VAR; }
+    {SS_COMPARISON_OPERATOR}            { return SilverStripeTypes.SS_COMPARISON_OPERATOR; }
 }
 
 <SS_BLOCK_VAR> {

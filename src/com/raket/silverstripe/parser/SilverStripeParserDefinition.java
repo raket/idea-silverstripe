@@ -20,6 +20,7 @@ import com.raket.silverstripe.psi.SilverStripeFile;
 import com.raket.silverstripe.psi.SilverStripePsiElement;
 import com.raket.silverstripe.psi.SilverStripeTypes;
 import com.raket.silverstripe.psi.impl.SilverStripeIncludeImpl;
+import com.raket.silverstripe.psi.impl.SilverStripeTranslationImpl;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Reader;
@@ -75,7 +76,9 @@ public class SilverStripeParserDefinition implements ParserDefinition{
         IElementType type = node.getElementType();
         if (type == SilverStripeTypes.SS_INCLUDE_STATEMENT) {
             return new SilverStripeIncludeImpl(node);
-        }
+        } else if (type == SilverStripeTypes.SS_TRANSLATION_STATEMENT) {
+			return new SilverStripeTranslationImpl(node);
+		}
         return new SilverStripePsiElement(node);
     }
 }

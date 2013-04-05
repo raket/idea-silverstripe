@@ -29,6 +29,7 @@ public class SilverStripeBaseParser implements PsiParser {
 	String[] endStatements = {"end_if", "end_loop", "end_with", "end_control", "end_cached"};
 	String[] statementContainers = {"if", "loop", "with", "control", "else_if", "else", "cached"};
 	TokenSet varTokens = TokenSet.create(SS_VAR, DOT, COMMA, LEFT_PAREN, RIGHT_PAREN, NUMBER, SS_STRING);
+	TokenSet string = TokenSet.create(SS_DOUBLE_LEFT, SS_DOUBLE_RIGHT, SS_SINGLE_LEFT, SS_SINGLE_RIGHT, SS_STRING);
 
 	private class ParseResult {
 		public boolean success = false;
@@ -304,9 +305,10 @@ public class SilverStripeBaseParser implements PsiParser {
 			IElementType[] tokensToConsume = {SS_BLOCK_START, nextToken, SS_BLOCK_END};
 			result = createBlock(builder, SS_BAD_BLOCK, tokensToConsume, TokenSet.create());
 		}
-		else if (nextToken == SS_TRANSLATION_CONTENT) {
-			IElementType[] tokensToConsume = {SS_BLOCK_START, nextToken, SS_BLOCK_END};
-			result = createBlock(builder, SS_TRANSLATION_STATEMENT, tokensToConsume, TokenSet.create());
+		else if (nextToken == SS_TRANSLATION_KEYWORD) {
+			TokenSet tokensToConsume = TokenSet.orSet(TokenSet.create(SS_BLOCK_START, nextToken, SS_TRANSLATION_IDENTIFIER,
+					SS_COMPARISON_OPERATOR, SS_VAR_START_DELIMITER, SS_VAR_END_DELIMITER), varTokens, string);
+			result = createBlock(builder, SS_TRANSLATION_STATEMENT, tokensToConsume, SS_BLOCK_END);
 		}
 		else if (builder.getTokenType() == SS_COMMENT_START) {
 			IElementType[] tokensToConsume = {SS_COMMENT_START, SS_COMMENT_END};

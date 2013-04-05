@@ -1,9 +1,7 @@
 package com.raket.silverstripe.references;
 
-import com.intellij.openapi.util.TextRange;
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.psi.*;
-import com.intellij.psi.tree.IElementType;
 import com.intellij.util.ProcessingContext;
 import com.raket.silverstripe.SilverStripeLanguage;
 import com.raket.silverstripe.psi.SilverStripeTypes;

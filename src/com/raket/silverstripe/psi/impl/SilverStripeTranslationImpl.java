@@ -1,10 +1,7 @@
 package com.raket.silverstripe.psi.impl;
 
 import com.intellij.lang.ASTNode;
-import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiReference;
-import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry;
 import com.intellij.util.IncorrectOperationException;
 import com.raket.silverstripe.psi.SilverStripeNamedElement;
 import com.raket.silverstripe.psi.SilverStripeTypes;
@@ -12,16 +9,23 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class SilverStripeIncludeImpl extends SilverStripeNamedElementImpl implements SilverStripeNamedElement {
+/**
+ * Created with IntelliJ IDEA.
+ * User: Marcus Dalgren
+ * Date: 2013-04-05
+ * Time: 23:16
+ * To change this template use File | Settings | File Templates.
+ */
+public class SilverStripeTranslationImpl extends SilverStripeNamedElementImpl implements SilverStripeNamedElement {
 
-	public SilverStripeIncludeImpl(@NotNull ASTNode node) {
+	public SilverStripeTranslationImpl(@NotNull ASTNode node) {
 		super(node);
 	}
 
 	@Nullable
 	@Override
 	public PsiElement getNameIdentifier() {
-		ASTNode keyNode = this.getNode().findChildByType(SilverStripeTypes.SS_INCLUDE_FILE);
+		ASTNode keyNode = this.getNode().findChildByType(SilverStripeTypes.SS_TRANSLATION_IDENTIFIER);
 		if (keyNode != null) {
 			return keyNode.getPsi();
 		} else {
@@ -30,7 +34,7 @@ public class SilverStripeIncludeImpl extends SilverStripeNamedElementImpl implem
 	}
 
 	public String getName() {
-		ASTNode keyNode = this.getNode().findChildByType(SilverStripeTypes.SS_INCLUDE_FILE);
+		ASTNode keyNode = this.getNode().findChildByType(SilverStripeTypes.SS_TRANSLATION_IDENTIFIER);
 		if (keyNode != null) {
 			return keyNode.getText();
 		} else {
@@ -43,7 +47,7 @@ public class SilverStripeIncludeImpl extends SilverStripeNamedElementImpl implem
 		return this;
 	}
 
-	@Nullable
+/*	@Nullable
 	public TextRange getReferenceTextRange() {
 		ASTNode keyNode = this.getNode().findChildByType(SilverStripeTypes.SS_INCLUDE_FILE);
 
@@ -65,5 +69,5 @@ public class SilverStripeIncludeImpl extends SilverStripeNamedElementImpl implem
 	public PsiReference getReference() {
 		PsiReference[] references = getReferences();
 		return references.length == 0 ? null : references[0];
-	}
+	}*/
 }
