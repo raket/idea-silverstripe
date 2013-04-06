@@ -84,8 +84,12 @@
 
     <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
          on how to target different products -->
-    <!-- uncomment to enable plugin in all products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.jetbrains.php</depends>
+    -->
+    <depends>com.jetbrains.php</depends>
     <depends>com.intellij.modules.lang</depends>
+    <depends>org.jetbrains.plugins.yaml</depends>
 
     <application-components>
         <!-- Add your application components here -->
@@ -97,7 +101,8 @@
 
     <actions>
         <!-- Add your actions here -->
-        <action id="SilverStripe.NewFile" class="com.raket.silverstripe.editor.actions.SilverStripeNewFileAction" text="SilverStripe Template"
+        <action id="SilverStripe.NewFile" class="com.raket.silverstripe.editor.actions.SilverStripeNewFileAction"
+                text="SilverStripe Template"
                 description="Add a new SilverStripe Template File">
             <add-to-group group-id="NewGroup" anchor="after" relative-to-action="NewFile"/>
         </action>
@@ -110,26 +115,37 @@
                                implementationClass="com.raket.silverstripe.parser.SilverStripeParserDefinition"/>
         <lang.fileViewProviderFactory language="SilverStripe"
                                       implementationClass="com.raket.silverstripe.file.SilverStripeFileViewProviderFactory"/>
-       <lang.formatter language="SilverStripe"
-                       implementationClass="com.raket.silverstripe.editor.format.SilverStripeFormattingModelBuilder"/>
-       <colorSettingsPage implementation="com.raket.silverstripe.editor.colors.SilverStripeColorSettingsPage"/>
-       <braceMatcher filetype="SilverStripe"
-                     implementationClass="com.raket.silverstripe.editor.braces.SilverStripeBraceMatcher"/>
-       <lang.foldingBuilder language="SilverStripe"
-                            implementationClass="com.raket.silverstripe.editor.folding.SilverStripeFoldingBuilder"/>
-       <typedHandler implementation="com.raket.silverstripe.editor.actions.SilverStripeTypedHandler"/>
-       <enterHandlerDelegate implementation="com.raket.silverstripe.editor.actions.SilverStripeEnterHandler"/>
-       <spellchecker.support language="SilverStripe" implementationClass="com.intellij.spellchecker.tokenizer.SpellcheckingStrategy"/>
-       <codeInsight.lineMarkerProvider language="SilverStripe" implementationClass="com.raket.silverstripe.editor.lines.SilverStripeLineMarkerProvider"/>
-       <completion.contributor language="SilverStripe" implementationClass="com.raket.silverstripe.editor.completions.SilverStripeCompletionContributor"/>
-       <completion.confidence language="SilverStripe" implementationClass="com.raket.silverstripe.editor.completions.SilverStripeCompletionConfidence"/>
-       <annotator language="SilverStripe" implementationClass="com.raket.silverstripe.editor.annotations.SilverStripeIncludeAnnotator"/>
-        <annotator language="SilverStripe" implementationClass="com.raket.silverstripe.editor.annotations.SilverStripeTranslationAnnotator"/>
-       <lang.commenter language="SilverStripe" implementationClass="com.raket.silverstripe.editor.comments.SilverStripeCommenter"/>
-       <psi.referenceContributor language="SilverStripe" implementation="com.raket.silverstripe.references.SilverStripeReferenceContributor"/>
-       <spellchecker.support language="SilverStripe" implementationClass="com.intellij.spellchecker.tokenizer.SpellcheckingStrategy"/>
+        <lang.formatter language="SilverStripe"
+                        implementationClass="com.raket.silverstripe.editor.format.SilverStripeFormattingModelBuilder"/>
+        <colorSettingsPage implementation="com.raket.silverstripe.editor.colors.SilverStripeColorSettingsPage"/>
+        <braceMatcher filetype="SilverStripe"
+                      implementationClass="com.raket.silverstripe.editor.braces.SilverStripeBraceMatcher"/>
+        <lang.foldingBuilder language="SilverStripe"
+                             implementationClass="com.raket.silverstripe.editor.folding.SilverStripeFoldingBuilder"/>
+        <typedHandler implementation="com.raket.silverstripe.editor.actions.SilverStripeTypedHandler"/>
+        <enterHandlerDelegate implementation="com.raket.silverstripe.editor.actions.SilverStripeEnterHandler"/>
+        <spellchecker.support language="SilverStripe"
+                              implementationClass="com.intellij.spellchecker.tokenizer.SpellcheckingStrategy"/>
+        <completion.contributor language="SilverStripe"
+                                implementationClass="com.raket.silverstripe.editor.completions.SilverStripeCompletionContributor"/>
+        <completion.confidence language="SilverStripe"
+                               implementationClass="com.raket.silverstripe.editor.completions.SilverStripeCompletionConfidence"/>
+        <annotator language="SilverStripe"
+                   implementationClass="com.raket.silverstripe.editor.annotations.SilverStripeIncludeAnnotator"/>
+        <annotator language="SilverStripe"
+                   implementationClass="com.raket.silverstripe.editor.annotations.SilverStripeTranslationAnnotator"/>
+        <lang.commenter language="SilverStripe"
+                        implementationClass="com.raket.silverstripe.editor.comments.SilverStripeCommenter"/>
+        <spellchecker.support language="SilverStripe"
+                              implementationClass="com.intellij.spellchecker.tokenizer.SpellcheckingStrategy"/>
+        <psi.referenceContributor
+                                  implementation="com.raket.silverstripe.references.SilverStripeReferenceContributor"/>
+        <psi.referenceContributor
+                implementation="com.raket.silverstripe.references.SilverStripeYamlReferenceContributor"/>
         <!--
-       <lang.syntaxHighlighterFactory key="SilverStripe" implementationClass="com.raket.silverstripe.editor.highlighting.SilverStripeSyntaxHighlighterFactory"/>
+        <codeInsight.lineMarkerProvider language="SilverStripe"
+                                        implementationClass="com.raket.silverstripe.editor.lines.SilverStripeLineMarkerProvider"/>
+      <lang.syntaxHighlighterFactory key="SilverStripe" implementationClass="com.raket.silverstripe.editor.highlighting.SilverStripeSyntaxHighlighterFactory"/>
        -->
     </extensions>
 </idea-plugin>
