@@ -69,7 +69,7 @@ public class SilverStripeIncludeRefactorAction extends SilverStripeNewActionBase
 	@NotNull
 	protected PsiElement[] invokeDialog(final Project project, final PsiDirectory directory) {
 		final FileChooserDescriptor descriptor = FileChooserDescriptorFactory.createSingleFolderDescriptor();
-		descriptor.setRoots(directory.getVirtualFile());
+		descriptor.setRoots(project.getBaseDir());
 		PsiDirectory currentDir = currentFile.getContainingDirectory();
 		PsiDirectory includeDir = currentDir.findSubdirectory("Includes");
 		VirtualFile selectDir = directory.getVirtualFile();
