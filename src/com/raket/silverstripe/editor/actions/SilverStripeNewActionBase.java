@@ -35,7 +35,7 @@ abstract class SilverStripeNewActionBase extends CreateElementActionBase {
 	}
 
 	@NotNull
-	protected final PsiElement[] invokeDialog(final Project project, final PsiDirectory directory) {
+	protected PsiElement[] invokeDialog(final Project project, final PsiDirectory directory) {
 		log.debug("invokeDialog");
 		final MyInputValidator validator = new MyInputValidator(project, directory);
 		Messages.showInputDialog(project, getDialogPrompt(), getDialogTitle(), Messages.getQuestionIcon(), "", validator);
@@ -67,7 +67,7 @@ abstract class SilverStripeNewActionBase extends CreateElementActionBase {
 		log.debug("createFileFromTemplate");
 		final String ext = "." + SilverStripeFileType.DEFAULT_EXTENSION;
 		String filename = (className.endsWith(ext)) ? className : className + ext;
-		return SilverStripeTemplatesFactory.createFromTemplate(directory, className, filename);
+		return SilverStripeTemplatesFactory.createFromTemplate(directory, filename, null);
 	}
 
 	@NotNull

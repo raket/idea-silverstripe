@@ -124,7 +124,10 @@ SS_TRANSLATION_IDENTIFIER= [a-zA-Z]+\.[a-zA-Z]+
                return SilverStripeTypes.CONTENT;
            }
         }
-   }
+
+
+
+    }
 }
 
 

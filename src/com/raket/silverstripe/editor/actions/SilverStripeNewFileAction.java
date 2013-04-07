@@ -40,7 +40,7 @@ public class SilverStripeNewFileAction extends SilverStripeNewActionBase {
 
 	@NotNull
 	protected PsiElement[] doCreate(String newName, PsiDirectory directory) {
-		PsiFile file = createFileFromTemplate(directory, newName, "template.ss");
+		PsiFile file = SilverStripeTemplatesFactory.createFromTemplate(directory, newName, null);
 		PsiElement child = file.getLastChild();
 		return child != null ? new PsiElement[]{file, child} : new PsiElement[]{file};
 	}

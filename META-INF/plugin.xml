@@ -1,7 +1,7 @@
 <idea-plugin version="2" url="https://github.com/raket/idea-silverstripe">
     <id>com.raket.silverstripe</id>
     <name>SilverStripe Template Language Support</name>
-    <version>0.5.1</version>
+    <version>0.6</version>
     <vendor logo="/icons/raket.png" email="marcus@raket.nu" url="https://github.com/raket/idea-silverstripe">Raket Webbyrå</vendor>
 
     <description><![CDATA[
@@ -13,6 +13,12 @@
     <category>Custom Languages</category>
     <change-notes>
         <![CDATA[
+        <strong>Version 0.6</strong>
+        <ul>
+            <li><b>Features</b></li>
+            <li>Refactor selected text to include file. This command moves the selected text to an include file. Defaults to ctrl+F6.</li>
+            <li>Fix parser bug for else_if statements</li>
+        </ul>
         <strong>Version 0.5.1</strong>
         <ul>
             <li><b>Features</b></li>
@@ -115,7 +121,7 @@
         </action>
         <action id="IncludeRefactor" class="com.raket.silverstripe.editor.actions.SilverStripeIncludeRefactorAction" text="Refactor to include file">
             <add-to-group group-id="IntroduceActionsGroup" anchor="last"/>
-            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt I"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl F6"/>
         </action>
     </actions>
 

@@ -32,14 +32,16 @@ public class SilverStripeTemplatesFactory implements FileTemplateGroupDescriptor
 		return templateGroup;
 	}
 
-	public static PsiFile createFromTemplate(final PsiDirectory directory, final String name, String fileName) throws IncorrectOperationException {
+	public static PsiFile createFromTemplate(final PsiDirectory directory, String fileName, String content) throws IncorrectOperationException {
 		log.debug("createFromTemplate: dir:" + directory + ", filename: " + fileName);
 
 		final String text = "#!/bin/sh\n";
 		final PsiFileFactory factory = PsiFileFactory.getInstance(directory.getProject());
 
 		log.debug("Create file from text");
-		final PsiFile file = factory.createFileFromText(fileName, SilverStripeFileType.INSTANCE, "");
+		if (content == null)
+			content = "";
+		final PsiFile file = factory.createFileFromText(fileName+"."+SilverStripeFileType.DEFAULT_EXTENSION, SilverStripeFileType.INSTANCE, content);
 
 		log.debug("Adding file to directory");
 		return (PsiFile) directory.add(file);
