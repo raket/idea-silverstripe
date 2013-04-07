@@ -130,6 +130,8 @@ SS_TRANSLATION_IDENTIFIER= [a-zA-Z]+\.[a-zA-Z]+
     }
 }
 
+
+
 <SS_BLOCK_START> {
 	{SS_BLOCK_START}                    { return SilverStripeTypes.SS_BLOCK_START; }
 	{SS_START_KEYWORD}                  { yypushstate(SS_BLOCK_VAR); return SilverStripeTypes.SS_START_KEYWORD; }
@@ -150,12 +152,16 @@ SS_TRANSLATION_IDENTIFIER= [a-zA-Z]+\.[a-zA-Z]+
 
 <SS_INCLUDE_STATEMENT> {
     {SS_INCLUDE_FILE}                   { yypushstate(SS_INCLUDE_VARS); return SilverStripeTypes.SS_INCLUDE_FILE; }
+	{WHITE_SPACE}+                      { return TokenType.WHITE_SPACE; }
+    .                                   { yypopstate(); yypushback(yylength()); }
 }
 
 <SS_INCLUDE_VARS> {
 	{VAR}                               { yypushstate(SS_VAR); return SilverStripeTypes.SS_VAR; }
 	{COMMA}                             { return SilverStripeTypes.COMMA; }
     {SS_COMPARISON_OPERATOR}            { return SilverStripeTypes.SS_COMPARISON_OPERATOR; }
+	{WHITE_SPACE}+                      { return TokenType.WHITE_SPACE; }
+    .                                   { yypopstate(); yypushback(yylength()); }
 }
 
 <SS_IF_STATEMENT> {
@@ -163,18 +169,24 @@ SS_TRANSLATION_IDENTIFIER= [a-zA-Z]+\.[a-zA-Z]+
     {SS_AND_OR_OPERATOR}               { return SilverStripeTypes.SS_AND_OR_OPERATOR; }
     {SS_STRING}                        { return SilverStripeTypes.SS_STRING; }
 	{VAR}                              { yypushstate(SS_VAR); return SilverStripeTypes.SS_VAR; }
+	{WHITE_SPACE}+                      { return TokenType.WHITE_SPACE; }
+    .                                   { yypopstate(); yypushback(yylength()); }
 }
 
 <SS_DOUBLE> {
 	{SS_VAR_START_DELIMITER}            { yypushstate(SS_VAR); return SilverStripeTypes.SS_VAR_START_DELIMITER; }
     {SS_DOUBLE_WITH_VAR}                { return SilverStripeTypes.SS_STRING; }
     {SS_DOUBLE}                         { yypopstate(); return SilverStripeTypes.SS_DOUBLE_RIGHT; }
+	{WHITE_SPACE}+                      { return TokenType.WHITE_SPACE; }
+    .                                   { yypopstate(); yypushback(yylength()); }
 }
 
 <SS_SINGLE> {
 	{SS_VAR_START_DELIMITER}            { yypushstate(SS_VAR); return SilverStripeTypes.SS_VAR_START_DELIMITER; }
     {SS_SINGLE_WITH_VAR}                { return SilverStripeTypes.SS_STRING; }
     {SS_SINGLE}                         { yypopstate(); return SilverStripeTypes.SS_SINGLE_RIGHT; }
+	{WHITE_SPACE}+                      { return TokenType.WHITE_SPACE; }
+    .                                   { yypopstate(); yypushback(yylength()); }
 }
 
 <SS_TRANSLATION> {
@@ -185,10 +197,14 @@ SS_TRANSLATION_IDENTIFIER= [a-zA-Z]+\.[a-zA-Z]+
     {SS_TRANSLATION_IDENTIFIER}         { return SilverStripeTypes.SS_TRANSLATION_IDENTIFIER; }
 	{VAR}                               { yypushstate(SS_VAR); return SilverStripeTypes.SS_VAR; }
     {SS_COMPARISON_OPERATOR}            { return SilverStripeTypes.SS_COMPARISON_OPERATOR; }
+	{WHITE_SPACE}+                      { return TokenType.WHITE_SPACE; }
+    .                                   { yypopstate(); yypushback(yylength()); }
 }
 
 <SS_BLOCK_VAR> {
     {VAR}                              { yypushstate(SS_VAR); return SilverStripeTypes.SS_VAR; }
+	{WHITE_SPACE}+                      { return TokenType.WHITE_SPACE; }
+    .                                   { yypopstate(); yypushback(yylength()); }
 }
 
 <SS_BAD_BLOCK_STATEMENT> {
@@ -203,6 +219,8 @@ SS_TRANSLATION_IDENTIFIER= [a-zA-Z]+\.[a-zA-Z]+
 	{VAR} { yypushstate(SS_VAR); return SilverStripeTypes.SS_VAR; }
 	{COMMA}  { return SilverStripeTypes.COMMA; }
 	{SS_STRING} { return SilverStripeTypes.SS_STRING; }
+	{WHITE_SPACE}+                      { return TokenType.WHITE_SPACE; }
+    .                                   { yypopstate(); yypushback(yylength()); }
 }
 
 <SS_VAR> {
@@ -212,6 +230,8 @@ SS_TRANSLATION_IDENTIFIER= [a-zA-Z]+\.[a-zA-Z]+
     {LEFT_PAREN} { yypushstate(SS_METHOD_ARGUMENTS); return SilverStripeTypes.LEFT_PAREN; }
 
 	{SS_VAR_END_DELIMITER} { yypopstate(); return SilverStripeTypes.SS_VAR_END_DELIMITER; }
+	{WHITE_SPACE}+                      { return TokenType.WHITE_SPACE; }
+    .                                   { yypopstate(); yypushback(yylength()); }
 }
 
 <SS_METHOD_ARGUMENTS> {
@@ -221,22 +241,24 @@ SS_TRANSLATION_IDENTIFIER= [a-zA-Z]+\.[a-zA-Z]+
 	{SS_STRING} { return SilverStripeTypes.SS_STRING; }
 	{NUMBER} { return SilverStripeTypes.NUMBER; }
     {RIGHT_PAREN} { yypopstate(); return SilverStripeTypes.RIGHT_PAREN; }
+	{WHITE_SPACE}+                      { return TokenType.WHITE_SPACE; }
+    .                                   { yypopstate(); yypushback(yylength()); }
 }
 
 {WHITE_SPACE}+                                              { return TokenType.WHITE_SPACE; }
 {CRLF}
 {
 	if (!stack.isEmpty()) {
-	   yypopstate(); yypushback(yylength());
-	} else {
+		   yypopstate(); yypushback(yylength());
+		} else {
 		return SilverStripeTypes.CRLF;
 	}
 }
 .
-{
-	if (!stack.isEmpty()) {
+{   return TokenType.BAD_CHARACTER;
+/*	if (!stack.isEmpty()) {
 	   yypopstate(); yypushback(yylength());
 	} else {
 		return TokenType.BAD_CHARACTER;
-	}
+	}*/
 }
