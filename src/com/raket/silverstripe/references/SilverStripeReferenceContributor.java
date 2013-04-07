@@ -1,17 +1,21 @@
 package com.raket.silverstripe.references;
 
 import com.intellij.patterns.PlatformPatterns;
+import com.intellij.patterns.PsiElementPattern;
 import com.intellij.psi.*;
 import com.intellij.util.ProcessingContext;
 import com.raket.silverstripe.SilverStripeLanguage;
 import com.raket.silverstripe.psi.SilverStripeTypes;
 import com.raket.silverstripe.psi.impl.SilverStripeIncludeImpl;
+import com.raket.silverstripe.psi.impl.SilverStripeTranslationImpl;
 import com.raket.silverstripe.psi.references.SilverStripeReference;
 import org.jetbrains.annotations.NotNull;
+//import org.jetbrains.yaml.psi.impl.YAMLCompoundValueImpl;
 
 public class SilverStripeReferenceContributor extends PsiReferenceContributor {
 	@Override
 	public void registerReferenceProviders(PsiReferenceRegistrar registrar) {
+
 		registrar.registerReferenceProvider(PlatformPatterns.psiElement(SilverStripeTypes.SS_INCLUDE_STATEMENT).withLanguage(SilverStripeLanguage.INSTANCE),
 				new PsiReferenceProvider() {
 					@NotNull
@@ -24,5 +28,12 @@ public class SilverStripeReferenceContributor extends PsiReferenceContributor {
 						return new PsiReference[0];
 					}
 				});
+		PsiElementPattern.Capture<SilverStripeTranslationImpl> psiElementCapture = PlatformPatterns.psiElement(
+				SilverStripeTranslationImpl.class);
+
+		registrar.registerReferenceProvider(
+				psiElementCapture,
+				new SilverStripeTranslationPsiReferenceProvider(),
+				PsiReferenceRegistrar.DEFAULT_PRIORITY);
 	}
 }

@@ -1,7 +1,10 @@
 package com.raket.silverstripe.psi.impl;
 
 import com.intellij.lang.ASTNode;
+import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiReference;
+import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry;
 import com.intellij.util.IncorrectOperationException;
 import com.raket.silverstripe.psi.SilverStripeNamedElement;
 import com.raket.silverstripe.psi.SilverStripeTypes;
@@ -47,7 +50,7 @@ public class SilverStripeTranslationImpl extends SilverStripeNamedElementImpl im
 		return this;
 	}
 
-/*	@Nullable
+	@Nullable
 	public TextRange getReferenceTextRange() {
 		ASTNode keyNode = this.getNode().findChildByType(SilverStripeTypes.SS_INCLUDE_FILE);
 
@@ -69,5 +72,5 @@ public class SilverStripeTranslationImpl extends SilverStripeNamedElementImpl im
 	public PsiReference getReference() {
 		PsiReference[] references = getReferences();
 		return references.length == 0 ? null : references[0];
-	}*/
+	}
 }
