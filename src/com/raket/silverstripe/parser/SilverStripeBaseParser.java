@@ -156,10 +156,11 @@ public class SilverStripeBaseParser implements PsiParser {
 		ParseResult parseResult = new ParseResult();
 		boolean tokensConsumed;
 		IElementType varKeyword = builder.lookAhead(1);
-		IElementType[] varTokens = {SS_VAR_START_DELIMITER, varKeyword, SS_VAR_END_DELIMITER};
+		//IElementType[] varTokens = {SS_VAR_START_DELIMITER, varKeyword, SS_VAR_END_DELIMITER};
 		PsiBuilder.Marker varMarker = builder.mark();
 
-		tokensConsumed = consumeTokens(builder, varTokens, TokenSet.create());
+		tokensConsumed = consumeAllTokens(builder,
+				TokenSet.orSet(TokenSet.create(SS_VAR_START_DELIMITER), varTokens), SS_VAR_END_DELIMITER);
 		if (tokensConsumed) {
 			varMarker.done(SS_VAR_STATEMENT);
 			parseResult.success = true;
@@ -427,6 +428,9 @@ public class SilverStripeBaseParser implements PsiParser {
 		}
 		if (token == endToken) {
 			consumeToken(builder, token);
+			return true;
+		}
+		if (endToken == null) {
 			return true;
 		}
 		return false;

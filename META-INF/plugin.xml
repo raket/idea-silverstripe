@@ -1,7 +1,7 @@
 <idea-plugin version="2" url="https://github.com/raket/idea-silverstripe">
     <id>com.raket.silverstripe</id>
     <name>SilverStripe Template Language Support</name>
-    <version>0.5</version>
+    <version>0.5.1</version>
     <vendor logo="/icons/raket.png" email="marcus@raket.nu" url="http://www.raket.nu">Raket Webbyrå</vendor>
 
     <description><![CDATA[
@@ -13,6 +13,13 @@
     <category>Custom Languages</category>
     <change-notes>
         <![CDATA[
+        <strong>Version 0.5.1</strong>
+        <ul>
+            <li><b>Features</b></li>
+            <li>Major bugfix that would freeze the lexer in some cases</li>
+            <li>Add YAML references for translations. It is now possible to ctrl+click an element in a yaml translation file to find the corresponding tag.</li>
+            <li>Gutter icon removed for include files</li>
+        </ul>
         <strong>Version 0.5</strong>
         <ul>
             <li><b>Features</b></li>
