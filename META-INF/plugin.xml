@@ -2,7 +2,7 @@
     <id>com.raket.silverstripe</id>
     <name>SilverStripe Template Language Support</name>
     <version>0.5.1</version>
-    <vendor logo="/icons/raket.png" email="marcus@raket.nu" url="http://www.raket.nu">Raket Webbyrå</vendor>
+    <vendor logo="/icons/raket.png" email="marcus@raket.nu" url="https://github.com/raket/idea-silverstripe">Raket Webbyrå</vendor>
 
     <description><![CDATA[
       <a href="http://www.silverstripe.org/">SilverStripe</a> template language support<br>
