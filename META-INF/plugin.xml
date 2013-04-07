@@ -113,6 +113,10 @@
                 description="Add a new SilverStripe Template File">
             <add-to-group group-id="NewGroup" anchor="after" relative-to-action="NewFile"/>
         </action>
+        <action id="IncludeRefactor" class="com.raket.silverstripe.editor.actions.SilverStripeIncludeRefactorAction" text="Refactor to include file">
+            <add-to-group group-id="IntroduceActionsGroup" anchor="last"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt I"/>
+        </action>
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">

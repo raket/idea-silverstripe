@@ -1,8 +1,10 @@
 package com.raket.silverstripe.parser;
 
 import com.intellij.lang.ASTNode;
+import com.intellij.lang.LighterASTNode;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiParser;
+import com.intellij.lang.impl.PsiBuilderImpl;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 import com.intellij.util.containers.Stack;
@@ -80,10 +82,12 @@ public class SilverStripeBaseParser implements PsiParser {
 		}
 
 		public void finishStatements() {
-			if (hasContent)
-				statements.done(SS_STATEMENTS);
-			else
-				statements.drop();
+			if (statements != null) {
+				if (hasContent)
+					statements.done(SS_STATEMENTS);
+				else
+					statements.drop();
+			}
 		}
 
 		public void startStatements() {
@@ -258,8 +262,9 @@ public class SilverStripeBaseParser implements PsiParser {
 			TokenSet tokensToConsume = TokenSet.orSet(TokenSet.create(SS_BLOCK_START, nextToken, SS_AND_OR_OPERATOR,
 					SS_COMPARISON_OPERATOR,SS_STRING), varTokens);
 
-		   	if (!blockLevelStack.isEmpty() && nextToken == SS_ELSE_IF_KEYWORD)
-				blockLevelStack.peek().finishStatements();
+		   	if (!blockLevelStack.isEmpty() && nextToken == SS_ELSE_IF_KEYWORD) {
+				//blockLevelStack.peek().finishStatements();
+			}
 
 			result = createBlock(builder, buildType, tokensToConsume, SS_BLOCK_END);
 		}
@@ -356,8 +361,22 @@ public class SilverStripeBaseParser implements PsiParser {
 	private ParseResult createBlock(PsiBuilder builder, IElementType markerType, TokenSet tokens, IElementType endToken) {
 		PsiBuilder.Marker marker = builder.mark();
 		boolean result;
+		boolean hasContent = false;
+		if (!blockLevelStack.isEmpty()) {
+			hasContent = blockLevelStack.peek().hasContent;
+		}
 		result = consumeAllTokens(builder, tokens, endToken);
-		if (result) {
+		if (result && markerType == SS_ELSE_IF_STATEMENT) {
+			marker.rollbackTo();
+			if (!blockLevelStack.isEmpty()) {
+				blockLevelStack.peek().hasContent = hasContent;
+				blockLevelStack.peek().finishStatements();
+			}
+			marker = builder.mark();
+			result = consumeAllTokens(builder, tokens, endToken);
+			marker.done(markerType);
+		}
+		else if (result) {
 			marker.done(markerType);
 		}
 		else {
