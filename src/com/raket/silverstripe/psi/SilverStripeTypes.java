@@ -33,6 +33,7 @@ public interface SilverStripeTypes {
 	IElementType RIGHT_PAREN = new SilverStripeTokenType(")");
 	IElementType DOT = new SilverStripeTokenType("Dot");
 	IElementType SS_STRING = new SilverStripeTokenType("String");
+	IElementType SS_VAR_START = new SilverStripeTokenType("$");
 	IElementType SS_VAR = new SilverStripeTokenType("Variable");
 	IElementType SS_CACHED_KEYWORD = new SilverStripeTokenType("Cached keyword");
 	IElementType SS_TRANSLATION_KEYWORD = new SilverStripeTokenType("Translation keyword");

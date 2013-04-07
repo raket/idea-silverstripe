@@ -217,6 +217,7 @@ SS_TRANSLATION_IDENTIFIER= [a-zA-Z]+\.[a-zA-Z]+
 
 <SS_VAR> {
 	{SS_VAR_START_DELIMITER} { return SilverStripeTypes.SS_VAR_START_DELIMITER; }
+	"$"   { return SilverStripeTypes.SS_VAR_START; }
 	{VAR} { return SilverStripeTypes.SS_VAR; }
 	{DOT} { return SilverStripeTypes.DOT; }
     {LEFT_PAREN} { yypushstate(SS_METHOD_ARGUMENTS); return SilverStripeTypes.LEFT_PAREN; }
