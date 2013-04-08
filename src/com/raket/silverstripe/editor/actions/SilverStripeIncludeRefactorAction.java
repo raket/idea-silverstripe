@@ -8,6 +8,7 @@ import com.intellij.openapi.editor.SelectionModel;
 import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
+import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
@@ -15,6 +16,7 @@ import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.openapi.vcs.FileStatusManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
@@ -101,16 +103,15 @@ public class SilverStripeIncludeRefactorAction extends SilverStripeNewActionBase
 									CaretModel caretModel = editor.getCaretModel();
 									int caretOffset = selectonModel.getSelectionStart();
 									EditorModificationUtil.deleteSelectedText(editor);
+									FileDocumentManager fileDocumentManager = FileDocumentManager.getInstance();
 									caretModel.moveToOffset(caretOffset);
 									int modOffset = EditorModificationUtil.insertStringAtCaret(editor, "<% include " + fileName + " %>", true, false);
-									codeStyleManager.reformat(currentFile);
-									//codeStyleManager.adjustLineIndent(currentFile, caretOffset);
-									//caretModel.moveToOffset(caretOffset + modOffset);
 									PsiFile createdFile = (PsiFile) elements[0];
 									codeStyleManager.reformat(createdFile);
+									fileDocumentManager.reloadFiles(currentFile.getVirtualFile());
 									FileEditorManager.getInstance(project).openFile(currentFile.getVirtualFile(), true);
-									TextRange formatRange =  new TextRange(caretOffset,modOffset);
-									//codeStyleManager.adjustLineIndent(currentFile, formatRange);
+									caretModel.moveToOffset(caretOffset);
+									codeStyleManager.adjustLineIndent(currentFile, caretOffset);
 								} catch (Exception e) {
 									e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
 								}
