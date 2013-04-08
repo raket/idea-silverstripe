@@ -251,10 +251,9 @@ public class SilverStripeBaseParser implements PsiParser {
 		ParseResult result = new ParseResult();
 
 		if (nextToken == SS_START_KEYWORD) {
-			IElementType varToken = builder.lookAhead(2);
 			//builder.remapCurrentToken(SS_BLOCK_START_START);
-			IElementType[] tokensToConsume = {SS_BLOCK_START, nextToken, varToken, SS_BLOCK_END};
-			result = createBlock(builder, SS_BLOCK_START_STATEMENT, tokensToConsume, TokenSet.create());
+			TokenSet tokensToConsume = TokenSet.orSet(TokenSet.create(SS_BLOCK_START, nextToken), varTokens);
+			result = createBlock(builder, SS_BLOCK_START_STATEMENT, tokensToConsume, SS_BLOCK_END);
         }
 		else if (nextToken == SS_IF_KEYWORD || nextToken == SS_ELSE_IF_KEYWORD) {
 			IElementType buildType = (nextToken == SS_IF_KEYWORD) ? SS_IF_STATEMENT : SS_ELSE_IF_STATEMENT;

@@ -104,11 +104,13 @@ SS_TRANSLATION_IDENTIFIER= [a-zA-Z]+\.[a-zA-Z]+
 %%
 
 <YYINITIAL> {
-    !([^]*("<%"|\$[a-zA-Z]+|"{$")[^]*)                {
-        if (yylength() > 0 && yytext().subSequence(yylength() - 1, yylength()).toString().equals("<")) {
-            yypushback(1);
+    !([^]*("<%"|\$[a-zA-Z]+|"{$")[^]*) "<%"  {
+            yypushback(2);
             yypushstate(SS_BLOCK_START);
-        }
+            IElementType content = checkContent();
+            if (content != null) return content;
+       }
+    !([^]*("<%"|\$[a-zA-Z]+|"{$")[^]*)                {
         if (yylength() > 0 && yytext().subSequence(yylength() - 1, yylength()).toString().equals("$") ||
             yylength() > 0 && yytext().subSequence(yylength() - 1, yylength()).toString().equals("{") ) {
             yypushback(1);
@@ -124,10 +126,7 @@ SS_TRANSLATION_IDENTIFIER= [a-zA-Z]+\.[a-zA-Z]+
                return SilverStripeTypes.CONTENT;
            }
         }
-
-
-
-    }
+   }
 }
 
 

@@ -35,8 +35,8 @@ public class SilverStripeTypedHandler extends TypedHandlerDelegate {
 	@Override
 	public Result beforeCharTyped(char c, Project project, Editor editor, PsiFile file, FileType fileType) {
 		int offset = editor.getCaretModel().getOffset();
-
-		if (offset == 0 || offset > editor.getDocument().getTextLength()) {
+		int documentLength = editor.getDocument().getTextLength();
+		if (offset > editor.getDocument().getTextLength()) {
 			return Result.CONTINUE;
 		}
 
