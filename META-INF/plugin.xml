@@ -13,6 +13,13 @@
     <category>Custom Languages</category>
     <change-notes>
         <![CDATA[
+        <strong>Version 0.6.1</strong>
+        <ul>
+            <li><b>Features</b></li>
+            <li>Correctly parses advanced versions of loop, with and control.</li>
+            <li>"<" is no longer interpreted as a bad character</li>
+            <li>Typing "{" should now consistently yield "{$}"</li>
+        </ul>
         <strong>Version 0.6</strong>
         <ul>
             <li><b>Features</b></li>

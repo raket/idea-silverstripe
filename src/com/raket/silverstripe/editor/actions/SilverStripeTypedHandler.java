@@ -94,10 +94,6 @@ public class SilverStripeTypedHandler extends TypedHandlerDelegate {
 				adjustMustacheFormatting(project, offset, editor, file, provider);
 			}
 
-			if (c == '%' && previousChar.equals("<")) {
-
-			}
-
 			/*if (isInclude.equals("include")) { *//*
 				ReadonlyStatusHandler.getInstance(project).ensureFilesWritable(file.getVirtualFile());
 				CodeCompletionHandlerBase codeCompleter = new CodeCompletionHandlerBase(CompletionType.BASIC);
