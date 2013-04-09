@@ -77,6 +77,7 @@ SS_SINGLE_WITH_VAR= [^\'{]*
 SS_SIMPLE_KEYWORD= base_tag
 SS_INCLUDE_KEYWORD= include
 SS_INCLUDE_FILE= [a-zA-Z\-_]+
+SS_REQUIRE_KEYWORD= require
 SS_CACHED_KEYWORD= cached
 SS_END_KEYWORD= end_loop | end_if | end_with | end_control | end_cached
 SS_BLOCK_VAR=(\$?[a-zA-Z]+)((\(((\')[^\']+(\')|(\")[^\"]+(\")|[a-zA-Z0-9,\ \t\f]+)\))|\.|([a-zA-Z]+))*
@@ -85,6 +86,8 @@ SS_COMMENT_END= --%>
 SS_TRANSLATION_START= <%t
 SS_DOUBLE=\"
 SS_SINGLE=\'
+SS_STRING_NO_QUOTES=[^\"\'\)]*
+SS_FREE_STRING= [^,)%!=><|&]+
 SS_TRANSLATION_IDENTIFIER= [a-zA-Z]+\.[a-zA-Z]+
 
 %state SS_VAR
@@ -95,12 +98,14 @@ SS_TRANSLATION_IDENTIFIER= [a-zA-Z]+\.[a-zA-Z]+
 %state SS_TRANSLATION
 %state SS_IF_STATEMENT
 %state SS_INCLUDE_STATEMENT
+%state SS_REQUIRE_STATEMENT
 %state SS_METHOD_ARGUMENTS
 %state SS_CACHED_STATEMENT
 %state SS_INCLUDE_VARS
 %state SS_STRING
 %state SS_DOUBLE
 %state SS_SINGLE
+%state SS_REQUIRE_CONTENT
 %%
 
 <YYINITIAL> {
@@ -136,6 +141,7 @@ SS_TRANSLATION_IDENTIFIER= [a-zA-Z]+\.[a-zA-Z]+
 	{SS_START_KEYWORD}                  { yypushstate(SS_BLOCK_VAR); return SilverStripeTypes.SS_START_KEYWORD; }
 	{SS_SIMPLE_KEYWORD}                 { yypushstate(SS_BLOCK_VAR); return SilverStripeTypes.SS_SIMPLE_KEYWORD; }
 	{SS_INCLUDE_KEYWORD}                { yypushstate(SS_INCLUDE_STATEMENT); return SilverStripeTypes.SS_INCLUDE_KEYWORD; }
+	{SS_REQUIRE_KEYWORD}                { yypushstate(SS_REQUIRE_STATEMENT); return SilverStripeTypes.SS_REQUIRE_KEYWORD; }
 	{SS_CACHED_KEYWORD}                 { yypushstate(SS_CACHED_STATEMENT); return SilverStripeTypes.SS_CACHED_KEYWORD; }
 	{SS_TRANSLATION_START}              { yypushstate(SS_TRANSLATION);  yypushback(3); return SilverStripeTypes.SS_BLOCK_START; }
 	{SS_COMMENT_START}                  { yypushstate(SS_COMMENT); return SilverStripeTypes.SS_COMMENT_START; }
@@ -155,6 +161,23 @@ SS_TRANSLATION_IDENTIFIER= [a-zA-Z]+\.[a-zA-Z]+
     .                                   { yypopstate(); yypushback(yylength()); }
 }
 
+<SS_REQUIRE_STATEMENT> {
+    "css"                               { return SilverStripeTypes.SS_REQUIRE_CSS; }
+    "themedCSS"                         { return SilverStripeTypes.SS_REQUIRE_THEME_CSS; }
+    "javascript"                        { return SilverStripeTypes.SS_REQUIRE_JS; }
+    {LEFT_PAREN}                        { yypushstate(SS_REQUIRE_CONTENT); return SilverStripeTypes.LEFT_PAREN; }
+	{WHITE_SPACE}+                      { return TokenType.WHITE_SPACE; }
+    .                                   { yypopstate(); yypushback(yylength()); }
+}
+<SS_REQUIRE_CONTENT> {
+    {SS_DOUBLE}                         { yypushstate(SS_DOUBLE); return SilverStripeTypes.SS_DOUBLE_LEFT; }
+    {SS_SINGLE}                         { yypushstate(SS_SINGLE); return SilverStripeTypes.SS_SINGLE_LEFT; }
+    {SS_STRING_NO_QUOTES}               { return SilverStripeTypes.SS_STRING; }
+    {RIGHT_PAREN}                       { yypopstate(); return SilverStripeTypes.RIGHT_PAREN; }
+	{WHITE_SPACE}+                      { return TokenType.WHITE_SPACE; }
+    .                                   { yypopstate(); yypushback(yylength()); }
+}
+
 <SS_INCLUDE_VARS> {
 	{VAR}                               { yypushstate(SS_VAR); return SilverStripeTypes.SS_VAR; }
 	{COMMA}                             { return SilverStripeTypes.COMMA; }
@@ -166,6 +189,7 @@ SS_TRANSLATION_IDENTIFIER= [a-zA-Z]+\.[a-zA-Z]+
     {SS_COMPARISON_OPERATOR}           { return SilverStripeTypes.SS_COMPARISON_OPERATOR; }
     {SS_AND_OR_OPERATOR}               { return SilverStripeTypes.SS_AND_OR_OPERATOR; }
     {SS_STRING}                        { return SilverStripeTypes.SS_STRING; }
+    {NUMBER}                           { return SilverStripeTypes.NUMBER; }
 	{VAR}                              { yypushstate(SS_VAR); return SilverStripeTypes.SS_VAR; }
 	{SS_BLOCK_END}                      { yycleanstates(); return SilverStripeTypes.SS_BLOCK_END; }
 }

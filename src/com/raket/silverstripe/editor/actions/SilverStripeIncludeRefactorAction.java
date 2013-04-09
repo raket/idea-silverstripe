@@ -18,10 +18,7 @@ import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.vcs.FileStatusManager;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiDirectory;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiManager;
+import com.intellij.psi.*;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.raket.silverstripe.file.SilverStripeFileType;
 import com.intellij.openapi.editor.CaretModel;
@@ -103,14 +100,12 @@ public class SilverStripeIncludeRefactorAction extends SilverStripeNewActionBase
 									CaretModel caretModel = editor.getCaretModel();
 									int caretOffset = selectonModel.getSelectionStart();
 									EditorModificationUtil.deleteSelectedText(editor);
-									FileDocumentManager fileDocumentManager = FileDocumentManager.getInstance();
+									PsiDocumentManager psiDocumentManager = PsiDocumentManager.getInstance(project);
 									caretModel.moveToOffset(caretOffset);
-									int modOffset = EditorModificationUtil.insertStringAtCaret(editor, "<% include " + fileName + " %>", true, false);
 									PsiFile createdFile = (PsiFile) elements[0];
 									codeStyleManager.reformat(createdFile);
-									fileDocumentManager.reloadFiles(currentFile.getVirtualFile());
+									psiDocumentManager.commitDocument(psiDocumentManager.getDocument(currentFile));
 									FileEditorManager.getInstance(project).openFile(currentFile.getVirtualFile(), true);
-									caretModel.moveToOffset(caretOffset);
 									codeStyleManager.adjustLineIndent(currentFile, caretOffset);
 								} catch (Exception e) {
 									e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -141,7 +136,7 @@ public class SilverStripeIncludeRefactorAction extends SilverStripeNewActionBase
 		PsiFile currentFile = (PsiFile) context.getData(LangDataKeys.PSI_FILE.getName());
 		Editor editor = (Editor)  context.getData(PlatformDataKeys.EDITOR.getName());
 		//VirtualFile currentFile = (VirtualFile) context.getData(PlatformDataKeys.VIRTUAL_FILE.getName());
-		if (currentFile != null) {
+		if (currentFile != null && editor != null) {
 			boolean isSSFile = currentFile.getFileType().getDefaultExtension().equals(SilverStripeFileType.DEFAULT_EXTENSION);
 			SelectionModel selectionModel = editor.getSelectionModel();
 			String selectedText = selectionModel.getSelectedText();

@@ -1,5 +1,6 @@
 package com.raket.silverstripe.file;
 
+import com.intellij.ide.highlighter.custom.impl.CustomFileTypeHighlighterProvider;
 import com.intellij.openapi.editor.colors.EditorColorsScheme;
 import com.intellij.openapi.editor.highlighter.EditorHighlighter;
 import com.intellij.openapi.fileTypes.*;
@@ -23,14 +24,15 @@ public class SilverStripeFileType extends LanguageFileType implements TemplateLa
 
     protected SilverStripeFileType() {
         super(SilverStripeLanguage.INSTANCE);
-        FileTypeEditorHighlighterProviders.INSTANCE.addExplicitExtension(this, new EditorHighlighterProvider() {
+
+/*        FileTypeEditorHighlighterProviders.INSTANCE.addExplicitExtension(this, new EditorHighlighterProvider() {
             public EditorHighlighter getEditorHighlighter(@Nullable Project project,
                                                           @NotNull FileType fileType,
                                                           @Nullable VirtualFile virtualFile,
                                                           @NotNull EditorColorsScheme editorColorsScheme) {
                 return new SilverStripeTemplateHighlighter(project, virtualFile, editorColorsScheme);
             }
-        });
+        });*/
     }
 
     @NotNull

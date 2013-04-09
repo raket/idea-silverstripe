@@ -298,6 +298,12 @@ public class SilverStripeBaseParser implements PsiParser {
 					COMMA, SS_COMPARISON_OPERATOR), varTokens);
 			result = createBlock(builder, SS_INCLUDE_STATEMENT, tokensToConsume, SS_BLOCK_END);
 		}
+		else if (nextToken == SS_REQUIRE_KEYWORD) {
+			TokenSet tokensToConsume = TokenSet.create(SS_BLOCK_START, nextToken, SS_REQUIRE_CSS, SS_REQUIRE_JS,
+					SS_REQUIRE_THEME_CSS, SS_SINGLE_LEFT, SS_SINGLE_RIGHT, SS_DOUBLE_LEFT, SS_DOUBLE_RIGHT,
+					LEFT_PAREN, RIGHT_PAREN, SS_STRING);
+			result = createBlock(builder, SS_REQUIRE_STATEMENT, tokensToConsume, SS_BLOCK_END);
+		}
 		else if (nextToken == SS_CACHED_KEYWORD) {
 			TokenSet tokensToConsume = TokenSet.orSet(TokenSet.create(SS_BLOCK_START, nextToken), varTokens);
 			result = createBlock(builder, SS_CACHED_STATEMENT, tokensToConsume, SS_BLOCK_END);

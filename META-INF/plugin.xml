@@ -109,6 +109,7 @@
     <depends>com.jetbrains.php</depends>
     -->
     <depends>com.jetbrains.php</depends>
+    <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.lang</depends>
     <depends>org.jetbrains.plugins.yaml</depends>
 
@@ -167,10 +168,11 @@
                                   implementation="com.raket.silverstripe.references.SilverStripeReferenceContributor"/>
         <psi.referenceContributor
                 implementation="com.raket.silverstripe.references.SilverStripeYamlReferenceContributor"/>
-        <!--
-        <codeInsight.lineMarkerProvider language="SilverStripe"
-                                        implementationClass="com.raket.silverstripe.editor.lines.SilverStripeLineMarkerProvider"/>
-      <lang.syntaxHighlighterFactory key="SilverStripe" implementationClass="com.raket.silverstripe.editor.highlighting.SilverStripeSyntaxHighlighterFactory"/>
-       -->
+        <editorHighlighterProvider filetype="SilverStripe" implementationClass="com.raket.silverstripe.editor.highlighting.SilverStripeEditorHighlighterProvider"/>
+         <!--
+         <lang.syntaxHighlighterFactory key="SilverStripe" implementationClass="com.raket.silverstripe.editor.highlighting.SilverStripeSyntaxHighlighterFactory"/>
+          <codeInsight.lineMarkerProvider language="SilverStripe"
+                                          implementationClass="com.raket.silverstripe.editor.lines.SilverStripeLineMarkerProvider"/>
+         -->
     </extensions>
 </idea-plugin>

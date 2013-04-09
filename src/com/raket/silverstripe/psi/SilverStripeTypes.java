@@ -21,6 +21,7 @@ public interface SilverStripeTypes {
 	IElementType SS_STATEMENTS = new SilverStripeElementType("SS_STATEMENTS");
 	IElementType SS_INCLUDE_STATEMENT = new SilverStripeElementType("SS_INCLUDE_STATEMENT");
 	IElementType SS_CACHED_STATEMENT = new SilverStripeElementType("Cache statement");
+	IElementType SS_REQUIRE_STATEMENT = new SilverStripeElementType("Require statement");
 
 
 
@@ -42,6 +43,10 @@ public interface SilverStripeTypes {
 	IElementType SS_DOUBLE_RIGHT = new SilverStripeTokenType("Right double quote");
 	IElementType SS_SINGLE_LEFT = new SilverStripeTokenType("Left single quote");
 	IElementType SS_SINGLE_RIGHT = new SilverStripeTokenType("Right single quote");
+	IElementType SS_REQUIRE_KEYWORD = new SilverStripeTokenType("Require keyword");
+	IElementType SS_REQUIRE_CSS = new SilverStripeTokenType("Require css file");
+	IElementType SS_REQUIRE_THEME_CSS = new SilverStripeTokenType("Require theme css file");
+	IElementType SS_REQUIRE_JS = new SilverStripeTokenType("Require js file");
 
 	IElementType SS_BAD_VAR = new SilverStripeTokenType("SS_BAD_VAR");
 	IElementType SS_BLOCK_END = new SilverStripeTokenType("SS_BLOCK_END");

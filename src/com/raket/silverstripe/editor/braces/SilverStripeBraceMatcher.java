@@ -42,6 +42,7 @@ public class SilverStripeBraceMatcher implements BraceMatcher {
 	private static final TokenSet ALWAYS_BRACES = TokenSet.create(
 		SS_SIMPLE_KEYWORD,
 		SS_INCLUDE_KEYWORD,
+		SS_REQUIRE_KEYWORD,
 		SS_ELSE_KEYWORD,
 		SS_BAD_BLOCK_STATEMENT,
 		SS_TRANSLATION_KEYWORD,
@@ -61,7 +62,7 @@ public class SilverStripeBraceMatcher implements BraceMatcher {
 	);
 
 	private static final TokenSet RIGHT_BLOCK_BRACES = TokenSet.orSet(
-			TokenSet.create(SS_END_KEYWORD), ALWAYS_BRACES
+		TokenSet.create(SS_END_KEYWORD), ALWAYS_BRACES
 	);
 
 	/*
@@ -79,7 +80,7 @@ public class SilverStripeBraceMatcher implements BraceMatcher {
 	public boolean isPairBraces(IElementType tokenType1, IElementType tokenType2) {
 		TokenSet myTokens = ALL_BRACES;
 		return ALL_BRACES.contains(tokenType1) && ALL_BRACES.contains(tokenType2)
-				|| ALL_BRACES.contains(tokenType1) && ALL_BRACES.contains(tokenType2);
+			|| ALL_BRACES.contains(tokenType1) && ALL_BRACES.contains(tokenType2);
 	}
 
 	@Override
