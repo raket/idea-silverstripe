@@ -1,28 +1,35 @@
 package com.raket.silverstripe.file;
 
 import com.intellij.lang.ASTNode;
+import com.intellij.openapi.fileTypes.UnknownFileType;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Key;
+import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.tree.TokenSet;
-import com.intellij.psi.util.PsiElementFilter;
-import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.psi.util.*;
 import com.intellij.util.indexing.FileBasedIndex;
 import com.raket.silverstripe.psi.SilverStripeFile;
-import com.raket.silverstripe.psi.SilverStripeNamedElement;
-import com.raket.silverstripe.psi.SilverStripePsiElement;
 import com.raket.silverstripe.psi.SilverStripeTypes;
 import com.raket.silverstripe.psi.impl.SilverStripeTranslationImpl;
+import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class SilverStripeFileUtil {
+	private static final Key<CachedValue<PsiFile>> SILVER_STRIPE_VERSION = new Key<CachedValue<PsiFile>>("SILVER_STRIPE_VERSION");
+	public static String VERSION_STRING = "latest";
+
 	public static List<SilverStripeFile> findFiles(Project project, String key) {
 		List<SilverStripeFile> result =  new ArrayList<SilverStripeFile>();
 		List<SilverStripeFile> files = findFiles(project);
@@ -87,5 +94,25 @@ public class SilverStripeFileUtil {
 			}
 		}
 		return result;
+	}
+
+	public static PsiFile getVersion(final Project project) {
+		CachedValue<PsiFile> ssVersion = project.getUserData(SILVER_STRIPE_VERSION);
+		if (ssVersion == null) {
+			ssVersion = CachedValuesManager.getManager(project).createCachedValue(
+				new CachedValueProvider<PsiFile>() {
+					@Nullable
+					@Override
+					public Result<PsiFile> compute() {
+						VirtualFile versionFile = LocalFileSystem.getInstance().findFileByPath(project.getBasePath()
+							+ File.separatorChar + "framework" + File.separatorChar + "silverstripe_version");
+						PsiFile contents = PsiManager.getInstance(project).findFile(versionFile);
+						return CachedValueProvider.Result.create(contents);
+					}
+				}
+			);
+			project.putUserData(SILVER_STRIPE_VERSION, ssVersion);
+		}
+		return ssVersion.getValue();
 	}
 }

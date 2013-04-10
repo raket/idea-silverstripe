@@ -1,8 +1,10 @@
 <idea-plugin version="2" url="https://github.com/raket/idea-silverstripe">
     <id>com.raket.silverstripe</id>
     <name>SilverStripe Template Language Support</name>
-    <version>0.6.1</version>
-    <vendor logo="/icons/raket.png" email="marcus@raket.nu" url="https://github.com/raket/idea-silverstripe">Raket Webbyrå</vendor>
+    <version>0.7</version>
+    <vendor logo="/icons/raket.png" email="marcus@raket.nu" url="https://github.com/raket/idea-silverstripe">Raket
+        Webbyrå
+    </vendor>
 
     <description><![CDATA[
       <a href="http://www.silverstripe.org/">SilverStripe</a> template language support<br>
@@ -13,26 +15,35 @@
     <category>Custom Languages</category>
     <change-notes>
         <![CDATA[
+        <strong>Version 0.7</strong>
+        <ul>
+            <li><b>Features</b></li>
+            <li>Annotates free strings to allow easy conversion to strings or variables.</li>
+            <li>Added <, <=, >, >= comparison operators with a warning if they are used in SilverStripe versions lower than 3.1.</li>
+            <li>Added require tag.</li>
+            <li>Fixed fatal error in include refactor when a project is opened without an open file.</li>
+            <li>Change highlighting colors to align more with PHP.</li>
+        </ul>
         <strong>Version 0.6.1</strong>
         <ul>
             <li><b>Features</b></li>
             <li>Fixes reformat bug after removing text when refactoring to include file.</li>
             <li>Correctly parses advanced versions of loop, with and control.</li>
-            <li>"<" is no longer interpreted as a bad character</li>
-            <li>Typing "{" should now consistently yield "{$}"</li>
+            <li>"<" is no longer interpreted as a bad character.</li>
+            <li>Typing "{" should now consistently yield "{$}".</li>
         </ul>
         <strong>Version 0.6</strong>
         <ul>
             <li><b>Features</b></li>
             <li>Refactor selected text to include file. This command moves the selected text to an include file. Defaults to ctrl+F6.</li>
-            <li>Fix parser bug for else_if statements</li>
+            <li>Fix parser bug for else_if statements.</li>
         </ul>
         <strong>Version 0.5.1</strong>
         <ul>
             <li><b>Features</b></li>
-            <li>Major bugfix that would freeze the lexer in some cases</li>
+            <li>Major bugfix that would freeze the lexer in some cases.</li>
             <li>Add YAML references for translations. It is now possible to ctrl+click an element in a yaml translation file to find the corresponding tag.</li>
-            <li>Gutter icon removed for include files</li>
+            <li>Gutter icon removed for include files.</li>
         </ul>
         <strong>Version 0.5</strong>
         <ul>
@@ -128,7 +139,8 @@
                 description="Add a new SilverStripe Template File">
             <add-to-group group-id="NewGroup" anchor="after" relative-to-action="NewFile"/>
         </action>
-        <action id="IncludeRefactor" class="com.raket.silverstripe.editor.actions.SilverStripeIncludeRefactorAction" text="Refactor to include file">
+        <action id="IncludeRefactor" class="com.raket.silverstripe.editor.actions.SilverStripeIncludeRefactorAction"
+                text="Refactor to include file">
             <add-to-group group-id="IntroduceActionsGroup" anchor="last"/>
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl F6"/>
         </action>
@@ -160,19 +172,24 @@
                    implementationClass="com.raket.silverstripe.editor.annotations.SilverStripeIncludeAnnotator"/>
         <annotator language="SilverStripe"
                    implementationClass="com.raket.silverstripe.editor.annotations.SilverStripeTranslationAnnotator"/>
+        <annotator language="SilverStripe"
+                   implementationClass="com.raket.silverstripe.editor.annotations.SilverStripeVariableAnnotator"/>
+         <annotator language="SilverStripe"
+                   implementationClass="com.raket.silverstripe.editor.annotations.SilverStripeComparisonAnnotator"/>
         <lang.commenter language="SilverStripe"
                         implementationClass="com.raket.silverstripe.editor.comments.SilverStripeCommenter"/>
         <spellchecker.support language="SilverStripe"
                               implementationClass="com.intellij.spellchecker.tokenizer.SpellcheckingStrategy"/>
         <psi.referenceContributor
-                                  implementation="com.raket.silverstripe.references.SilverStripeReferenceContributor"/>
+                implementation="com.raket.silverstripe.references.SilverStripeReferenceContributor"/>
         <psi.referenceContributor
                 implementation="com.raket.silverstripe.references.SilverStripeYamlReferenceContributor"/>
-        <editorHighlighterProvider filetype="SilverStripe" implementationClass="com.raket.silverstripe.editor.highlighting.SilverStripeEditorHighlighterProvider"/>
-         <!--
-         <lang.syntaxHighlighterFactory key="SilverStripe" implementationClass="com.raket.silverstripe.editor.highlighting.SilverStripeSyntaxHighlighterFactory"/>
-          <codeInsight.lineMarkerProvider language="SilverStripe"
-                                          implementationClass="com.raket.silverstripe.editor.lines.SilverStripeLineMarkerProvider"/>
-         -->
+        <editorHighlighterProvider filetype="SilverStripe"
+                                   implementationClass="com.raket.silverstripe.editor.highlighting.SilverStripeEditorHighlighterProvider"/>
+        <!--
+        <lang.syntaxHighlighterFactory key="SilverStripe" implementationClass="com.raket.silverstripe.editor.highlighting.SilverStripeSyntaxHighlighterFactory"/>
+         <codeInsight.lineMarkerProvider language="SilverStripe"
+                                         implementationClass="com.raket.silverstripe.editor.lines.SilverStripeLineMarkerProvider"/>
+        -->
     </extensions>
 </idea-plugin>

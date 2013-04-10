@@ -69,7 +69,7 @@ SS_START_KEYWORD= loop | with | control
 SS_IF_KEYWORD= if
 SS_ELSE_IF_KEYWORD= else_if
 SS_ELSE_KEYWORD= else
-SS_COMPARISON_OPERATOR= "==" | "!=" | "=" | "not"
+SS_COMPARISON_OPERATOR= "==" | "!=" | "=" | "not" | ">" | "<" | ">=" | "<="
 SS_AND_OR_OPERATOR= "&&" | "||"
 SS_STRING= \"[^\"]*\" | \'[^\']*\'
 SS_DOUBLE_WITH_VAR= [^\"{]*
@@ -106,6 +106,7 @@ SS_TRANSLATION_IDENTIFIER= [a-zA-Z]+\.[a-zA-Z]+
 %state SS_DOUBLE
 %state SS_SINGLE
 %state SS_REQUIRE_CONTENT
+%state SS_IDENTIFIER
 %%
 
 <YYINITIAL> {
@@ -189,7 +190,6 @@ SS_TRANSLATION_IDENTIFIER= [a-zA-Z]+\.[a-zA-Z]+
     {SS_COMPARISON_OPERATOR}           { return SilverStripeTypes.SS_COMPARISON_OPERATOR; }
     {SS_AND_OR_OPERATOR}               { return SilverStripeTypes.SS_AND_OR_OPERATOR; }
     {SS_STRING}                        { return SilverStripeTypes.SS_STRING; }
-    {NUMBER}                           { return SilverStripeTypes.NUMBER; }
 	{VAR}                              { yypushstate(SS_VAR); return SilverStripeTypes.SS_VAR; }
 	{SS_BLOCK_END}                      { yycleanstates(); return SilverStripeTypes.SS_BLOCK_END; }
 }
@@ -245,7 +245,7 @@ SS_TRANSLATION_IDENTIFIER= [a-zA-Z]+\.[a-zA-Z]+
 	{SS_VAR_START_DELIMITER} { return SilverStripeTypes.SS_VAR_START_DELIMITER; }
 	"$"   { return SilverStripeTypes.SS_VAR_START; }
 	{VAR} { return SilverStripeTypes.SS_VAR; }
-	{DOT} { return SilverStripeTypes.DOT; }
+	{DOT} { yypushstate(SS_IDENTIFIER); return SilverStripeTypes.DOT; }
     {LEFT_PAREN} { yypushstate(SS_METHOD_ARGUMENTS); return SilverStripeTypes.LEFT_PAREN; }
 
 	{SS_VAR_END_DELIMITER} { yypopstate(); return SilverStripeTypes.SS_VAR_END_DELIMITER; }
@@ -256,14 +256,17 @@ SS_TRANSLATION_IDENTIFIER= [a-zA-Z]+\.[a-zA-Z]+
 <SS_METHOD_ARGUMENTS> {
 	{COMMA}  { return SilverStripeTypes.COMMA; }
 	{VAR} { return SilverStripeTypes.SS_VAR; }
-	{DOT} { return SilverStripeTypes.DOT; }
+	{DOT} { yypushstate(SS_IDENTIFIER); return SilverStripeTypes.DOT; }
 	{SS_STRING} { return SilverStripeTypes.SS_STRING; }
 	{NUMBER} { return SilverStripeTypes.NUMBER; }
     {RIGHT_PAREN} { yypopstate(); return SilverStripeTypes.RIGHT_PAREN; }
 	{WHITE_SPACE}+                      { return TokenType.WHITE_SPACE; }
     .                                   { yypopstate(); yypushback(yylength()); }
 }
-
+<SS_IDENTIFIER> {
+  [a-zA-Z_]+([a-zA-Z0-9_])* { yypopstate(); return SilverStripeTypes.SS_IDENTIFIER; }
+  .                                   { yypopstate(); yypushback(yylength()); }
+}
 {WHITE_SPACE}+                                              { return TokenType.WHITE_SPACE; }
 {CRLF}
 {

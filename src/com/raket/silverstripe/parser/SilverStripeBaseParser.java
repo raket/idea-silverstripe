@@ -1,10 +1,8 @@
 package com.raket.silverstripe.parser;
 
 import com.intellij.lang.ASTNode;
-import com.intellij.lang.LighterASTNode;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiParser;
-import com.intellij.lang.impl.PsiBuilderImpl;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 import com.intellij.util.containers.Stack;
@@ -30,7 +28,7 @@ public class SilverStripeBaseParser implements PsiParser {
 	String[] startStatements = {"if", "loop", "with", "control", "cached"};
 	String[] endStatements = {"end_if", "end_loop", "end_with", "end_control", "end_cached"};
 	String[] statementContainers = {"if", "loop", "with", "control", "else_if", "else", "cached"};
-	TokenSet varTokens = TokenSet.create(SS_VAR, DOT, COMMA, LEFT_PAREN, RIGHT_PAREN, NUMBER, SS_STRING);
+	TokenSet varTokens = TokenSet.create(SS_VAR, DOT, COMMA, LEFT_PAREN, RIGHT_PAREN, NUMBER, SS_STRING, SS_IDENTIFIER);
 	TokenSet string = TokenSet.create(SS_DOUBLE_LEFT, SS_DOUBLE_RIGHT, SS_SINGLE_LEFT, SS_SINGLE_RIGHT, SS_STRING);
 
 	private class ParseResult {
@@ -476,6 +474,7 @@ public class SilverStripeBaseParser implements PsiParser {
 		}
 		else {
 //			PsiBuilder.Marker tokenMarker = builder.mark();
+
 			builder.advanceLexer();
 //			tokenMarker.done(token);
 		}

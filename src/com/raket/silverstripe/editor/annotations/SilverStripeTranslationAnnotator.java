@@ -1,18 +1,16 @@
 package com.raket.silverstripe.editor.annotations;
 
-import com.intellij.lang.annotation.Annotation;
+import com.intellij.lang.ASTNode;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
-import com.intellij.openapi.util.Pair;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.TokenSet;
 import com.intellij.util.containers.Stack;
 import com.raket.silverstripe.psi.impl.SilverStripeTranslationImpl;
-import com.intellij.lang.ASTNode;
+import org.jetbrains.annotations.NotNull;
 
 import static com.raket.silverstripe.SilverStripeBundle.message;
 import static com.raket.silverstripe.psi.SilverStripeTypes.*;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Created with IntelliJ IDEA.
