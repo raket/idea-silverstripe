@@ -10,6 +10,7 @@ import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
+import com.jetbrains.php.lang.highlighter.PhpHighlightingData;
 import com.raket.silverstripe.SilverStripeLexer;
 import com.raket.silverstripe.psi.SilverStripeTypes;
 import org.jetbrains.annotations.NotNull;
@@ -26,7 +27,7 @@ public class SilverStripeSyntaxHighlighter extends SyntaxHighlighterBase {
 	public static final TextAttributesKey COMMENT = createTextAttributesKey("SS_COMMENT", XmlHighlighterColors.HTML_COMMENT);
 	public static final TextAttributesKey SS_BLOCK = createTextAttributesKey("SS_BLOCK", DefaultLanguageHighlighterColors.BRACES);
 	public static final TextAttributesKey SS_KEYWORD = createTextAttributesKey("SS_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD);
-	public static final TextAttributesKey SS_BLOCK_VAR_KEY = createTextAttributesKey("SS_BLOCK_VAR", DefaultLanguageHighlighterColors.LOCAL_VARIABLE);
+	public static final TextAttributesKey SS_BLOCK_VAR_KEY = createTextAttributesKey("SS_BLOCK_VAR", PhpHighlightingData.VAR);
 
 	static final TextAttributesKey BAD_CHARACTER = createTextAttributesKey("SS_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER);
 
@@ -42,6 +43,7 @@ public class SilverStripeSyntaxHighlighter extends SyntaxHighlighterBase {
 	private static final TextAttributesKey[] PAREN_KEYS = new TextAttributesKey[]{DefaultLanguageHighlighterColors.PARENTHESES};
 	private static final TextAttributesKey[] STRING_KEYS = new TextAttributesKey[]{DefaultLanguageHighlighterColors.STRING};
 	private static final TextAttributesKey[] TAG_KEYS = new TextAttributesKey[]{DefaultLanguageHighlighterColors.MARKUP_TAG};
+	private static final TextAttributesKey[] IDENTIFIER_KEYS = new TextAttributesKey[]{DefaultLanguageHighlighterColors.IDENTIFIER};
 
 	private static final TokenSet BRACES = TokenSet.create(
 		SS_VAR_START_DELIMITER,
@@ -97,6 +99,8 @@ public class SilverStripeSyntaxHighlighter extends SyntaxHighlighterBase {
 			return STRING_KEYS;
 		} else if (tokenType.equals(LEFT_PAREN) || tokenType.equals(RIGHT_PAREN)) {
 			return PAREN_KEYS;
+		} else if (tokenType.equals(SS_IDENTIFIER)) {
+			return IDENTIFIER_KEYS;
 		} else {
 			return EMPTY_KEYS;
 		}

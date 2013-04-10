@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 import static com.raket.silverstripe.SilverStripeBundle.message;
+
 public class SilverStripeIncludeAnnotator implements Annotator {
 	@Override
 	public void annotate(@NotNull final PsiElement element, @NotNull AnnotationHolder holder) {
@@ -28,14 +29,14 @@ public class SilverStripeIncludeAnnotator implements Annotator {
 			String fullFileName = fileName + "." + fileExtension;
 			List<SilverStripeFile> properties = SilverStripeFileUtil.findFiles(project, fullFileName);
 			TextRange range = new TextRange(element.getTextRange().getStartOffset(),
-					element.getTextRange().getStartOffset());
+				element.getTextRange().getStartOffset());
 			if (properties.size() >= 1) {
 				Annotation annotation = holder.createInfoAnnotation(ssElement, null);
 				//annotation.setTextAttributes(SyntaxHighlighterColors.LINE_COMMENT);
 			}
 			if (properties.size() == 0) {
 				Annotation annotation = holder
-						.createErrorAnnotation(ssElement, message("ss.annotations.file.not.found", fullFileName));
+					.createErrorAnnotation(ssElement, message("ss.annotations.file.not.found", fullFileName));
 				annotation.setTextAttributes(CodeInsightColors.NOT_USED_ELEMENT_ATTRIBUTES);
 				annotation.registerFix(new CreateIncludeQuickFix(fileName));
 			}
