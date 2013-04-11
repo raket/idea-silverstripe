@@ -180,9 +180,9 @@
                         implementationClass="com.raket.silverstripe.editor.comments.SilverStripeCommenter"/>
         <spellchecker.support language="SilverStripe"
                               implementationClass="com.intellij.spellchecker.tokenizer.SpellcheckingStrategy"/>
-        <psi.referenceContributor
+        <psi.referenceContributor language="SilverStripe"
                 implementation="com.raket.silverstripe.references.SilverStripeReferenceContributor"/>
-        <psi.referenceContributor
+        <psi.referenceContributor language="yaml"
                 implementation="com.raket.silverstripe.references.SilverStripeYamlReferenceContributor"/>
         <editorHighlighterProvider filetype="SilverStripe"
                                    implementationClass="com.raket.silverstripe.editor.highlighting.SilverStripeEditorHighlighterProvider"/>
