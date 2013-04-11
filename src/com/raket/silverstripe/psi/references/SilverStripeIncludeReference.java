@@ -1,9 +1,12 @@
 package com.raket.silverstripe.psi.references;
 
+import com.intellij.codeInsight.lookup.LookupElement;
+import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
+import com.raket.silverstripe.file.SilverStripeFileType;
 import com.raket.silverstripe.file.SilverStripeFileUtil;
 import com.raket.silverstripe.psi.SilverStripeFile;
 import com.raket.silverstripe.psi.SilverStripeTypes;
@@ -13,15 +16,15 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SilverStripeReference extends PsiReferenceBase<PsiElement> implements PsiPolyVariantReference {
+public class SilverStripeIncludeReference extends PsiReferenceBase<PsiElement> implements PsiPolyVariantReference {
 	private String key;
 
-	public SilverStripeReference(@NotNull PsiNamedElement element, TextRange textRange) {
+	public SilverStripeIncludeReference(@NotNull PsiNamedElement element, TextRange textRange) {
 		super(element, textRange);
 		key = element.getName();
 	}
 
-	public SilverStripeReference(@NotNull PsiNamedElement element) {
+	public SilverStripeIncludeReference(@NotNull PsiNamedElement element) {
 		super(element);
 		key = element.getName();
 	}
@@ -47,7 +50,7 @@ public class SilverStripeReference extends PsiReferenceBase<PsiElement> implemen
 
 	@Override
 	public TextRange getRangeInElement() {
-		TextRange origRange = super.getRangeInElement();
+		//TextRange origRange = super.getRangeInElement();
 		ASTNode parentNode = this.getElement().getNode();
 		ASTNode includeKeyword = parentNode.findChildByType(SilverStripeTypes.SS_INCLUDE_KEYWORD);
 		ASTNode includeFile = parentNode.findChildByType(SilverStripeTypes.SS_INCLUDE_FILE);
@@ -56,7 +59,7 @@ public class SilverStripeReference extends PsiReferenceBase<PsiElement> implemen
 			return new TextRange(includeFile.getPsi().getStartOffsetInParent(),
 					includeFile.getPsi().getStartOffsetInParent()+includeFile.getPsi().getTextLength());
 		}
-		return new TextRange(startOffset, origRange.getEndOffset());
+		return new TextRange(0, parentNode.getTextLength());
 	}
 
 	@NotNull
@@ -65,14 +68,18 @@ public class SilverStripeReference extends PsiReferenceBase<PsiElement> implemen
 		return EMPTY_ARRAY;
 		/*
 		Project project = myElement.getProject();
-		List<SilverStripeFile> properties = SilverStripeFileUtil.findFiles(project);
+		List<SilverStripeFile> files = SilverStripeFileUtil.findFilesByDir(project, "Includes");
 		List<LookupElement> variants = new ArrayList<LookupElement>();
-		for (final SilverStripeFile property : properties) {
-			variants.add(LookupElementBuilder.create(property).
+		for (final SilverStripeFile file : files) {
+			String fileName = file.getName();
+			fileName = fileName.substring(0, fileName.length()-3);
+
+			variants.add(LookupElementBuilder.create(" " + fileName).
 					withIcon(SilverStripeFileType.FILE_ICON).
-					withTypeText(property.getContainingFile().getName())
+					withTypeText(file.getName())
 			);
 		}
-		return variants.toArray();*/
+		return variants.toArray();
+		*/
 	}
 }

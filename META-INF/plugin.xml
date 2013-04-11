@@ -1,7 +1,7 @@
 <idea-plugin version="2" url="https://github.com/raket/idea-silverstripe">
     <id>com.raket.silverstripe</id>
     <name>SilverStripe Template Language Support</name>
-    <version>0.7</version>
+    <version>0.7.1</version>
     <vendor logo="/icons/raket.png" email="marcus@raket.nu" url="https://github.com/raket/idea-silverstripe">Raket
         Webbyrå
     </vendor>
@@ -15,6 +15,12 @@
     <category>Custom Languages</category>
     <change-notes>
         <![CDATA[
+        <strong>Version 0.7.1</strong>
+        <ul>
+            <li><b>Features</b></li>
+            <li>Underscores are now valid in variable names.</li>
+            <li>References added to require tag. The file names are now ctrl+clickable leading to the file in question. themedCSS is currently NOT theme aware and will suggest all matches.</li>
+        </ul>
         <strong>Version 0.7</strong>
         <ul>
             <li><b>Features</b></li>
@@ -166,7 +172,7 @@
                               implementationClass="com.intellij.spellchecker.tokenizer.SpellcheckingStrategy"/>
         <completion.contributor language="SilverStripe"
                                 implementationClass="com.raket.silverstripe.editor.completions.SilverStripeCompletionContributor"/>
-        <completion.confidence language="SilverStripe"
+         <completion.confidence language="SilverStripe"
                                implementationClass="com.raket.silverstripe.editor.completions.SilverStripeCompletionConfidence"/>
         <annotator language="SilverStripe"
                    implementationClass="com.raket.silverstripe.editor.annotations.SilverStripeIncludeAnnotator"/>

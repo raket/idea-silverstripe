@@ -12,16 +12,23 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class SilverStripeIncludeImpl extends SilverStripeNamedElementImpl implements SilverStripeNamedElement {
+/**
+ * Created with IntelliJ IDEA.
+ * User: Marcus Dalgren
+ * Date: 2013-04-11
+ * Time: 21:18
+ * To change this template use File | Settings | File Templates.
+ */
+public class SilverStripeRequireImpl extends SilverStripeNamedElementImpl implements SilverStripeNamedElement {
 
-	public SilverStripeIncludeImpl(@NotNull ASTNode node) {
+	public SilverStripeRequireImpl(@NotNull ASTNode node) {
 		super(node);
 	}
 
 	@Nullable
 	@Override
 	public PsiElement getNameIdentifier() {
-		ASTNode keyNode = this.getNode().findChildByType(SilverStripeTypes.SS_INCLUDE_FILE);
+		ASTNode keyNode = this.getNode().findChildByType(SilverStripeTypes.SS_STRING);
 		if (keyNode != null) {
 			return keyNode.getPsi();
 		} else {
@@ -30,7 +37,7 @@ public class SilverStripeIncludeImpl extends SilverStripeNamedElementImpl implem
 	}
 
 	public String getName() {
-		ASTNode keyNode = this.getNode().findChildByType(SilverStripeTypes.SS_INCLUDE_FILE);
+		ASTNode keyNode = this.getNode().findChildByType(SilverStripeTypes.SS_STRING);
 		if (keyNode != null) {
 			return keyNode.getText();
 		} else {
@@ -41,18 +48,5 @@ public class SilverStripeIncludeImpl extends SilverStripeNamedElementImpl implem
 	@Override
 	public PsiElement setName(@NonNls @NotNull String name) throws IncorrectOperationException {
 		return this;
-	}
-
-	@Nullable
-	public TextRange getReferenceTextRange() {
-		ASTNode keyNode = this.getNode().findChildByType(SilverStripeTypes.SS_INCLUDE_FILE);
-
-		if (keyNode != null) {
-			int textStart = keyNode.getPsi().getTextOffset();
-			int textLength = this.getTextLength();
-			return new TextRange(0, textLength);
-		} else {
-			return null;
-		}
 	}
 }

@@ -1,6 +1,8 @@
 package com.raket.silverstripe.file;
 
+import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.lang.ASTNode;
+import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.fileTypes.UnknownFileType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
@@ -47,6 +49,30 @@ public class SilverStripeFileUtil {
 				GlobalSearchScope.allScope(project));
 		for (VirtualFile virtualFile : virtualFiles) {
 			SilverStripeFile simpleFile = (SilverStripeFile) PsiManager.getInstance(project).findFile(virtualFile);
+			if (simpleFile != null) {
+				Collections.addAll(result, simpleFile);
+			}
+		}
+		return result;
+	}
+
+	public static List<PsiFile> findFiles(Project project, FileType fileType, String key) {
+		List<PsiFile> result =  new ArrayList<PsiFile>();
+		List<PsiFile> files = findFiles(project, fileType);
+		for (PsiFile file : files) {
+			if (file.getName().matches(key)) {
+				result.add(file);
+			}
+		}
+		return result;
+	}
+
+	public static List<PsiFile> findFiles(Project project, FileType fileType) {
+		List<PsiFile> result = new ArrayList<PsiFile>();
+		Collection<VirtualFile> virtualFiles = FileBasedIndex.getInstance().getContainingFiles(FileTypeIndex.NAME, fileType,
+			GlobalSearchScope.allScope(project));
+		for (VirtualFile virtualFile : virtualFiles) {
+			PsiFile simpleFile = PsiManager.getInstance(project).findFile(virtualFile);
 			if (simpleFile != null) {
 				Collections.addAll(result, simpleFile);
 			}
