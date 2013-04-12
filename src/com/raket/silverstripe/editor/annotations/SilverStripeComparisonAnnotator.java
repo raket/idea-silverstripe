@@ -9,6 +9,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.raket.silverstripe.file.SilverStripeFileUtil;
+import com.raket.silverstripe.project.SilverStripeProjectComponent;
 import com.raket.silverstripe.psi.SilverStripeTypes;
 import org.jetbrains.annotations.NotNull;
 
@@ -32,10 +33,10 @@ public class SilverStripeComparisonAnnotator implements Annotator {
 			String varValue = element.getText();
 			if (varValue.startsWith("<") || varValue.startsWith(">")) {
 				PsiFile version = SilverStripeFileUtil.getVersion(project);
-				String content = version.getText();
-				if (content != null && !content.trim().isEmpty()) {
-					String versionString = content;
-					String[] parts = versionString.split("\\.");
+				SilverStripeProjectComponent projectComponent = (SilverStripeProjectComponent)project.getComponent("SilverStripeProjectComponent");
+				String versionText = projectComponent.getSilverStripeVersion();
+				if (versionText != null && !versionText.isEmpty()) {
+					String[] parts = versionText.split("\\.");
 					boolean versionBool = false;
 					if (parts.length > 0) {
 						int majorVersion = Integer.parseInt(parts[0]);

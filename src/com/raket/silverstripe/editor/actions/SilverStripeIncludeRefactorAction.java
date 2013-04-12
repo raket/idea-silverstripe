@@ -93,11 +93,13 @@ public class SilverStripeIncludeRefactorAction extends SilverStripeNewActionBase
 									EditorModificationUtil.deleteSelectedText(editor);
 									PsiDocumentManager psiDocumentManager = PsiDocumentManager.getInstance(project);
 									caretModel.moveToOffset(caretOffset);
+									EditorModificationUtil.insertStringAtCaret(editor, "<% include " + fileName + " %>", true, false);
 									PsiFile createdFile = (PsiFile) elements[0];
 									codeStyleManager.reformat(createdFile);
 									psiDocumentManager.commitDocument(psiDocumentManager.getDocument(currentFile));
 									FileEditorManager.getInstance(project).openFile(currentFile.getVirtualFile(), true);
 									codeStyleManager.adjustLineIndent(currentFile, caretOffset);
+									psiDocumentManager.commitDocument(psiDocumentManager.getDocument(currentFile));
 								} catch (Exception e) {
 									e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
 								}
