@@ -22,4 +22,9 @@ public abstract class SilverStripeNamedElementImpl extends ASTWrapperPsiElement 
 		PsiReference[] references = getReferences();
 		return references.length == 0 ? null : references[0];
 	}
+
+	@Override
+	public String toString() {
+		return getNode().getElementType().toString();
+	}
 }

@@ -6,16 +6,11 @@ import com.intellij.lang.PsiParser;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 import com.intellij.util.containers.Stack;
-import com.raket.silverstripe.eventdispatcher.EventDispatcher;
 import com.raket.silverstripe.observers.SilverStripeObservable;
-import com.raket.silverstripe.parser.observers.SilverStripeBlockStatementObserver;
-import com.raket.silverstripe.parser.observers.SilverStripeIfObserver;
 import com.raket.silverstripe.parser.observers.SilverStripeVariableObserver;
-import com.raket.silverstripe.parser.observers.SilverStripeVariableStatementObserver;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
-import java.util.Vector;
 
 import static com.raket.silverstripe.SSErrorTokenTypes.ERROR_TOKEN_MESSAGES;
 import static com.raket.silverstripe.SilverStripeBundle.message;
@@ -29,12 +24,9 @@ import static com.raket.silverstripe.psi.SilverStripeTypes.*;
  * Time: 21:40
  */
 
-public class SilverStripeBaseParser extends SilverStripeObservable implements PsiParser {
-	PsiBuilder builder;
-	EventDispatcher dispatcher = EventDispatcher.getInstance();
+public class SilverStripeBaseParserBackup extends SilverStripeObservable implements PsiParser {
 	Stack<BlockLevel> blockLevelStack = new Stack<BlockLevel>();
 	IElementType nextToken;
-	String nextTokenText;
 	String[] startStatements = {"if", "loop", "with", "control", "cached"};
 	String[] endStatements = {"end_if", "end_loop", "end_with", "end_control", "end_cached"};
 	String[] statementContainers = {"if", "loop", "with", "control", "else_if", "else", "cached"};
@@ -108,16 +100,13 @@ public class SilverStripeBaseParser extends SilverStripeObservable implements Ps
 		}
 	}
 
+	public SilverStripeBaseParserBackup() {
+		super();
+		addObservers(new SilverStripeVariableObserver());
+	}
+
 	public IElementType getNextToken() {
 		return  nextToken;
-	}
-
-	public String getNextTokenText() {
-		return  nextTokenText;
-	}
-
-	public PsiBuilder getBuilder() {
-		return builder;
 	}
 
 	/**
@@ -129,7 +118,6 @@ public class SilverStripeBaseParser extends SilverStripeObservable implements Ps
 	@NotNull
 	@Override
 	public ASTNode parse(IElementType root, PsiBuilder builder) {
-		this.builder = builder;
 		PsiBuilder.Marker rootMarker = builder.mark();
 		PsiBuilder.Marker wrapperMarker = builder.mark();
 
@@ -150,12 +138,19 @@ public class SilverStripeBaseParser extends SilverStripeObservable implements Ps
 
 		while (!builder.eof()) {
 			type = builder.getTokenType();
-			getNextTokenValue(builder);
-			//setChanged().notifyObserversBefore(builder, type);
-			dispatcher.triggerEvent("before_consume", false, this, type);
-			consumeToken(builder, type); // move to next token
-			dispatcher.triggerEvent("after_consume", false, this, type);
-			//setChanged().notifyObserversAfter(builder, type);
+//			consumeToken(builder, type);
+//			continue;
+			parseResult = new ParseResult();
+			if (type == SS_BLOCK_START || type == SS_COMMENT_START) {
+				tokenValue = getNextTokenValue(builder);
+				parseResult = parseStatementBlock(builder, tokenValue);
+				if (parseResult.success)
+					buildStatementsBlock(builder, tokenValue, parseResult);
+			} else if (type == SS_VAR_START_DELIMITER) {
+				parseResult = parseVarStatement(builder, type);
+			}
+			if (!parseResult.success)
+				consumeToken(builder, type); // move to next token
 
 			// These are errors, all blocks should be closed when we've reached the End Of File
 			// We drop the block statement marker and put an error around the open block statement
@@ -404,9 +399,7 @@ public class SilverStripeBaseParser extends SilverStripeObservable implements Ps
 		String returnString;
 		PsiBuilder.Marker rb = builder.mark();
 		builder.advanceLexer();
-		nextToken = builder.getTokenType();
 		returnString = builder.getTokenText();
-		nextTokenText = returnString;
 		rb.rollbackTo();
 		return returnString;
 	}
@@ -473,5 +466,6 @@ public class SilverStripeBaseParser extends SilverStripeObservable implements Ps
 		if (!blockLevelStack.isEmpty()) {
 			blockLevelStack.peek().hasContent = true;
 		}
+		clearChanged();
 	}
 }

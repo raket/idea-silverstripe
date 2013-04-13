@@ -188,6 +188,7 @@ SS_TRANSLATION_IDENTIFIER= [a-zA-Z]+\.[a-zA-Z]+
 
 <SS_IF_STATEMENT> {
     {SS_COMPARISON_OPERATOR}           { return SilverStripeTypes.SS_COMPARISON_OPERATOR; }
+    {NUMBER}                           { return SilverStripeTypes.NUMBER; }
     {SS_AND_OR_OPERATOR}               { return SilverStripeTypes.SS_AND_OR_OPERATOR; }
     {SS_STRING}                        { return SilverStripeTypes.SS_STRING; }
 	{VAR}                              { yypushstate(SS_VAR); return SilverStripeTypes.SS_VAR; }

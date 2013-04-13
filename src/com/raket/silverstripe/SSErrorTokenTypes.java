@@ -9,13 +9,6 @@ import java.util.Map;
 import static com.raket.silverstripe.SilverStripeBundle.message;
 import static com.raket.silverstripe.psi.SilverStripeTypes.*;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Marcus Dalgren
- * Date: 2013-03-24
- * Time: 16:15
- * To change this template use File | Settings | File Templates.
- */
 public class SSErrorTokenTypes {
 	public static Map<IElementType, String> ERROR_TOKEN_MESSAGES;
 	public static TokenSet ERROR_TOKENS;

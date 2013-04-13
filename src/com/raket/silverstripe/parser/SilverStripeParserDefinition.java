@@ -16,12 +16,19 @@ import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.TokenSet;
 import com.raket.silverstripe.SilverStripeLanguage;
 import com.raket.silverstripe.SilverStripeLexer;
+import com.raket.silverstripe.eventdispatcher.EventDispatcher;
+import com.raket.silverstripe.eventdispatcher.EventListenerCollection;
+import com.raket.silverstripe.parser.events.SilverStripeBlockEndEventListener;
+import com.raket.silverstripe.parser.events.SilverStripeBlockEventListener;
+import com.raket.silverstripe.parser.events.SilverStripeIfEventListener;
+import com.raket.silverstripe.parser.events.SilverStripeVariableEventListener;
 import com.raket.silverstripe.psi.SilverStripeFile;
 import com.raket.silverstripe.psi.SilverStripePsiElement;
 import com.raket.silverstripe.psi.SilverStripeTypes;
 import com.raket.silverstripe.psi.impl.SilverStripeIncludeImpl;
 import com.raket.silverstripe.psi.impl.SilverStripeRequireImpl;
 import com.raket.silverstripe.psi.impl.SilverStripeTranslationImpl;
+import com.raket.silverstripe.psi.impl.SilverStripeVariableImpl;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Reader;
@@ -81,6 +88,8 @@ public class SilverStripeParserDefinition implements ParserDefinition{
 			return new SilverStripeTranslationImpl(node);
 		} else if (type == SilverStripeTypes.SS_REQUIRE_STATEMENT) {
 			return new SilverStripeRequireImpl(node);
+		} else if (type == SilverStripeTypes.NAMED_VAR) {
+			return new SilverStripeVariableImpl(node);
 		}
         return new SilverStripePsiElement(node);
     }

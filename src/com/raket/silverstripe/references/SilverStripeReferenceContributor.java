@@ -8,7 +8,6 @@ import com.raket.silverstripe.SilverStripeLanguage;
 import com.raket.silverstripe.psi.SilverStripeTypes;
 import com.raket.silverstripe.psi.impl.SilverStripeIncludeImpl;
 import com.raket.silverstripe.psi.impl.SilverStripeRequireImpl;
-import com.raket.silverstripe.psi.impl.SilverStripeTranslationImpl;
 import com.raket.silverstripe.psi.references.SilverStripeIncludeReference;
 import org.jetbrains.annotations.NotNull;
 //import org.jetbrains.yaml.psi.impl.YAMLCompoundValueImpl;

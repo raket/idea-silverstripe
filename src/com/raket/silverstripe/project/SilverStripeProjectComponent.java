@@ -6,10 +6,14 @@ import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
+import com.raket.silverstripe.eventdispatcher.EventDispatcher;
+import com.raket.silverstripe.parser.events.SilverStripeBlockEndEventListener;
+import com.raket.silverstripe.parser.events.SilverStripeBlockEventListener;
+import com.raket.silverstripe.parser.events.SilverStripeIfEventListener;
+import com.raket.silverstripe.parser.events.SilverStripeVariableEventListener;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.io.IOException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -43,11 +47,27 @@ public class SilverStripeProjectComponent implements ProjectComponent {
 
 	public void projectOpened() {
 		// called when project is opened
+		EventDispatcher dispatcher = EventDispatcher.getInstance();
+		SilverStripeVariableEventListener varEventListener = new SilverStripeVariableEventListener();
+		SilverStripeIfEventListener ifEventListener = new SilverStripeIfEventListener();
+		SilverStripeBlockEndEventListener endEventListener = new SilverStripeBlockEndEventListener();
+		SilverStripeBlockEventListener blockEventListener = new SilverStripeBlockEventListener();
+		dispatcher.addListeners("before_consume",
+			varEventListener, ifEventListener, endEventListener
+		);
+		dispatcher.addListeners("after_consume",
+			varEventListener, ifEventListener, endEventListener
+		);
+		dispatcher.addListener("start_statement_complete", blockEventListener);
+		dispatcher.addListener("end_statement_complete", blockEventListener);
+
 		VirtualFile versionFile = LocalFileSystem.getInstance().findFileByPath(project.getBasePath()
 				+ File.separatorChar + "framework" + File.separatorChar + "silverstripe_version");
 		if (versionFile != null) {
 			this.versionFile = versionFile;
 		}
+
+
 	}
 
 	public void projectClosed() {
