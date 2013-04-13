@@ -7,15 +7,9 @@ import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 import com.intellij.util.containers.Stack;
 import com.raket.silverstripe.eventdispatcher.EventDispatcher;
-import com.raket.silverstripe.observers.SilverStripeObservable;
-import com.raket.silverstripe.parser.observers.SilverStripeBlockStatementObserver;
-import com.raket.silverstripe.parser.observers.SilverStripeIfObserver;
-import com.raket.silverstripe.parser.observers.SilverStripeVariableObserver;
-import com.raket.silverstripe.parser.observers.SilverStripeVariableStatementObserver;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
-import java.util.Vector;
 
 import static com.raket.silverstripe.SSErrorTokenTypes.ERROR_TOKEN_MESSAGES;
 import static com.raket.silverstripe.SilverStripeBundle.message;
@@ -29,7 +23,7 @@ import static com.raket.silverstripe.psi.SilverStripeTypes.*;
  * Time: 21:40
  */
 
-public class SilverStripeBaseParser extends SilverStripeObservable implements PsiParser {
+public class SilverStripeBaseParser implements PsiParser {
 	PsiBuilder builder;
 	EventDispatcher dispatcher = EventDispatcher.getInstance();
 	Stack<BlockLevel> blockLevelStack = new Stack<BlockLevel>();
@@ -313,7 +307,7 @@ public class SilverStripeBaseParser extends SilverStripeObservable implements Ps
 			TokenSet tokensToConsume = TokenSet.orSet(TokenSet.create(SS_BLOCK_START, nextToken), varTokens);
 			result = createBlock(builder, SS_CACHED_STATEMENT, tokensToConsume, SS_BLOCK_END);
 		} else if (nextToken == SS_SIMPLE_KEYWORD) {
-			IElementType[] tokensToConsume = {SS_BLOCK_START, nextToken, SS_BLOCK_VAR, SS_BLOCK_END};
+			IElementType[] tokensToConsume = {SS_BLOCK_START, nextToken, SS_BLOCK_END};
 			result = createBlock(builder, SS_BLOCK_SIMPLE_STATEMENT, tokensToConsume, TokenSet.create(SS_BLOCK_VAR));
 		} else if (nextToken == SS_BAD_BLOCK_STATEMENT) {
 			IElementType[] tokensToConsume = {SS_BLOCK_START, nextToken, SS_BLOCK_END};

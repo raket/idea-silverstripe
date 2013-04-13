@@ -9,7 +9,7 @@ import com.intellij.psi.PsiManager;
 import com.raket.silverstripe.eventdispatcher.EventDispatcher;
 import com.raket.silverstripe.parser.events.SilverStripeBlockEndEventListener;
 import com.raket.silverstripe.parser.events.SilverStripeBlockEventListener;
-import com.raket.silverstripe.parser.events.SilverStripeIfEventListener;
+import com.raket.silverstripe.parser.events.SilverStripeBlockLevelEventListener;
 import com.raket.silverstripe.parser.events.SilverStripeVariableEventListener;
 import org.jetbrains.annotations.NotNull;
 
@@ -49,17 +49,17 @@ public class SilverStripeProjectComponent implements ProjectComponent {
 		// called when project is opened
 		EventDispatcher dispatcher = EventDispatcher.getInstance();
 		SilverStripeVariableEventListener varEventListener = new SilverStripeVariableEventListener();
-		SilverStripeIfEventListener ifEventListener = new SilverStripeIfEventListener();
+		SilverStripeBlockEventListener ifEventListener = new SilverStripeBlockEventListener();
 		SilverStripeBlockEndEventListener endEventListener = new SilverStripeBlockEndEventListener();
-		SilverStripeBlockEventListener blockEventListener = new SilverStripeBlockEventListener();
+		SilverStripeBlockLevelEventListener blockEventListener = new SilverStripeBlockLevelEventListener();
 		dispatcher.addListeners("before_consume",
 			varEventListener, ifEventListener, endEventListener
 		);
 		dispatcher.addListeners("after_consume",
 			varEventListener, ifEventListener, endEventListener
 		);
-		dispatcher.addListener("start_statement_complete", blockEventListener);
-		dispatcher.addListener("end_statement_complete", blockEventListener);
+		dispatcher.addListener("block_start_statement_complete", blockEventListener);
+		dispatcher.addListener("block_end_statement_complete", blockEventListener);
 
 		VirtualFile versionFile = LocalFileSystem.getInstance().findFileByPath(project.getBasePath()
 				+ File.separatorChar + "framework" + File.separatorChar + "silverstripe_version");

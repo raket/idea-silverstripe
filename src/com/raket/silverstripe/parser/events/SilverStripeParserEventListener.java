@@ -28,6 +28,9 @@ public abstract class SilverStripeParserEventListener implements EventListener {
 	}
 
 	public void updateAfter(SilverStripeBaseParser parser, IElementType token) {
-
+		if (marking && parser.getBuilder().eof()) {
+			observerMarker.drop();
+			marking = false;
+		}
 	}
 }
