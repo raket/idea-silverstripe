@@ -1,7 +1,7 @@
 <idea-plugin version="2" url="https://github.com/raket/idea-silverstripe">
     <id>com.raket.silverstripe</id>
     <name>SilverStripe Template Language Support</name>
-    <version>0.7.2</version>
+    <version>0.7.3</version>
     <vendor logo="/icons/raket.png" email="marcus@raket.nu" url="https://github.com/raket/idea-silverstripe">Raket
         Webbyrå
     </vendor>
@@ -15,7 +15,12 @@
     <category>Custom Languages</category>
     <change-notes>
         <![CDATA[
-         <strong>Version 0.7.2</strong>
+        <strong>Version 0.7.3</strong>
+        <ul>
+            <li><b>Features</b></li>
+            <li>Total parser rewrite</li>
+        </ul>
+        <strong>Version 0.7.2</strong>
         <ul>
             <li><b>Features</b></li>
             <li>Project component for tracking SilverStripe version</li>
@@ -176,7 +181,6 @@
         <lang.foldingBuilder language="SilverStripe"
                              implementationClass="com.raket.silverstripe.editor.folding.SilverStripeFoldingBuilder"/>
         <typedHandler implementation="com.raket.silverstripe.editor.actions.SilverStripeTypedHandler"/>
-        <enterHandlerDelegate implementation="com.raket.silverstripe.editor.actions.SilverStripeEnterHandler"/>
         <spellchecker.support language="SilverStripe"
                               implementationClass="com.intellij.spellchecker.tokenizer.SpellcheckingStrategy"/>
         <completion.contributor language="SilverStripe"
@@ -202,6 +206,7 @@
         <editorHighlighterProvider filetype="SilverStripe"
                                    implementationClass="com.raket.silverstripe.editor.highlighting.SilverStripeEditorHighlighterProvider"/>
         <!--
+        <enterHandlerDelegate implementation="com.raket.silverstripe.editor.actions.SilverStripeEnterHandler"/>
         <lang.syntaxHighlighterFactory key="SilverStripe" implementationClass="com.raket.silverstripe.editor.highlighting.SilverStripeSyntaxHighlighterFactory"/>
          <codeInsight.lineMarkerProvider language="SilverStripe"
                                          implementationClass="com.raket.silverstripe.editor.lines.SilverStripeLineMarkerProvider"/>

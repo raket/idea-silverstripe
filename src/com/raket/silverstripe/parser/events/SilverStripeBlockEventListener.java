@@ -1,6 +1,5 @@
 package com.raket.silverstripe.parser.events;
 
-import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 import com.raket.silverstripe.parser.SilverStripeBaseParser;
@@ -19,7 +18,7 @@ public class SilverStripeBlockEventListener extends SilverStripeStatementEventLi
 			nextToken = parser.getNextToken();
 			localStartTokens = STATEMENT_MAP.get(nextToken);
 			if (localStartTokens != null) {
-				PsiBuilder builder = parser.getBuilder();
+				builder = parser.getBuilder();
 				tokenText = parser.getNextTokenText();
 				observerMarker = builder.mark();
 				marking = true;
@@ -34,9 +33,9 @@ public class SilverStripeBlockEventListener extends SilverStripeStatementEventLi
 			observerMarker.done(blockType);
 
 			if (BLOCK_STATEMENTS.contains(blockType))
-				dispatcher.triggerEvent("block_start_statement_complete", false, observerMarker, tokenText);
+				dispatcher.triggerEvent("block_start_statement_complete", false, this, tokenText);
 			else if (blockType.equals(SS_ELSE_IF_STATEMENT) || blockType.equals(SS_ELSE_STATEMENT))
-				dispatcher.triggerEvent("if_continue_statement_complete", false, observerMarker, tokenText);
+				dispatcher.triggerEvent("if_continue_statement_complete", false, this, tokenText);
 
 			marking = false;
 		}

@@ -49,17 +49,20 @@ public class SilverStripeProjectComponent implements ProjectComponent {
 		// called when project is opened
 		EventDispatcher dispatcher = EventDispatcher.getInstance();
 		SilverStripeVariableEventListener varEventListener = new SilverStripeVariableEventListener();
-		SilverStripeBlockEventListener ifEventListener = new SilverStripeBlockEventListener();
+		SilverStripeBlockEventListener blockEventListener = new SilverStripeBlockEventListener();
 		SilverStripeBlockEndEventListener endEventListener = new SilverStripeBlockEndEventListener();
-		SilverStripeBlockLevelEventListener blockEventListener = new SilverStripeBlockLevelEventListener();
+		SilverStripeBlockLevelEventListener blockLevelEventListener = new SilverStripeBlockLevelEventListener();
+		//SilverStripeStatementsEventListener statementsEventListener = new SilverStripeStatementsEventListener();
 		dispatcher.addListeners("before_consume",
-			varEventListener, ifEventListener, endEventListener
+			varEventListener, blockEventListener, endEventListener
 		);
 		dispatcher.addListeners("after_consume",
-			varEventListener, ifEventListener, endEventListener
+			varEventListener, blockEventListener, endEventListener
 		);
-		dispatcher.addListener("block_start_statement_complete", blockEventListener);
-		dispatcher.addListener("block_end_statement_complete", blockEventListener);
+		dispatcher.addListeners("block_start_statement_complete", blockLevelEventListener);
+		dispatcher.addListeners("if_continue_statement_complete", blockLevelEventListener);
+		dispatcher.addListeners("block_end_statement_complete",  blockLevelEventListener);
+		dispatcher.addListeners("builder_eof", blockLevelEventListener);
 
 		VirtualFile versionFile = LocalFileSystem.getInstance().findFileByPath(project.getBasePath()
 				+ File.separatorChar + "framework" + File.separatorChar + "silverstripe_version");

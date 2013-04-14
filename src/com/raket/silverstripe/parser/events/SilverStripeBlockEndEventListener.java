@@ -1,6 +1,5 @@
 package com.raket.silverstripe.parser.events;
 
-import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 import com.raket.silverstripe.parser.SilverStripeBaseParser;
 
@@ -11,7 +10,7 @@ public class SilverStripeBlockEndEventListener extends SilverStripeStatementEven
 
 	@Override
 	public void updateBefore(SilverStripeBaseParser parser, IElementType token) {
-		PsiBuilder builder = parser.getBuilder();
+		builder = parser.getBuilder();
 		currentToken = token;
 		nextToken = parser.getNextToken();
 
@@ -29,7 +28,7 @@ public class SilverStripeBlockEndEventListener extends SilverStripeStatementEven
 	public void updateAfter(SilverStripeBaseParser parser, IElementType token) {
 		if (marking && currentToken.equals(SS_BLOCK_END)) {
 			observerMarker.done(SS_BLOCK_END_STATEMENT);
-			dispatcher.triggerEvent("block_end_statement_complete", false, observerMarker, tokenText);
+			dispatcher.triggerEvent("block_end_statement_complete", false, this, tokenText);
 			marking = false;
 		}
 		if (marking && !currentToken.equals(endStatementTokens[statementPosition])) {
