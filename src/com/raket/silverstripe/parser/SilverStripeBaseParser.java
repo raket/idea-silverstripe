@@ -23,18 +23,17 @@ import static com.raket.silverstripe.psi.SilverStripeTypes.*;
 public class SilverStripeBaseParser implements PsiParser {
 	private IElementType nextToken;
 	private String nextTokenText;
-	private Stack<Pair<PsiBuilder.Marker, String>> blockStack = new Stack<Pair<PsiBuilder.Marker, String>>();
-	private Stack<PsiBuilder.Marker> statementsStack = new Stack<PsiBuilder.Marker>();
-	private boolean markingVar;
+	private final Stack<Pair<PsiBuilder.Marker, String>> blockStack = new Stack<Pair<PsiBuilder.Marker, String>>();
+	private final Stack<PsiBuilder.Marker> statementsStack = new Stack<PsiBuilder.Marker>();
 	private PsiBuilder.Marker varMarker;
-	private boolean blockMarking;
-	private boolean markingBlock;
 	private PsiBuilder.Marker blockMarker;
+	private PsiBuilder.Marker commentMarker;
+	private boolean markingVar;
+	private boolean markingBlock;
+	private boolean markingComment;
 	private String blockTokenText;
 	private IElementType blockType;
 	private TokenSet blockStartTokens;
-	private PsiBuilder.Marker commentMarker;
-	private boolean markingComment;
 
 	private void getNextTokenValue(PsiBuilder builder) {
 		PsiBuilder.Marker rb = builder.mark();
@@ -44,14 +43,14 @@ public class SilverStripeBaseParser implements PsiParser {
 		rb.rollbackTo();
 	}
 
-	public IElementType getNextToken(PsiBuilder builder) {
+	IElementType getNextToken(PsiBuilder builder) {
 		if (nextToken == null) {
 			getNextTokenValue(builder);
 		}
 		return  nextToken;
 	}
 
-	public String getNextTokenText(PsiBuilder builder) {
+	String getNextTokenText(PsiBuilder builder) {
 		if (nextTokenText == null) {
 			getNextTokenValue(builder);
 		}
@@ -83,16 +82,13 @@ public class SilverStripeBaseParser implements PsiParser {
 
 		while (!builder.eof()) {
 			type = builder.getTokenType();
-			//dispatcher.triggerEvent("before_consume", false, this, type);
 			beforeConsume(builder, type);
 			builder.advanceLexer();
-			//dispatcher.triggerEvent("after_consume", false, this, type);
 			afterConsume(builder, type);
 			nextToken = null;
 			nextTokenText = null;
 		}
 		eofCleanup();
-		//dispatcher.triggerEvent("builder_eof", false, this, null);
 	}
 
 	private void beforeConsume(PsiBuilder builder, IElementType type) {
@@ -105,7 +101,7 @@ public class SilverStripeBaseParser implements PsiParser {
 			markingComment = true;
 		}
 		
-		if (type.equals(SS_BLOCK_START) && !blockMarking) {
+		if (type.equals(SS_BLOCK_START) && !markingBlock) {
 			nextToken = getNextToken(builder);
 			blockStartTokens = STATEMENT_MAP.get(nextToken);
 			blockType = BLOCK_TYPE_MAP.get(nextToken);
