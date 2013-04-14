@@ -181,6 +181,7 @@
         <lang.foldingBuilder language="SilverStripe"
                              implementationClass="com.raket.silverstripe.editor.folding.SilverStripeFoldingBuilder"/>
         <typedHandler implementation="com.raket.silverstripe.editor.actions.SilverStripeTypedHandler"/>
+        <enterHandlerDelegate implementation="com.raket.silverstripe.editor.actions.SilverStripeEnterHandler"/>
         <spellchecker.support language="SilverStripe"
                               implementationClass="com.intellij.spellchecker.tokenizer.SpellcheckingStrategy"/>
         <completion.contributor language="SilverStripe"
@@ -206,7 +207,6 @@
         <editorHighlighterProvider filetype="SilverStripe"
                                    implementationClass="com.raket.silverstripe.editor.highlighting.SilverStripeEditorHighlighterProvider"/>
         <!--
-        <enterHandlerDelegate implementation="com.raket.silverstripe.editor.actions.SilverStripeEnterHandler"/>
         <lang.syntaxHighlighterFactory key="SilverStripe" implementationClass="com.raket.silverstripe.editor.highlighting.SilverStripeSyntaxHighlighterFactory"/>
          <codeInsight.lineMarkerProvider language="SilverStripe"
                                          implementationClass="com.raket.silverstripe.editor.lines.SilverStripeLineMarkerProvider"/>

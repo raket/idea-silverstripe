@@ -1,4 +1,4 @@
-package com.raket.silverstripe.parser.events;
+package com.raket.silverstripe.parser;
 
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
@@ -6,10 +6,7 @@ import com.intellij.util.containers.HashMap;
 
 import static com.raket.silverstripe.psi.SilverStripeTypes.*;
 
-
-public class SilverStripeStatementEventListener extends SilverStripeParserEventListener {
-	IElementType nextToken;
-	String tokenText;
+public class SilverStripeParserStatements {
 	static TokenSet string = TokenSet.create(SS_DOUBLE_LEFT, SS_DOUBLE_RIGHT, SS_SINGLE_LEFT, SS_SINGLE_RIGHT, SS_STRING);
 	static TokenSet varTokens = TokenSet.create(SS_VAR, DOT, COMMA, LEFT_PAREN, RIGHT_PAREN, NUMBER, SS_STRING, SS_IDENTIFIER);
 	static TokenSet varStatementTokens = TokenSet.orSet(TokenSet.create(SS_VAR_START_DELIMITER), varTokens);
@@ -29,7 +26,7 @@ public class SilverStripeStatementEventListener extends SilverStripeParserEventL
 		LEFT_PAREN, RIGHT_PAREN, SS_STRING);
 	static TokenSet cachedTokens = TokenSet.orSet(TokenSet.create(SS_BLOCK_START, SS_CACHED_KEYWORD), varTokens);
 	static TokenSet translationTokens = TokenSet.orSet(TokenSet.create(SS_BLOCK_START, SS_TRANSLATION_KEYWORD, SS_TRANSLATION_IDENTIFIER,
-	SS_COMPARISON_OPERATOR, SS_VAR_START_DELIMITER, SS_VAR_END_DELIMITER), varTokens, string);
+		SS_COMPARISON_OPERATOR, SS_VAR_START_DELIMITER, SS_VAR_END_DELIMITER), varTokens, string);
 	static TokenSet simpleTokens = TokenSet.create(SS_BLOCK_START, SS_SIMPLE_KEYWORD, SS_BLOCK_END);
 	static TokenSet badBlockTokens = TokenSet.create(SS_BLOCK_START, SS_BAD_BLOCK_STATEMENT, SS_BLOCK_END);
 

@@ -6,22 +6,11 @@ import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
-import com.raket.silverstripe.eventdispatcher.EventDispatcher;
-import com.raket.silverstripe.parser.events.SilverStripeBlockEndEventListener;
-import com.raket.silverstripe.parser.events.SilverStripeBlockEventListener;
-import com.raket.silverstripe.parser.events.SilverStripeBlockLevelEventListener;
-import com.raket.silverstripe.parser.events.SilverStripeVariableEventListener;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
-/**
- * Created with IntelliJ IDEA.
- * User: marcus
- * Date: 2013-04-12
- * Time: 15:10
- * To change this template use File | Settings | File Templates.
- */
+
 public class SilverStripeProjectComponent implements ProjectComponent {
 	private String silverStripeVersion;
 	private VirtualFile versionFile;
@@ -47,23 +36,6 @@ public class SilverStripeProjectComponent implements ProjectComponent {
 
 	public void projectOpened() {
 		// called when project is opened
-		EventDispatcher dispatcher = EventDispatcher.getInstance();
-		SilverStripeVariableEventListener varEventListener = new SilverStripeVariableEventListener();
-		SilverStripeBlockEventListener blockEventListener = new SilverStripeBlockEventListener();
-		SilverStripeBlockEndEventListener endEventListener = new SilverStripeBlockEndEventListener();
-		SilverStripeBlockLevelEventListener blockLevelEventListener = new SilverStripeBlockLevelEventListener();
-		//SilverStripeStatementsEventListener statementsEventListener = new SilverStripeStatementsEventListener();
-		dispatcher.addListeners("before_consume",
-			varEventListener, blockEventListener, endEventListener
-		);
-		dispatcher.addListeners("after_consume",
-			varEventListener, blockEventListener, endEventListener
-		);
-		dispatcher.addListeners("block_start_statement_complete", blockLevelEventListener);
-		dispatcher.addListeners("if_continue_statement_complete", blockLevelEventListener);
-		dispatcher.addListeners("block_end_statement_complete",  blockLevelEventListener);
-		dispatcher.addListeners("builder_eof", blockLevelEventListener);
-
 		VirtualFile versionFile = LocalFileSystem.getInstance().findFileByPath(project.getBasePath()
 				+ File.separatorChar + "framework" + File.separatorChar + "silverstripe_version");
 		if (versionFile != null) {

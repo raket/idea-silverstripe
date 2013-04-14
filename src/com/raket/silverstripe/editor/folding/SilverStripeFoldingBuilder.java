@@ -38,24 +38,27 @@ public class SilverStripeFoldingBuilder implements FoldingBuilder, DumbAware {
 		}
 
 		if (SS_BLOCK_STATEMENT == node.getElementType() || SS_COMMENT_STATEMENT == node.getElementType()) {
-			ASTNode endOpenBlockStache = node.getFirstChildNode();
-			ASTNode endCloseBlockStache = node.getLastChildNode();
+			ASTNode startNode = node.getFirstChildNode();
+			ASTNode endNode = node.getLastChildNode();
 
 			if (SS_BLOCK_STATEMENT == node.getElementType()) {
-				endOpenBlockStache = endOpenBlockStache.getLastChildNode();
-				endCloseBlockStache = endCloseBlockStache.getLastChildNode();
+				startNode = startNode.getLastChildNode();
+				endNode = endNode.getLastChildNode();
 			}
 
 			// if we've got a well formed block with the open and close elems we need, define a region to fold
-			if (endOpenBlockStache != null && endCloseBlockStache != null) {
+			if (startNode != null && endNode != null) {
 				int endOfFirstOpenStacheLine
 						= document.getLineEndOffset(document.getLineNumber(node.getTextRange().getStartOffset()));
 
 				// we set the start of the text we'll fold to be just before the close braces of the open stache,
 				//     or, if the open stache spans multiple lines, to the end of the first line
-				int foldingRangeStartOffset = Math.min(endOpenBlockStache.getTextRange().getStartOffset(), endOfFirstOpenStacheLine);
+				int foldingRangeStartOffset = Math.min(startNode.getTextRange().getStartOffset(), endOfFirstOpenStacheLine);
+				if (node.getElementType().equals(SS_COMMENT_STATEMENT)) {
+					foldingRangeStartOffset = startNode.getTextRange().getStartOffset()+startNode.getTextLength();
+				}
 				// we set the end of the text we'll fold to be just before the final close braces in this block
-				int foldingRangeEndOffset = endCloseBlockStache.getTextRange().getStartOffset();
+				int foldingRangeEndOffset = endNode.getTextRange().getStartOffset();
 
 				TextRange range = new TextRange(foldingRangeStartOffset, foldingRangeEndOffset);
 
