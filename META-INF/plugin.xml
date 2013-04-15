@@ -1,7 +1,7 @@
 <idea-plugin version="2" url="https://github.com/raket/idea-silverstripe">
     <id>com.raket.silverstripe</id>
     <name>SilverStripe Template Language Support</name>
-    <version>0.7.3</version>
+    <version>0.8.1</version>
     <vendor logo="/icons/raket.png" email="marcus@raket.nu" url="https://github.com/raket/idea-silverstripe">Raket
         Webbyrå
     </vendor>
@@ -15,7 +15,7 @@
     <category>Custom Languages</category>
     <change-notes>
         <![CDATA[
-        <strong>Version 0.7.3</strong>
+        <strong>Version 0.8.1</strong>
         <ul>
             <li><b>Features</b></li>
             <li>Total parser rewrite</li>
