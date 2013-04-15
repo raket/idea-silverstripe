@@ -19,10 +19,7 @@ import com.raket.silverstripe.SilverStripeLexer;
 import com.raket.silverstripe.psi.SilverStripeFile;
 import com.raket.silverstripe.psi.SilverStripePsiElement;
 import com.raket.silverstripe.psi.SilverStripeTypes;
-import com.raket.silverstripe.psi.impl.SilverStripeIncludeImpl;
-import com.raket.silverstripe.psi.impl.SilverStripeRequireImpl;
-import com.raket.silverstripe.psi.impl.SilverStripeTranslationImpl;
-import com.raket.silverstripe.psi.impl.SilverStripeVariableImpl;
+import com.raket.silverstripe.psi.impl.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Reader;
@@ -84,6 +81,8 @@ public class SilverStripeParserDefinition implements ParserDefinition{
 			return new SilverStripeRequireImpl(node);
 		} else if (type == SilverStripeTypes.NAMED_VAR) {
 			return new SilverStripeVariableImpl(node);
+		} else if (type == SilverStripeTypes.SS_FIELD_REFERENCE) {
+			return new SilverStripeFieldReferenceImpl(node);
 		}
         return new SilverStripePsiElement(node);
     }

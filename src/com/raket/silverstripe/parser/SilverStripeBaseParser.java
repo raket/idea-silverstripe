@@ -34,6 +34,7 @@ public class SilverStripeBaseParser implements PsiParser {
 	private String blockTokenText;
 	private IElementType blockType;
 	private TokenSet blockStartTokens;
+	private PsiBuilder.Marker identifierMarker;
 
 	private void getNextTokenValue(PsiBuilder builder) {
 		PsiBuilder.Marker rb = builder.mark();
@@ -117,6 +118,15 @@ public class SilverStripeBaseParser implements PsiParser {
 		if (type.equals(SS_VAR) && markingVar) {
 			varMarker.done(NAMED_VAR);
 			markingVar = false;
+			identifierMarker = null;
+		}
+
+		if (type.equals(SS_IDENTIFIER)) {
+			if (identifierMarker == null)
+				identifierMarker = varMarker.precede();
+			else
+				identifierMarker = identifierMarker.precede();
+			identifierMarker.done(SS_FIELD_REFERENCE);
 		}
 
 		if (type.equals(SS_COMMENT_END)) {

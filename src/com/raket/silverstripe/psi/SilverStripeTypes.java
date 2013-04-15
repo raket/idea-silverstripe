@@ -23,6 +23,7 @@ public interface SilverStripeTypes {
 	IElementType SS_CACHED_STATEMENT = new SilverStripeElementType("Cache statement");
 	IElementType SS_REQUIRE_STATEMENT = new SilverStripeElementType("Require statement");
 	IElementType NAMED_VAR = new SilverStripeElementType("Variable");
+	IElementType SS_FIELD_REFERENCE = new SilverStripeElementType("Field Reference");
 
 
 
