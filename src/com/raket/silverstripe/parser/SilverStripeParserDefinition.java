@@ -81,7 +81,9 @@ public class SilverStripeParserDefinition implements ParserDefinition{
 			return new SilverStripeTranslationImpl(node);
 		} else if (type == SilverStripeTypes.SS_REQUIRE_STATEMENT) {
 			return new SilverStripeRequireImpl(node);
-		}
+		} else if (type == SilverStripeTypes.NAMED_VAR) {
+	        return new SilverStripeVariableImpl(node);
+        }
         return new SilverStripePsiElement(node);
     }
 }
