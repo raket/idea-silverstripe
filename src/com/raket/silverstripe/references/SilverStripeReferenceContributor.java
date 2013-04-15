@@ -8,6 +8,7 @@ import com.raket.silverstripe.SilverStripeLanguage;
 import com.raket.silverstripe.psi.SilverStripeTypes;
 import com.raket.silverstripe.psi.impl.SilverStripeIncludeImpl;
 import com.raket.silverstripe.psi.impl.SilverStripeRequireImpl;
+import com.raket.silverstripe.psi.impl.SilverStripeVariableImpl;
 import com.raket.silverstripe.psi.references.SilverStripeIncludeReference;
 import org.jetbrains.annotations.NotNull;
 //import org.jetbrains.yaml.psi.impl.YAMLCompoundValueImpl;
@@ -30,10 +31,14 @@ public class SilverStripeReferenceContributor extends PsiReferenceContributor {
 			});
 		PsiElementPattern.Capture<SilverStripeRequireImpl> psiElementCapture = PlatformPatterns.psiElement(
 			SilverStripeRequireImpl.class).withLanguage(SilverStripeLanguage.INSTANCE);
-
 		registrar.registerReferenceProvider(
 			psiElementCapture,
-			new SilverStripeRequirePsiReferenceProvider(),
-			PsiReferenceRegistrar.DEFAULT_PRIORITY);
+			new SilverStripeRequirePsiReferenceProvider());
+
+		PsiElementPattern.Capture<SilverStripeVariableImpl> variableCapture = PlatformPatterns.psiElement(
+			SilverStripeVariableImpl.class).withLanguage(SilverStripeLanguage.INSTANCE);
+		registrar.registerReferenceProvider(
+			variableCapture,
+			new SilverStripeVariablePsiReferenceProvider());
 	}
 }
