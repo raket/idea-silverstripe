@@ -8,13 +8,6 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Marcus Dalgren
- * Date: 2013-04-12
- * Time: 20:15
- * To change this template use File | Settings | File Templates.
- */
 public class SilverStripeVariableImpl extends SilverStripeNamedElementImpl implements SilverStripeNamedElement {
 
 	public SilverStripeVariableImpl(@NotNull ASTNode node) {
