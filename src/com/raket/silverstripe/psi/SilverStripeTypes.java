@@ -22,8 +22,7 @@ public interface SilverStripeTypes {
 	IElementType SS_INCLUDE_STATEMENT = new SilverStripeElementType("SS_INCLUDE_STATEMENT");
 	IElementType SS_CACHED_STATEMENT = new SilverStripeElementType("Cache statement");
 	IElementType SS_REQUIRE_STATEMENT = new SilverStripeElementType("Require statement");
-
-
+	IElementType NAMED_VAR = new SilverStripeElementType("Variable");
 
 	IElementType COMMENT = new SilverStripeTokenType("Comment");
 	IElementType CONTENT = new SilverStripeTokenType("Content");

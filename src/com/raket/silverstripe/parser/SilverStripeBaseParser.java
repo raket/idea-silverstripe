@@ -472,6 +472,11 @@ public class SilverStripeBaseParser implements PsiParser {
 			builder.advanceLexer();
 			errorMarker.error(ERROR_TOKEN_MESSAGES.get(token));
 		}
+		if (token.equals(SS_VAR)) {
+			PsiBuilder.Marker varMarker = builder.mark();
+			builder.advanceLexer();
+			varMarker.done(NAMED_VAR);
+		}
 		else {
 //			PsiBuilder.Marker tokenMarker = builder.mark();
 

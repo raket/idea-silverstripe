@@ -95,27 +95,17 @@ public class SilverStripeFileUtil {
 		List<SilverStripeTranslationImpl> result = new ArrayList<SilverStripeTranslationImpl>();
 		Collection<SilverStripeFile> virtualFiles = findFiles(project);
 		for (SilverStripeFile virtualFile : virtualFiles) {
-			ASTNode[] fileChildren = virtualFile.getNode().getChildren(TokenSet.create(SilverStripeTypes.SS_STATEMENTS));
-			String fileName = virtualFile.getName();
-			for (int i = 0; i < fileChildren.length; i++) {
-
-			}
-
 			PsiElement[] translations = PsiTreeUtil.collectElements(virtualFile, new PsiElementFilter() {
 				@Override
 				public boolean isAccepted(PsiElement element) {
-					if (element instanceof  SilverStripeTranslationImpl)
-						return true;  //To change body of implemented methods use File | Settings | File Templates.
-					return false;
+					return element instanceof SilverStripeTranslationImpl;
 				}
 			});
-			if (translations != null) {
-				for (PsiElement translation : translations) {
-					SilverStripeTranslationImpl realTranslation = (SilverStripeTranslationImpl) translation;
-					String translationName = realTranslation.getName();
-					if (key.equals(realTranslation.getName())) {
-						result.add(realTranslation);
-					}
+
+			for (PsiElement translation : translations) {
+				SilverStripeTranslationImpl realTranslation = (SilverStripeTranslationImpl) translation;
+				if (key.equals(realTranslation.getName())) {
+					result.add(realTranslation);
 				}
 			}
 		}

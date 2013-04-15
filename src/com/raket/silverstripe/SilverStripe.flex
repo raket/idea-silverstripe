@@ -232,6 +232,7 @@ SS_TRANSLATION_IDENTIFIER= [a-zA-Z]+\.[a-zA-Z]+
 
 <SS_COMMENT> {
 	~"--%>"  { yypopstate(); yypushback(4); return SilverStripeTypes.COMMENT; }
+	!([^]*"--%>"[^]*) { return SilverStripeTypes.COMMENT; }
 }
 
 <SS_CACHED_STATEMENT> {
