@@ -20,6 +20,12 @@
             <li><b>Features</b></li>
             <li>Total parser rewrite</li>
         </ul>
+        <strong>Version 0.8</strong>
+        <ul>
+            <li><b>Features</b></li>
+            <li>Variables are named elements</li>
+            <li>Variable resolves. Ctrl+click will now try to resolve to a method with that name or a method prefixed by get.</li>
+        </ul>
         <strong>Version 0.7.2</strong>
         <ul>
             <li><b>Features</b></li>
