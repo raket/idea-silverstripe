@@ -22,6 +22,7 @@ import com.raket.silverstripe.psi.SilverStripeTypes;
 import com.raket.silverstripe.psi.impl.SilverStripeIncludeImpl;
 import com.raket.silverstripe.psi.impl.SilverStripeRequireImpl;
 import com.raket.silverstripe.psi.impl.SilverStripeTranslationImpl;
+import com.raket.silverstripe.psi.impl.SilverStripeVariableImpl;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Reader;

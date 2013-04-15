@@ -1,24 +1,18 @@
 package com.raket.silverstripe.file;
 
-import com.intellij.extapi.psi.PsiFileBase;
-import com.intellij.lang.ASTNode;
 import com.intellij.openapi.fileTypes.FileType;
-import com.intellij.openapi.fileTypes.UnknownFileType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.tree.TokenSet;
 import com.intellij.psi.util.*;
 import com.intellij.util.indexing.FileBasedIndex;
 import com.raket.silverstripe.psi.SilverStripeFile;
-import com.raket.silverstripe.psi.SilverStripeTypes;
 import com.raket.silverstripe.psi.impl.SilverStripeTranslationImpl;
 import org.jetbrains.annotations.Nullable;
 

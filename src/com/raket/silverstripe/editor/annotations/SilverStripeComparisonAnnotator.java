@@ -1,19 +1,14 @@
 package com.raket.silverstripe.editor.annotations;
 
-import com.intellij.lang.annotation.Annotation;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.raket.silverstripe.file.SilverStripeFileUtil;
 import com.raket.silverstripe.project.SilverStripeProjectComponent;
 import com.raket.silverstripe.psi.SilverStripeTypes;
 import org.jetbrains.annotations.NotNull;
-
-import java.io.File;
 
 import static com.raket.silverstripe.SilverStripeBundle.message;
 

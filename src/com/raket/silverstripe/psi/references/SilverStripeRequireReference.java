@@ -1,36 +1,21 @@
 package com.raket.silverstripe.psi.references;
 
-import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.css.CssFileType;
-import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.util.PsiTreeUtil;
 import com.raket.silverstripe.file.SilverStripeFileUtil;
-import com.raket.silverstripe.psi.SilverStripeFile;
 import com.raket.silverstripe.psi.SilverStripeTypes;
-import com.raket.silverstripe.psi.impl.SilverStripeTranslationImpl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.yaml.YAMLElementTypes;
-import org.jetbrains.yaml.psi.impl.YAMLKeyValueImpl;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Marcus Dalgren
- * Date: 2013-04-06
- * Time: 03:19
- * To change this template use File | Settings | File Templates.
- */
 public class SilverStripeRequireReference extends PsiReferenceBase<PsiElement> implements PsiPolyVariantReference {
 	private String key = null;
 

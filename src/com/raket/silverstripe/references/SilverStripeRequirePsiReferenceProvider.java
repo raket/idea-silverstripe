@@ -5,19 +5,10 @@ import com.intellij.psi.PsiReference;
 import com.intellij.psi.PsiReferenceProvider;
 import com.intellij.util.ProcessingContext;
 import com.raket.silverstripe.psi.impl.SilverStripeRequireImpl;
-import com.raket.silverstripe.psi.impl.SilverStripeTranslationImpl;
 import com.raket.silverstripe.psi.references.SilverStripeRequireReference;
-import com.raket.silverstripe.psi.references.SilverStripeYamlReference;
 import org.jetbrains.annotations.NotNull;
 //import org.jetbrains.yaml.psi.impl.YAMLCompoundValueImpl;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Marcus Dalgren
- * Date: 2013-04-06
- * Time: 02:47
- * To change this template use File | Settings | File Templates.
- */
 public class SilverStripeRequirePsiReferenceProvider extends PsiReferenceProvider {
 	@NotNull
 	@Override

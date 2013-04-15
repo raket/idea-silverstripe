@@ -4,12 +4,12 @@ import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.io.IOException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,6 +23,7 @@ public class SilverStripeProjectComponent implements ProjectComponent {
 	private VirtualFile versionFile;
 	private PsiFile psiVersionFile;
 	private Project project;
+	private PsiElement[] phpMethods = PsiElement.EMPTY_ARRAY;
 
 	public SilverStripeProjectComponent(Project project) {
 		this.project = project;
@@ -43,11 +44,14 @@ public class SilverStripeProjectComponent implements ProjectComponent {
 
 	public void projectOpened() {
 		// called when project is opened
+
 		VirtualFile versionFile = LocalFileSystem.getInstance().findFileByPath(project.getBasePath()
 				+ File.separatorChar + "framework" + File.separatorChar + "silverstripe_version");
 		if (versionFile != null) {
 			this.versionFile = versionFile;
 		}
+
+
 	}
 
 	public void projectClosed() {
