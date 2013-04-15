@@ -6,6 +6,7 @@ import com.intellij.psi.*;
 import com.intellij.util.ProcessingContext;
 import com.raket.silverstripe.SilverStripeLanguage;
 import com.raket.silverstripe.psi.SilverStripeTypes;
+import com.raket.silverstripe.psi.impl.SilverStripeFieldReferenceImpl;
 import com.raket.silverstripe.psi.impl.SilverStripeIncludeImpl;
 import com.raket.silverstripe.psi.impl.SilverStripeRequireImpl;
 import com.raket.silverstripe.psi.impl.SilverStripeVariableImpl;
@@ -28,7 +29,9 @@ public class SilverStripeReferenceContributor extends PsiReferenceContributor {
 					}
 					return new PsiReference[0];
 				}
-			});
+			}
+		);
+
 		PsiElementPattern.Capture<SilverStripeRequireImpl> psiElementCapture = PlatformPatterns.psiElement(
 			SilverStripeRequireImpl.class).withLanguage(SilverStripeLanguage.INSTANCE);
 		registrar.registerReferenceProvider(
@@ -39,6 +42,12 @@ public class SilverStripeReferenceContributor extends PsiReferenceContributor {
 			SilverStripeVariableImpl.class).withLanguage(SilverStripeLanguage.INSTANCE);
 		registrar.registerReferenceProvider(
 			variableCapture,
+			new SilverStripeVariablePsiReferenceProvider());
+
+		PsiElementPattern.Capture<SilverStripeFieldReferenceImpl> fieldCapture = PlatformPatterns.psiElement(
+			SilverStripeFieldReferenceImpl.class).withLanguage(SilverStripeLanguage.INSTANCE);
+		registrar.registerReferenceProvider(
+			fieldCapture,
 			new SilverStripeVariablePsiReferenceProvider());
 	}
 }
