@@ -3,15 +3,10 @@ package com.raket.silverstripe.psi.references;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
-import com.jetbrains.php.PhpIndex;
-import com.jetbrains.php.lang.psi.elements.Method;
-import com.jetbrains.php.lang.psi.elements.PhpClass;
 import com.raket.silverstripe.psi.SilverStripePsiUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class SilverStripeFieldReference extends PsiReferenceBase<PsiElement> implements PsiPolyVariantReference {

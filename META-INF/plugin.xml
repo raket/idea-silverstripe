@@ -204,6 +204,8 @@
                    implementationClass="com.raket.silverstripe.editor.annotations.SilverStripeVariableAnnotator"/>
          <annotator language="SilverStripe"
                    implementationClass="com.raket.silverstripe.editor.annotations.SilverStripeComparisonAnnotator"/>
+        <annotator language="SilverStripe"
+                   implementationClass="com.raket.silverstripe.editor.annotations.SilverStripeBlockAnnotator"/>
         <lang.commenter language="SilverStripe"
                         implementationClass="com.raket.silverstripe.editor.comments.SilverStripeCommenter"/>
         <spellchecker.support language="SilverStripe"

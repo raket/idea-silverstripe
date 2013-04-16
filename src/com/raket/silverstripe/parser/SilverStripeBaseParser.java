@@ -162,8 +162,9 @@ public class SilverStripeBaseParser implements PsiParser {
 						blockStack.pop();
 					}
 					else {
+						blockStack.pop();
 						//blockLevel.getFirst().error(message("ss.parsing.unclosed.block", blockLevel.getSecond()));
-						blockMarker.precede().error(message("ss.parsing.unexpected.end.statement.expected", "end_"+blockLevel.getSecond()));
+						//blockMarker.precede().error(message("ss.parsing.unexpected.end.statement.expected", "end_"+blockLevel.getSecond()));
 						if (statementMarker != null)
 							statementMarker.drop();
 					}
