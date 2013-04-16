@@ -63,7 +63,7 @@ public class SilverStripeVariableReference extends PsiReferenceBase<PsiElement> 
 			if (phpMethod != null) {
 				results.add(new PsiElementResolveResult(phpMethod));
 			}
-			PsiElement[] arraySearches = {
+/*			PsiElement[] arraySearches = {
 				phpClass.findOwnFieldByName("db", false),
 				phpClass.findOwnFieldByName("has_one", false),
 				phpClass.findOwnFieldByName("has_many", false),
@@ -86,7 +86,7 @@ public class SilverStripeVariableReference extends PsiReferenceBase<PsiElement> 
 						}
 					}
 				}
-			}
+			}*/
 		}
 
 		return results.toArray(new ResolveResult[results.size()]);
