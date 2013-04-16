@@ -1,9 +1,21 @@
 package com.raket.silverstripe.psi;
 
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Condition;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiElementResolveResult;
+import com.intellij.psi.ResolveResult;
 import com.intellij.psi.tree.TokenSet;
+import com.intellij.psi.util.PsiElementFilter;
 import com.intellij.psi.util.PsiTreeUtil;
+import com.jetbrains.php.PhpIndex;
+import com.jetbrains.php.lang.psi.elements.Method;
+import com.jetbrains.php.lang.psi.elements.PhpClass;
+import com.jetbrains.php.lang.psi.elements.impl.ArrayHashElementImpl;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import static com.raket.silverstripe.psi.SilverStripeTypes.*;
 
@@ -88,5 +100,47 @@ public class SilverStripePsiUtil {
 		// we're a non-root statements if we're of type statements, and we have a statements parent
 		return element.getNode().getElementType() == SS_STATEMENTS
 				&& statementsParent != null;
+	}
+
+	public static List<ResolveResult> getFieldMethodResolverResults(Project project, String key) {
+		List<ResolveResult> results = new ArrayList<ResolveResult>();
+
+		PhpIndex phpIndex = PhpIndex.getInstance(project);
+		Collection<PhpClass> classes = phpIndex.getAllSubclasses("Object");
+		Collection<PhpClass> extensionClasses = phpIndex.getAllSubclasses("Extension");
+		classes.addAll(extensionClasses);
+
+		for (PhpClass phpClass : classes) {
+			Method phpMethod = phpClass.findOwnMethodByName(key);
+			if (phpMethod == null) phpMethod = phpClass.findOwnMethodByName("get"+key);
+			if (phpMethod != null) {
+				results.add(new PsiElementResolveResult(phpMethod));
+			}
+			PsiElement[] arraySearches = {
+				phpClass.findOwnFieldByName("db", false),
+				phpClass.findOwnFieldByName("has_one", false),
+				phpClass.findOwnFieldByName("has_many", false),
+				phpClass.findOwnFieldByName("many_many", false),
+				phpClass.findOwnFieldByName("belongs_many_many", false)
+			};
+			for (PsiElement arraySearch : arraySearches) {
+				if (arraySearch != null) {
+					PsiElement[] arrayKeys = PsiTreeUtil.collectElements(arraySearch, new PsiElementFilter() {
+						@Override
+						public boolean isAccepted(PsiElement element) {
+							return element instanceof ArrayHashElementImpl;
+						}
+					});
+					for (PsiElement arrayHash : arrayKeys) {
+						String childText = arrayHash.getFirstChild().getText();
+						childText = childText.substring(1, childText.length()-1);
+						if (childText.equals(key)) {
+							results.add(new PsiElementResolveResult(arrayHash.getFirstChild()));
+						}
+					}
+				}
+			}
+		}
+		return results;
 	}
 }

@@ -6,6 +6,7 @@ import com.intellij.psi.*;
 import com.jetbrains.php.PhpIndex;
 import com.jetbrains.php.lang.psi.elements.Method;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
+import com.raket.silverstripe.psi.SilverStripePsiUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -37,21 +38,7 @@ public class SilverStripeFieldReference extends PsiReferenceBase<PsiElement> imp
 	public ResolveResult[] multiResolve(boolean incompleteCode) {
 		final String key = this.key;
 		final Project project = myElement.getProject();
-		List<ResolveResult> results = new ArrayList<ResolveResult>();
-
-		PhpIndex phpIndex = PhpIndex.getInstance(project);
-		Collection<PhpClass> classes = phpIndex.getAllSubclasses("Object");
-		Collection<PhpClass> extensionClasses = phpIndex.getAllSubclasses("Extension");
-		classes.addAll(extensionClasses);
-
-		for (PhpClass phpClass : classes) {
-			Method phpMethod = phpClass.findOwnMethodByName(key);
-			if (phpMethod == null) phpMethod = phpClass.findOwnMethodByName("get"+key);
-			if (phpMethod != null) {
-				results.add(new PsiElementResolveResult(phpMethod));
-			}
-		}
-
+		List<ResolveResult> results = SilverStripePsiUtil.getFieldMethodResolverResults(project, key);
 		return results.toArray(new ResolveResult[results.size()]);
 	}
 
