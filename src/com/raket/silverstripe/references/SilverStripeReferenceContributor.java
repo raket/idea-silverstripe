@@ -24,10 +24,7 @@ public class SilverStripeReferenceContributor extends PsiReferenceContributor {
 				@Override
 				public PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
 					SilverStripeIncludeImpl ssElement = (SilverStripeIncludeImpl) element;
-					if (ssElement != null) {
-						return new PsiReference[]{new SilverStripeIncludeReference(ssElement, ssElement.getReferenceTextRange())};
-					}
-					return new PsiReference[0];
+					return new PsiReference[]{new SilverStripeIncludeReference(ssElement, ssElement.getReferenceTextRange())};
 				}
 			}
 		);
