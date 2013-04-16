@@ -3,9 +3,12 @@ package com.raket.silverstripe.psi.references;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
+import com.intellij.psi.util.PsiElementFilter;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.php.PhpIndex;
 import com.jetbrains.php.lang.psi.elements.Method;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
+import com.jetbrains.php.lang.psi.elements.impl.ArrayHashElementImpl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -49,6 +52,30 @@ public class SilverStripeVariableReference extends PsiReferenceBase<PsiElement> 
 			if (phpMethod == null) phpMethod = phpClass.findOwnMethodByName("get"+key);
 			if (phpMethod != null) {
 				results.add(new PsiElementResolveResult(phpMethod));
+			}
+			PsiElement[] arraySearches = {
+				phpClass.findOwnFieldByName("db", false),
+				phpClass.findOwnFieldByName("has_one", false),
+				phpClass.findOwnFieldByName("has_many", false),
+				phpClass.findOwnFieldByName("many_many", false),
+				phpClass.findOwnFieldByName("belongs_many_many", false)
+			};
+			for (PsiElement arraySearch : arraySearches) {
+				if (arraySearch != null) {
+					PsiElement[] arrayKeys = PsiTreeUtil.collectElements(arraySearch, new PsiElementFilter() {
+						@Override
+						public boolean isAccepted(PsiElement element) {
+							return element instanceof ArrayHashElementImpl;
+						}
+					});
+					for (PsiElement arrayHash : arrayKeys) {
+						String childText = arrayHash.getFirstChild().getText();
+						childText = childText.substring(1, childText.length()-1);
+						if (childText.equals(key)) {
+							results.add(new PsiElementResolveResult(arrayHash.getFirstChild()));
+						}
+					}
+				}
 			}
 		}
 
