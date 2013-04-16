@@ -207,6 +207,7 @@
                 implementation="com.raket.silverstripe.references.SilverStripeYamlReferenceContributor"/>
         <editorHighlighterProvider filetype="SilverStripe"
                                    implementationClass="com.raket.silverstripe.editor.highlighting.SilverStripeEditorHighlighterProvider"/>
+        <lang.surroundDescriptor language="SilverStripe" implementationClass="com.raket.silverstripe.editor.surround.SilverStripeSurroundDescriptor"/>
         <!--
         <lang.syntaxHighlighterFactory key="SilverStripe" implementationClass="com.raket.silverstripe.editor.highlighting.SilverStripeSyntaxHighlighterFactory"/>
          <codeInsight.lineMarkerProvider language="SilverStripe"
