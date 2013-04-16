@@ -19,6 +19,7 @@
         <ul>
             <li><b>Features</b></li>
             <li>Surround descriptors. By pressing ctrl+alt+t you can surround selected text with either an if, loop or with statement.</li>
+            <li>Expanded variable resolves. Ctrl+clicking variables now also checks the db, has_one, has_many, many_many and belongs_many_many arrays.</li>
         </ul>
          <strong>Version 0.8</strong>
         <ul>
