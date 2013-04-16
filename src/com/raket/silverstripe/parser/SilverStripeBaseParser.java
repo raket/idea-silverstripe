@@ -197,7 +197,7 @@ public class SilverStripeBaseParser implements PsiParser {
 		}
 
 		// Starts a statements block inside a block level
-		if (Arrays.asList(statementContainers).contains(tokenValue))
+		if (Arrays.asList(statementContainers).contains(tokenValue) && !blockLevelStack.isEmpty())
 			blockLevelStack.peek().startStatements();
 
 		// We have an ending statement
