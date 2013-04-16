@@ -73,6 +73,6 @@ public class SilverStripeSurrounder implements Surrounder {
 			}
 		});
 
-		return new TextRange(startPosition+5+tagName.length(),startPosition+10);  //To change body of implemented methods use File | Settings | File Templates.
+		return new TextRange(startPosition+5+tagName.length(),startPosition+8+tagName.length());  //To change body of implemented methods use File | Settings | File Templates.
 	}
 }
