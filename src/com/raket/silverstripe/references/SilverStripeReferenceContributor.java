@@ -6,11 +6,11 @@ import com.intellij.psi.*;
 import com.intellij.util.ProcessingContext;
 import com.raket.silverstripe.SilverStripeLanguage;
 import com.raket.silverstripe.psi.SilverStripeTypes;
-import com.raket.silverstripe.psi.impl.SilverStripeFieldReferenceImpl;
-import com.raket.silverstripe.psi.impl.SilverStripeIncludeImpl;
-import com.raket.silverstripe.psi.impl.SilverStripeRequireImpl;
-import com.raket.silverstripe.psi.impl.SilverStripeVariableImpl;
+import com.raket.silverstripe.psi.impl.*;
 import com.raket.silverstripe.psi.references.SilverStripeIncludeReference;
+import com.raket.silverstripe.psi.references.SilverStripeRequireReference;
+import com.raket.silverstripe.psi.references.SilverStripeThemeDirReference;
+import com.raket.silverstripe.psi.references.SilverStripeThemeFilePathReference;
 import org.jetbrains.annotations.NotNull;
 //import org.jetbrains.yaml.psi.impl.YAMLCompoundValueImpl;
 
@@ -46,5 +46,31 @@ public class SilverStripeReferenceContributor extends PsiReferenceContributor {
 		registrar.registerReferenceProvider(
 			fieldCapture,
 			new SilverStripeVariablePsiReferenceProvider());
+
+		PsiElementPattern.Capture<SilverStripeThemeDirImpl> themeDirCapture = PlatformPatterns.psiElement(
+			SilverStripeThemeDirImpl.class).withLanguage(SilverStripeLanguage.INSTANCE);
+		registrar.registerReferenceProvider(
+			themeDirCapture,
+			new PsiReferenceProvider() {
+				@NotNull
+				@Override
+				public PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
+					SilverStripeThemeDirImpl se = (SilverStripeThemeDirImpl) element;
+					return new PsiReference[]{new SilverStripeThemeDirReference(se)};
+				}
+			});
+
+		PsiElementPattern.Capture<SilverStripeThemeFilePathImpl> themePathCapture = PlatformPatterns.psiElement(
+			SilverStripeThemeFilePathImpl.class).withLanguage(SilverStripeLanguage.INSTANCE);
+		registrar.registerReferenceProvider(
+			themePathCapture,
+			new PsiReferenceProvider() {
+				@NotNull
+				@Override
+				public PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
+					SilverStripeThemeFilePathImpl se = (SilverStripeThemeFilePathImpl) element;
+					return new PsiReference[]{new SilverStripeThemeFilePathReference(se)};
+				}
+			});
 	}
 }

@@ -83,6 +83,10 @@ public class SilverStripeParserDefinition implements ParserDefinition{
 			return new SilverStripeVariableImpl(node);
 		} else if (type == SilverStripeTypes.SS_FIELD_REFERENCE) {
 			return new SilverStripeFieldReferenceImpl(node);
+		} else if (type == SilverStripeTypes.SS_THEME_DIR) {
+			return new SilverStripeThemeDirImpl(node);
+		} else if (type == SilverStripeTypes.SS_THEME_FILE_PATH) {
+			return new SilverStripeThemeFilePathImpl(node);
 		}
         return new SilverStripePsiElement(node);
     }

@@ -24,6 +24,8 @@ public interface SilverStripeTypes {
 	IElementType SS_REQUIRE_STATEMENT = new SilverStripeElementType("Require statement");
 	IElementType NAMED_VAR = new SilverStripeElementType("Variable");
 	IElementType SS_FIELD_REFERENCE = new SilverStripeElementType("Field Reference");
+	IElementType SS_THEME_FILE_PATH = new SilverStripeElementType("Path to theme file");
+	IElementType SS_THEME_DIR = new SilverStripeElementType("Theme dir");
 
 
 
@@ -38,6 +40,7 @@ public interface SilverStripeTypes {
 	IElementType SS_STRING = new SilverStripeTokenType("String");
 	IElementType SS_VAR_START = new SilverStripeTokenType("$");
 	IElementType SS_VAR = new SilverStripeTokenType("Variable");
+	IElementType SS_THEME_VAR = new SilverStripeTokenType("Theme dir");
 	IElementType SS_IDENTIFIER = new SilverStripeTokenType("Identifier");
 	IElementType SS_CACHED_KEYWORD = new SilverStripeTokenType("Cached keyword");
 	IElementType SS_TRANSLATION_KEYWORD = new SilverStripeTokenType("Translation keyword");

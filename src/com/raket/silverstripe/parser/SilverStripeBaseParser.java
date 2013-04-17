@@ -35,6 +35,8 @@ public class SilverStripeBaseParser implements PsiParser {
 	private IElementType blockType;
 	private TokenSet blockStartTokens;
 	private PsiBuilder.Marker identifierMarker;
+	private boolean markingTheme;
+	private PsiBuilder.Marker themeMarker = null;
 
 	private void getNextTokenValue(PsiBuilder builder) {
 		PsiBuilder.Marker rb = builder.mark();
@@ -101,6 +103,10 @@ public class SilverStripeBaseParser implements PsiParser {
 			commentMarker = builder.mark();
 			markingComment = true;
 		}
+		if (type.equals(SS_THEME_VAR)) {
+			themeMarker = builder.mark();
+			markingTheme = true;
+		}
 		
 		if (type.equals(SS_BLOCK_START) && !markingBlock) {
 			nextToken = getNextToken(builder);
@@ -112,6 +118,10 @@ public class SilverStripeBaseParser implements PsiParser {
 				markingBlock = true;
 			}
 		}
+
+		if (markingTheme && !type.equals(SS_THEME_VAR) && !type.equals(SS_STRING)) {
+			markingTheme = false;
+		}
 	}
 
 	private void afterConsume(PsiBuilder builder, IElementType type) {
@@ -119,6 +129,17 @@ public class SilverStripeBaseParser implements PsiParser {
 			varMarker.done(NAMED_VAR);
 			markingVar = false;
 			identifierMarker = null;
+		}
+
+		if (markingTheme && type.equals(SS_THEME_VAR)) {
+			themeMarker.done(SS_THEME_DIR);
+		}
+
+		if (type.equals(SS_STRING) && markingTheme) {
+			PsiBuilder.Marker fullTheme = themeMarker.precede();
+			fullTheme.done(SS_THEME_FILE_PATH);
+			markingTheme = false;
+			themeMarker = null;
 		}
 
 		if (type.equals(SS_IDENTIFIER)) {
@@ -163,8 +184,6 @@ public class SilverStripeBaseParser implements PsiParser {
 					}
 					else {
 						blockStack.pop();
-						//blockLevel.getFirst().error(message("ss.parsing.unclosed.block", blockLevel.getSecond()));
-						//blockMarker.precede().error(message("ss.parsing.unexpected.end.statement.expected", "end_"+blockLevel.getSecond()));
 						if (statementMarker != null)
 							statementMarker.drop();
 					}

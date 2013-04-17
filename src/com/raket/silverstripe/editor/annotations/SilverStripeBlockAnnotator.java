@@ -3,12 +3,14 @@ package com.raket.silverstripe.editor.annotations;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
+import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.TokenSet;
 
 import static com.raket.silverstripe.SilverStripeBundle.message;
 import static com.raket.silverstripe.psi.SilverStripeTypes.*;
 
+import com.raket.silverstripe.project.SilverStripeProjectComponent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -17,6 +19,9 @@ import java.util.Collections;
 public class SilverStripeBlockAnnotator implements Annotator {
 	@Override
 	public void annotate(@NotNull final PsiElement element, @NotNull AnnotationHolder holder) {
+		Project project = element.getProject();
+		SilverStripeProjectComponent projectComponent = (SilverStripeProjectComponent) project.getComponent("SilverStripeProjectComponent");
+		projectComponent.getProjectDir();
 		if (element.getNode().getElementType().equals(SS_BLOCK_END_STATEMENT)) {
 			PsiElement myElement = element.getParent();
 			if (!myElement.getNode().getElementType().equals(SS_BLOCK_STATEMENT)) {

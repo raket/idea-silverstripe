@@ -61,7 +61,7 @@ public class SilverStripeSyntaxHighlighter extends SyntaxHighlighterBase {
 		SS_COMMENT_END
 	);
 
-	private static final TokenSet VARS = TokenSet.create(SS_BLOCK_VAR, SS_VAR, SS_INCLUDE_FILE);
+	private static final TokenSet VARS = TokenSet.create(SS_BLOCK_VAR, SS_VAR, SS_INCLUDE_FILE, SS_THEME_VAR);
 	private static final TokenSet KEYWORDS = TokenSet.create(SS_START_KEYWORD, SS_END_KEYWORD, SS_IF_KEYWORD
 		, SS_ELSE_IF_KEYWORD, SS_ELSE_KEYWORD, SS_SIMPLE_KEYWORD, SS_INCLUDE_KEYWORD, SS_CACHED_KEYWORD,
 		SS_TRANSLATION_KEYWORD, SS_REQUIRE_KEYWORD);

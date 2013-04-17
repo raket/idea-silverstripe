@@ -107,6 +107,7 @@ SS_TRANSLATION_IDENTIFIER= [a-zA-Z]+\.[a-zA-Z]+
 %state SS_SINGLE
 %state SS_REQUIRE_CONTENT
 %state SS_IDENTIFIER
+%state SS_THEME_STRING
 %%
 
 <YYINITIAL> {
@@ -244,6 +245,14 @@ SS_TRANSLATION_IDENTIFIER= [a-zA-Z]+\.[a-zA-Z]+
 }
 
 <SS_VAR> {
+	"$ThemeDir"   {
+	if (stack.size() == 1) {
+		yypushstate(SS_THEME_STRING); return SilverStripeTypes.SS_THEME_VAR;
+	}
+	else {
+	   return SilverStripeTypes.SS_VAR;
+	}
+}
 	{SS_VAR_START_DELIMITER} { return SilverStripeTypes.SS_VAR_START_DELIMITER; }
 	"$"   { return SilverStripeTypes.SS_VAR_START; }
 	{VAR} { return SilverStripeTypes.SS_VAR; }
@@ -253,6 +262,11 @@ SS_TRANSLATION_IDENTIFIER= [a-zA-Z]+\.[a-zA-Z]+
 	{SS_VAR_END_DELIMITER} { yypopstate(); return SilverStripeTypes.SS_VAR_END_DELIMITER; }
 	{SS_BLOCK_END}                      { yycleanstates(); return SilverStripeTypes.SS_BLOCK_END; }
 	.                                   { yypopstate(); yypushback(yylength()); }
+}
+
+<SS_THEME_STRING> {
+  {SS_STRING_NO_QUOTES} { yypopstate(); return SilverStripeTypes.SS_STRING; }
+  .                                   { yypopstate(); yypushback(yylength()); }
 }
 
 <SS_METHOD_ARGUMENTS> {
