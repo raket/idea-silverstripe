@@ -14,7 +14,7 @@ public class SilverStripeParserStatements {
 	static HashMap<IElementType, TokenSet> STATEMENT_MAP = new HashMap<IElementType, TokenSet>();
 	static HashMap<IElementType, IElementType> BLOCK_TYPE_MAP = new HashMap<IElementType, IElementType>();
 
-	static TokenSet BLOCK_STATEMENTS = TokenSet.create(SS_IF_STATEMENT, SS_BLOCK_START_STATEMENT);
+	static TokenSet BLOCK_STATEMENTS = TokenSet.create(SS_IF_STATEMENT, SS_BLOCK_START_STATEMENT, SS_CACHED_STATEMENT);
 	static TokenSet ifStatementTokens = TokenSet.orSet(TokenSet.create(SS_BLOCK_START, SS_AND_OR_OPERATOR,
 		SS_COMPARISON_OPERATOR, SS_STRING), varTokens);
 	static TokenSet elseTokens = TokenSet.create(SS_BLOCK_START, SS_ELSE_KEYWORD);
