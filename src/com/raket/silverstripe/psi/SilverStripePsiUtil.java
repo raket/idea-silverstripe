@@ -16,6 +16,7 @@ import com.jetbrains.php.lang.psi.elements.impl.ArrayHashElementImpl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.raket.silverstripe.psi.SilverStripeTypes.*;
 
@@ -104,42 +105,51 @@ public class SilverStripePsiUtil {
 
 	public static List<ResolveResult> getFieldMethodResolverResults(Project project, String key) {
 		List<ResolveResult> results = new ArrayList<ResolveResult>();
+		List<String> checkedClasses = new ArrayList<String>();
+		List<String> checkedArrayClasses = new ArrayList<String>();
+		CopyOnWriteArrayList<PhpClass> iteratorList;
 
 		PhpIndex phpIndex = PhpIndex.getInstance(project);
 		Collection<PhpClass> classes = phpIndex.getAllSubclasses("Object");
 		Collection<PhpClass> extensionClasses = phpIndex.getAllSubclasses("Extension");
 		classes.addAll(extensionClasses);
+		iteratorList = new CopyOnWriteArrayList<PhpClass>(classes);
 
-		for (PhpClass phpClass : classes) {
-			Method phpMethod = phpClass.findOwnMethodByName(key);
-			if (phpMethod == null) phpMethod = phpClass.findOwnMethodByName("get"+key);
-			if (phpMethod != null) {
-				results.add(new PsiElementResolveResult(phpMethod));
-			}
-/*			PsiElement[] arraySearches = {
-				phpClass.findOwnFieldByName("db", false),
-				phpClass.findOwnFieldByName("has_one", false),
-				phpClass.findOwnFieldByName("has_many", false),
-				phpClass.findOwnFieldByName("many_many", false),
-				phpClass.findOwnFieldByName("belongs_many_many", false)
-			};
-			for (PsiElement arraySearch : arraySearches) {
-				if (arraySearch != null) {
-					PsiElement[] arrayKeys = PsiTreeUtil.collectElements(arraySearch, new PsiElementFilter() {
-						@Override
-						public boolean isAccepted(PsiElement element) {
-							return element instanceof ArrayHashElementImpl;
-						}
-					});
-					for (PsiElement arrayHash : arrayKeys) {
-						String childText = arrayHash.getFirstChild().getText();
-						childText = childText.substring(1, childText.length()-1);
-						if (childText.equals(key)) {
-							results.add(new PsiElementResolveResult(arrayHash.getFirstChild()));
+		for (PhpClass phpClass : iteratorList) {
+			if (phpClass != null) {
+				Method phpMethod = phpClass.findOwnMethodByName(key);
+				if (phpMethod == null) phpMethod = phpClass.findOwnMethodByName("get"+key);
+				if (phpMethod != null && !checkedClasses.contains(phpClass.getName())) {
+					checkedClasses.add(phpClass.getName());
+					results.add(new PsiElementResolveResult(phpMethod));
+				}
+
+				PsiElement[] arraySearches = {
+					phpClass.findOwnFieldByName("db", false),
+					phpClass.findOwnFieldByName("has_one", false),
+					phpClass.findOwnFieldByName("has_many", false),
+					phpClass.findOwnFieldByName("many_many", false),
+					phpClass.findOwnFieldByName("belongs_many_many", false)
+				};
+				for (PsiElement arraySearch : arraySearches) {
+					if (arraySearch != null) {
+						PsiElement[] arrayKeys = PsiTreeUtil.collectElements(arraySearch, new PsiElementFilter() {
+							@Override
+							public boolean isAccepted(PsiElement element) {
+								return element instanceof ArrayHashElementImpl;
+							}
+						});
+						for (PsiElement arrayHash : arrayKeys) {
+							String childText = arrayHash.getFirstChild().getText();
+							childText = childText.substring(1, childText.length()-1);
+							if (childText.equals(key) && !checkedArrayClasses.contains(phpClass.getName())) {
+								checkedArrayClasses.add(phpClass.getName());
+								results.add(new PsiElementResolveResult(arrayHash.getFirstChild()));
+							}
 						}
 					}
 				}
-			}*/
+			}
 		}
 		return results;
 	}

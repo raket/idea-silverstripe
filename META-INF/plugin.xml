@@ -15,6 +15,12 @@
     <category>Custom Languages</category>
     <change-notes>
         <![CDATA[
+        <strong>Version 0.8.3</strong>
+        <ul>
+            <li><b>Features</b></li>
+            <li>Fix bug in translation identifiers</li>
+            <li>Expanded variable resolves. Ctrl+clicking variables now also checks the db, has_one, has_many, many_many and belongs_many_many arrays.</li>
+        </ul>
         <strong>Version 0.8.2</strong>
         <ul>
             <li><b>Features</b></li>
@@ -25,7 +31,6 @@
             <li><b>Features</b></li>
             <li>Total parser rewrite</li>
             <li>Surround descriptors. By pressing ctrl+alt+t you can surround selected text with either an if, loop or with statement.</li>
-            <li>Expanded variable resolves. Ctrl+clicking variables now also checks the db, has_one, has_many, many_many and belongs_many_many arrays.</li>
         </ul>
         <strong>Version 0.8</strong>
         <ul>
@@ -142,7 +147,7 @@
     </change-notes>
 
     <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Build+Number+Ranges for description -->
-    <idea-version since-build="110.000"/>
+    <idea-version since-build="129.196"/>
 
     <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
          on how to target different products -->

@@ -88,7 +88,7 @@ SS_DOUBLE=\"
 SS_SINGLE=\'
 SS_STRING_NO_QUOTES=[^\"\'\)]*
 SS_FREE_STRING= [^,)%!=><|&]+
-SS_TRANSLATION_IDENTIFIER= [a-zA-Z]+\.[a-zA-Z]+
+SS_TRANSLATION_IDENTIFIER= [a-zA-Z_]+\.[a-zA-Z_]+
 
 %state SS_VAR
 %state SS_BLOCK_START

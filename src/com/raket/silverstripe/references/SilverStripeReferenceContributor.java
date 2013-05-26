@@ -1,5 +1,6 @@
 package com.raket.silverstripe.references;
 
+import com.intellij.openapi.util.TextRange;
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.patterns.PsiElementPattern;
 import com.intellij.psi.*;
@@ -11,7 +12,10 @@ import com.raket.silverstripe.psi.references.SilverStripeIncludeReference;
 import com.raket.silverstripe.psi.references.SilverStripeRequireReference;
 import com.raket.silverstripe.psi.references.SilverStripeThemeDirReference;
 import com.raket.silverstripe.psi.references.SilverStripeThemeFilePathReference;
+import org.apache.commons.lang.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 //import org.jetbrains.yaml.psi.impl.YAMLCompoundValueImpl;
 
 public class SilverStripeReferenceContributor extends PsiReferenceContributor {
@@ -68,7 +72,23 @@ public class SilverStripeReferenceContributor extends PsiReferenceContributor {
 				@NotNull
 				@Override
 				public PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
+					ArrayList<SilverStripeThemeFilePathReference> references = new ArrayList<SilverStripeThemeFilePathReference>();
 					SilverStripeThemeFilePathImpl se = (SilverStripeThemeFilePathImpl) element;
+					String filePath = se.getName();
+					if (filePath != null) {
+						String[] pathSegments = filePath.split("/");
+						ArrayUtils.reverse(pathSegments);
+						int startOffset = (filePath.length()+9);
+						for (String pathSegment : pathSegments) {
+							if (!pathSegment.isEmpty()) {
+								references.add(new SilverStripeThemeFilePathReference(se, new TextRange(startOffset - pathSegment.length(), startOffset)));
+								startOffset = (startOffset - pathSegment.length() - 1);
+							} else {
+								startOffset--;
+							}
+						}
+						return references.toArray(new PsiReference[references.size()]);
+					}
 					return new PsiReference[]{new SilverStripeThemeFilePathReference(se)};
 				}
 			});
