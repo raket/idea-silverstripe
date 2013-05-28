@@ -39,6 +39,9 @@ public class SilverStripePsiUtil {
 			SS_BLOCK_END_STATEMENT
 	);
 
+	private static Collection<PhpClass> PHP_CLASSES = null;
+	private static PhpClass[] CLASS_LIST = null;
+
 	/**
 	 * Used to determine if an element is part of an "open tag" (i.e. "{{#open}}" or "{{^openInverse}}")
 	 * If the given element is the descendant of an {@link com.dmarcotte.handlebars.parsing.HbTokenTypes#OPEN_BLOCK_STACHE}
@@ -107,15 +110,21 @@ public class SilverStripePsiUtil {
 		List<ResolveResult> results = new ArrayList<ResolveResult>();
 		List<String> checkedClasses = new ArrayList<String>();
 		List<String> checkedArrayClasses = new ArrayList<String>();
-		CopyOnWriteArrayList<PhpClass> iteratorList;
+		//CopyOnWriteArrayList<PhpClass> iteratorList;
 
 		PhpIndex phpIndex = PhpIndex.getInstance(project);
-		Collection<PhpClass> classes = phpIndex.getAllSubclasses("Object");
+/*		Collection<PhpClass> classes = phpIndex.getAllSubclasses("Object");
 		Collection<PhpClass> extensionClasses = phpIndex.getAllSubclasses("Extension");
 		classes.addAll(extensionClasses);
-		iteratorList = new CopyOnWriteArrayList<PhpClass>(classes);
 
-		for (PhpClass phpClass : iteratorList) {
+		*/
+		if (PHP_CLASSES == null) {
+			PHP_CLASSES = phpIndex.getAllSubclasses("Object");
+			PHP_CLASSES.addAll(phpIndex.getAllSubclasses("Extension"));
+			CLASS_LIST = PHP_CLASSES.toArray(new PhpClass[PHP_CLASSES.size()]);
+		}
+		//iteratorList = new CopyOnWriteArrayList<PhpClass>(classes);
+		for (PhpClass phpClass : CLASS_LIST) {
 			if (phpClass != null) {
 				Method phpMethod = phpClass.findOwnMethodByName(key);
 				if (phpMethod == null) phpMethod = phpClass.findOwnMethodByName("get"+key);
