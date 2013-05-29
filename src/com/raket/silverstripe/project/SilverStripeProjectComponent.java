@@ -65,6 +65,20 @@ public class SilverStripeProjectComponent implements ProjectComponent {
 				PsiFile variableFile = variable.getContainingFile();
 				PsiDirectory dir = variableFile.getContainingDirectory();
 				String dirName = variable.getParent().getLastChild().getText();
+				PsiDirectory parentDir = dir;
+				String parentDirName = "";
+				int depth = 0;
+				while (parentDir != null && depth < 2) {
+					parentDirName = parentDir.getName();
+					if (parentDirName.equals("tests")) {
+						break;
+					}
+					parentDir = parentDir.getParentDirectory();
+					depth++;
+				}
+				if (parentDirName.equals("tests")) {
+					continue;
+				}
 				if (!dirName.equals(";") && dirName.length() > 0) {
 					assert dir != null;
 					projectDir = dir.getVirtualFile();
