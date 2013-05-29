@@ -106,6 +106,24 @@ public class SilverStripePsiUtil {
 				&& statementsParent != null;
 	}
 
+	private static boolean checkClass(PhpClass phpClass) {
+		String[] implementsList = phpClass.getInterfaceNames();
+		PhpClass parentClass = phpClass.getSuperClass();
+		boolean addToList = true;
+		for (String impInterface : implementsList) {
+			if (impInterface.contains("TestOnly")) {
+				addToList = false;
+				break;
+			}
+		}
+
+		if (parentClass != null && parentClass.getName().contains("BuildTask"))  {
+			addToList = false;
+		}
+
+		return addToList;
+	}
+
 	public static List<ResolveResult> getFieldMethodResolverResults(Project project, String key) {
 		List<ResolveResult> results = new ArrayList<ResolveResult>();
 		List<String> checkedClasses = new ArrayList<String>();
@@ -125,9 +143,16 @@ public class SilverStripePsiUtil {
 		}
 		//iteratorList = new CopyOnWriteArrayList<PhpClass>(classes);
 		for (PhpClass phpClass : CLASS_LIST) {
+			if (!checkClass(phpClass))
+				continue;
+
+			String workingKey = key;
 			if (phpClass != null) {
-				Method phpMethod = phpClass.findOwnMethodByName(key);
-				if (phpMethod == null) phpMethod = phpClass.findOwnMethodByName("get"+key);
+				Method phpMethod = phpClass.findOwnMethodByName(workingKey);
+				if (phpMethod == null) {
+					workingKey = "get"+key;
+					phpMethod = phpClass.findOwnMethodByName(workingKey);
+				}
 				if (phpMethod != null && !checkedClasses.contains(phpClass.getName())) {
 					checkedClasses.add(phpClass.getName());
 					results.add(new PsiElementResolveResult(phpMethod));
