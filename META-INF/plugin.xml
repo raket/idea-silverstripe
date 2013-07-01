@@ -1,7 +1,7 @@
 <idea-plugin version="2" url="https://github.com/raket/idea-silverstripe">
     <id>com.raket.silverstripe</id>
     <name>SilverStripe Template Language Support</name>
-    <version>0.9</version>
+    <version>0.9.1</version>
     <vendor logo="/icons/raket.png" email="marcus@raket.nu" url="https://github.com/raket/idea-silverstripe">Raket
         Webbyrå
     </vendor>
@@ -15,6 +15,11 @@
     <category>Custom Languages</category>
     <change-notes>
         <![CDATA[
+        <strong>Version 0.9.1</strong>
+        <ul>
+            <li><b>Features</b></li>
+            <li>Bundled live templates</li>
+        </ul>
         <strong>Version 0.9</strong>
         <ul>
             <li><b>Features</b></li>
@@ -229,5 +234,7 @@
          <codeInsight.lineMarkerProvider language="SilverStripe"
                                          implementationClass="com.raket.silverstripe.editor.lines.SilverStripeLineMarkerProvider"/>
         -->
+        <liveTemplateContext id="SilverStripe" implementation="com.raket.silverstripe.editor.livetemplates.SilverStripeTemplateContext"/>
+        <defaultLiveTemplatesProvider implementation="com.raket.silverstripe.editor.livetemplates.SilverStripeTemplatesProvider"/>
     </extensions>
 </idea-plugin>
