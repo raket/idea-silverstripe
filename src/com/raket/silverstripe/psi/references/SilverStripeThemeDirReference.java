@@ -45,12 +45,16 @@ public class SilverStripeThemeDirReference extends PsiReferenceBase<PsiElement> 
 			VirtualFile[] subDirs = themeDir.getChildren();
 			if (subDirs != null) {
 				for (VirtualFile subDir : subDirs) {
-					results.add(new PsiElementResolveResult(psiManager.findDirectory(subDir)));
+					PsiDirectory foundDir = psiManager.findDirectory(subDir);
+					if (foundDir != null)
+						results.add(new PsiElementResolveResult(foundDir));
 				}
 			}
 		}
 		if (projectDir != null) {
-			results.add(new PsiElementResolveResult(psiManager.findDirectory(projectDir)));
+			PsiDirectory foundProjectDir = psiManager.findDirectory(projectDir);
+			if (foundProjectDir != null)
+				results.add(new PsiElementResolveResult(foundProjectDir));
 		}
 		return results.toArray(new ResolveResult[results.size()]);
 	}
