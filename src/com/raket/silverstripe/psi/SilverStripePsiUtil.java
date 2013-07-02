@@ -139,7 +139,8 @@ public class SilverStripePsiUtil {
 		if (PHP_CLASSES == null) {
 			PHP_CLASSES = phpIndex.getAllSubclasses("Object");
 			PHP_CLASSES.addAll(phpIndex.getAllSubclasses("Extension"));
-			CLASS_LIST = PHP_CLASSES.toArray(new PhpClass[PHP_CLASSES.size()]);
+			if (CLASS_LIST == null)
+				CLASS_LIST = PHP_CLASSES.toArray(new PhpClass[PHP_CLASSES.size()]);
 		}
 		//iteratorList = new CopyOnWriteArrayList<PhpClass>(classes);
 		for (PhpClass phpClass : CLASS_LIST) {
