@@ -21,6 +21,7 @@
             <li>Fixed concurrency issues in variable resolves</li>
             <li>Exclude test classes from resolves</li>
             <li>Create live template context for SilverStripe templates</li>
+            <li>Bundled live templates for all the common tags</li>
         </ul>
         <strong>Version 0.9</strong>
         <ul>
