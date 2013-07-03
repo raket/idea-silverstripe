@@ -53,6 +53,9 @@ public class SilverStripeRequireReference extends PsiReferenceBase<PsiElement> i
 	public ResolveResult[] multiResolve(boolean incompleteCode) {
 		Project project = myElement.getProject();
 		List<ResolveResult> results = new ArrayList<ResolveResult>();
+		if (key == null || key.trim().equals("")) {
+			return results.toArray(new ResolveResult[results.size()]);
+		}
 		String[] cssParts = key.split("\\.");
 		String fileExtemsion = cssParts[cssParts.length-1];
 		if (key != null && cssParts.length > 0 && (fileExtemsion.equals("css") || fileExtemsion.equals("js"))) {

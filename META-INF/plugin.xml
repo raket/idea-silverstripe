@@ -18,7 +18,9 @@
         <strong>Version 0.9.1</strong>
         <ul>
             <li><b>Features</b></li>
-            <li>Bundled live templates</li>
+            <li>Fixed concurrency issues in variable resolves</li>
+            <li>Exclude test classes from resolves</li>
+            <li>Create live template context for SilverStripe templates</li>
         </ul>
         <strong>Version 0.9</strong>
         <ul>

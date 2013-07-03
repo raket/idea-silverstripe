@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templateSet group="SilverStripe">
     <!--Contributed by Pawel Kozlowski-->
-    <template name="loop"
-              value="&#60;&#37; loop &#36;$loopVar$ &#37;&#62;&#10;    $END$&#10;  &#60;&#37; end_loop &#37;&#62;" description="A loop block" toReformat="true" toShortenFQNames="true">
-        <variable name="loopVar" expression="" defaultValue="" alwaysStopAt="true" />
-        <context>
-            <option name="SILVERSTRIPE" value="true" />
-        </context>
-    </template>
     <template name="if"
               value="&#60;&#37; if $$$ifVar$ &#37;&#62;&#10;    $END$&#10;&#60;&#37; end_if &#37;&#62;" description="An if block" toReformat="true" toShortenFQNames="true">
         <variable name="ifVar" expression="" defaultValue="" alwaysStopAt="true" />
@@ -15,7 +8,77 @@
             <option name="SILVERSTRIPE" value="true" />
         </context>
     </template>
-<!--    <template name="ngdlf" value="function (scope, element, attrs$ctrl$) {&#10;$END$    &#10;}" description="A linking function in a directive." toReformat="true" toShortenFQNames="true">
+    <template name="elseif"
+              value="&#60;&#37; else_if $$$ifVar$ &#37;&#62;" description="An else if tag" toReformat="true" toShortenFQNames="true">
+        <variable name="ifVar" expression="" defaultValue="" alwaysStopAt="true" />
+        <context>
+            <option name="SILVERSTRIPE" value="true" />
+        </context>
+    </template>
+    <template name="else"
+              value="&#60;&#37; else &#37;&#62;" description="An else tag" toReformat="true" toShortenFQNames="true">
+        <context>
+            <option name="SILVERSTRIPE" value="true" />
+        </context>
+    </template>
+    <template name="with"
+              value="&#60;&#37; with $$$withVar$ &#37;&#62;&#10;    $END$&#10;&#60;&#37; end_with &#37;&#62;" description="A with block. Used to change scope." toReformat="true" toShortenFQNames="true">
+        <variable name="withVar" expression="" defaultValue="" alwaysStopAt="true" />
+        <context>
+            <option name="SILVERSTRIPE" value="true" />
+        </context>
+    </template>
+    <template name="loop"
+              value="&#60;&#37; loop $$$loopVar$ &#37;&#62;&#10;    $END$&#10;  &#60;&#37; end_loop &#37;&#62;" description="A loop block. Used to loop over collections." toReformat="true" toShortenFQNames="true">
+        <variable name="loopVar" expression="" defaultValue="" alwaysStopAt="true" />
+        <context>
+            <option name="SILVERSTRIPE" value="true" />
+        </context>
+    </template>
+    <template name="cached"
+              value="&#60;&#37; cached $$$cachedVar$ &#37;&#62;&#10;    $END$&#10;  &#60;&#37; end_cached &#37;&#62;" description="A cached block. Code within this block is cached." toReformat="true" toShortenFQNames="true">
+        <variable name="cachedVar" expression="" defaultValue="" alwaysStopAt="true" />
+        <context>
+            <option name="SILVERSTRIPE" value="true" />
+        </context>
+    </template>
+    <template name="inc"
+              value="&#60;&#37; include $incFile$ &#37;&#62;" description="Include file from Includes dir." toReformat="true" toShortenFQNames="true">
+        <variable name="incFile" expression="" defaultValue="" alwaysStopAt="true" />
+        <context>
+            <option name="SILVERSTRIPE" value="true" />
+        </context>
+    </template>
+    <template name="reqcss"
+              value="&#60;&#37; require themedCSS('$incFile$') &#37;&#62;" description="Require Theme CSS." toReformat="true" toShortenFQNames="true">
+        <variable name="incFile" expression="" defaultValue="" alwaysStopAt="true" />
+        <context>
+            <option name="SILVERSTRIPE" value="true" />
+        </context>
+    </template>
+    <template name="reqjs"
+              value="&#60;&#37; require javascript('$incFile$') &#37;&#62;" description="Require JS." toReformat="true" toShortenFQNames="true">
+        <variable name="incFile" expression="" defaultValue="" alwaysStopAt="true" />
+        <context>
+            <option name="SILVERSTRIPE" value="true" />
+        </context>
+    </template>
+    <template name="base"
+              value="&#60;&#37; base_tag &#37;&#62;" description="HTML Base tag." toReformat="true" toShortenFQNames="true">
+        <context>
+            <option name="SILVERSTRIPE" value="true" />
+        </context>
+    </template>
+    <template name="_t"
+              value="&#60;&#37;t $identifier$ '$string$' &#37;&#62;" description="Translation tag. Used with lang yaml files." toReformat="true" toShortenFQNames="true">
+        <variable name="identifier" expression="" defaultValue="" alwaysStopAt="true" />
+        <variable name="string" expression="" defaultValue="" alwaysStopAt="true" />
+        <context>
+            <option name="SILVERSTRIPE" value="true" />
+        </context>
+    </template>
+
+    <!--    <template name="ngdlf" value="function (scope, element, attrs$ctrl$) {&#10;$END$    &#10;}" description="A linking function in a directive." toReformat="true" toShortenFQNames="true">
         <variable name="ctrl" expression="" defaultValue="" alwaysStopAt="true" />
         <context>
             <option name="HTML_TEXT" value="false" />
