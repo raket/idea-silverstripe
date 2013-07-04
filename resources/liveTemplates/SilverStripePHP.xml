@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templateSet group="SilverStripe PHP">
+    <!--Contributed by Pawel Kozlowski-->
+    <template name="has_many"
+              value="private static $has_many = array();" description="Has many" toReformat="true" toShortenFQNames="true">
+        <context>
+            <option name="PHP" value="true" />
+        </context>
+    </template>
+</templateSet>

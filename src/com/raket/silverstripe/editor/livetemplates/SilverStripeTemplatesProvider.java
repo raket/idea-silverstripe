@@ -12,7 +12,7 @@ public class SilverStripeTemplatesProvider implements DefaultLiveTemplatesProvid
 
 	@Override
 	public String[] getDefaultLiveTemplateFiles() {
-		return new String[]{"liveTemplates/SilverStripe"};
+		return new String[]{"liveTemplates/SilverStripe","liveTemplates/SilverStripePHP"};
 	}
 
 	@Override

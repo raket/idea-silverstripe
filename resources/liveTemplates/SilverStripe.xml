@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<templateSet group="SilverStripe">
+<templateSet group="SilverStripe Template">
     <!--Contributed by Pawel Kozlowski-->
     <template name="if"
               value="&#60;&#37; if $$$ifVar$ &#37;&#62;&#10;    $END$&#10;&#60;&#37; end_if &#37;&#62;" description="An if block" toReformat="true" toShortenFQNames="true">
