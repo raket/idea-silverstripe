@@ -1,7 +1,7 @@
 # [SilverStripe](http://silverstripe.org/) template plugin for Jetbrains IDEs
 
-IDEA-SilverStripe adds support for [SilverStripe](http://silverstripe.org/) templates to IDEs based on the IntelliJ IDEA platform (IntelliJ IDEA, IDEA Community Edition, RubyMine, PhpStorm, WebStorm, PyCharm, AppCode).
-The primary focus is PHPStorm since SilverStripe is a PHP framework but the plugin should work in all the versions.
+IDEA-SilverStripe adds support for [SilverStripe](http://silverstripe.org/) templates to PHP IDEs based on the IntelliJ IDEA platform (IntelliJ IDEA, IDEA Community Edition and PhpStorm).
+The primary focus is PHPStorm since SilverStripe is a PHP framework.
 
 ## Installing
 
