@@ -239,5 +239,6 @@
         -->
         <liveTemplateContext id="SilverStripe" implementation="com.raket.silverstripe.editor.livetemplates.SilverStripeTemplateContext"/>
         <defaultLiveTemplatesProvider implementation="com.raket.silverstripe.editor.livetemplates.SilverStripeTemplatesProvider"/>
+        <php.typeProvider2 implementation="com.raket.silverstripe.providers.type.DataObjectTypeProvider"/>
     </extensions>
 </idea-plugin>

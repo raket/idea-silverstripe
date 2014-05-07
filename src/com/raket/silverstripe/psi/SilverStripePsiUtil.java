@@ -11,7 +11,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.php.PhpIndex;
 import com.jetbrains.php.lang.psi.elements.Method;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
-import com.jetbrains.php.lang.psi.elements.impl.ArrayHashElementImpl;
+import com.jetbrains.php.lang.psi.elements.ArrayHashElement;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -171,7 +171,7 @@ public class SilverStripePsiUtil {
 						PsiElement[] arrayKeys = PsiTreeUtil.collectElements(arraySearch, new PsiElementFilter() {
 							@Override
 							public boolean isAccepted(PsiElement element) {
-								return element instanceof ArrayHashElementImpl;
+								return element instanceof ArrayHashElement;
 							}
 						});
 						for (PsiElement arrayHash : arrayKeys) {

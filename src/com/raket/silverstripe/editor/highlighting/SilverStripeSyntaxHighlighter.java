@@ -10,7 +10,6 @@ import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
-import com.jetbrains.php.lang.highlighter.PhpHighlightingData;
 import com.raket.silverstripe.SilverStripeLexer;
 import com.raket.silverstripe.psi.SilverStripeTypes;
 import org.jetbrains.annotations.NotNull;
@@ -27,7 +26,7 @@ public class SilverStripeSyntaxHighlighter extends SyntaxHighlighterBase {
 	public static final TextAttributesKey COMMENT = createTextAttributesKey("SS_COMMENT", XmlHighlighterColors.HTML_COMMENT);
 	public static final TextAttributesKey SS_BLOCK = createTextAttributesKey("SS_BLOCK", DefaultLanguageHighlighterColors.BRACES);
 	public static final TextAttributesKey SS_KEYWORD = createTextAttributesKey("SS_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD);
-	public static final TextAttributesKey SS_BLOCK_VAR_KEY = createTextAttributesKey("SS_BLOCK_VAR", PhpHighlightingData.VAR);
+	public static final TextAttributesKey SS_BLOCK_VAR_KEY = createTextAttributesKey("SS_BLOCK_VAR",DefaultLanguageHighlighterColors.LOCAL_VARIABLE);
 
 	static final TextAttributesKey BAD_CHARACTER = createTextAttributesKey("SS_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER);
 
