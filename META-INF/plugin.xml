@@ -1,7 +1,7 @@
 <idea-plugin version="2" url="https://github.com/raket/idea-silverstripe">
     <id>com.raket.silverstripe</id>
     <name>SilverStripe Template Language Support</name>
-    <version>0.9.1</version>
+    <version>0.9.1.1</version>
     <vendor logo="/icons/raket.png" email="marcus@raket.nu" url="https://github.com/raket/idea-silverstripe">Raket
         Webbyrå
     </vendor>
@@ -15,6 +15,13 @@
     <category>Custom Languages</category>
     <change-notes>
         <![CDATA[
+        <strong>Version 0.9.1.1</strong>
+        <ul>
+            <li><b>Bugfixes</b></li>
+            <li>Fix null pointer in class search</li>
+            <li>Set never changed in cache provider</li>
+            <li>Tested with PHPStorm 7.1.4 and 8.0.1</li>
+        </ul>
         <strong>Version 0.9.1</strong>
         <ul>
             <li><b>Features</b></li>
