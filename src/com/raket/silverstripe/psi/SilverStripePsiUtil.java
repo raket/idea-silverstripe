@@ -143,6 +143,7 @@ public class SilverStripePsiUtil {
 				CLASS_LIST = PHP_CLASSES.toArray(new PhpClass[PHP_CLASSES.size()]);
 		}
 		//iteratorList = new CopyOnWriteArrayList<PhpClass>(classes);
+		if (CLASS_LIST == null) return results;
 		for (PhpClass phpClass : CLASS_LIST) {
 			if (!checkClass(phpClass))
 				continue;

@@ -4,6 +4,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
+import com.intellij.openapi.util.ModificationTracker;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
@@ -130,7 +131,7 @@ public class SilverStripeFileUtil {
 						VirtualFile versionFile = LocalFileSystem.getInstance().findFileByPath(project.getBasePath()
 							+ File.separatorChar + "framework" + File.separatorChar + "silverstripe_version");
 						PsiFile contents = PsiManager.getInstance(project).findFile(versionFile);
-						return CachedValueProvider.Result.create(contents);
+						return CachedValueProvider.Result.create(contents, ModificationTracker.NEVER_CHANGED);
 					}
 				}
 			);
