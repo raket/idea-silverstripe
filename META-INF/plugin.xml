@@ -1,7 +1,7 @@
 <idea-plugin version="2" url="https://github.com/raket/idea-silverstripe">
     <id>com.raket.silverstripe</id>
     <name>SilverStripe Template Language Support</name>
-    <version>0.9.1.1</version>
+    <version>0.9.1.2</version>
     <vendor logo="/icons/raket.png" email="marcus@raket.nu" url="https://github.com/raket/idea-silverstripe">Raket
         Webbyrå
     </vendor>
@@ -15,6 +15,12 @@
     <category>Custom Languages</category>
     <change-notes>
         <![CDATA[
+        <strong>Version 0.9.1.2</strong>
+        <ul>
+            <li><b>Bugfixes</b></li>
+            <li>Turn off type provider. Fixes #66</li>
+            <li>Fix version file not found. Fixes #67</li>
+        </ul>
         <strong>Version 0.9.1.1</strong>
         <ul>
             <li><b>Bugfixes</b></li>
@@ -243,9 +249,9 @@
         <lang.syntaxHighlighterFactory key="SilverStripe" implementationClass="com.raket.silverstripe.editor.highlighting.SilverStripeSyntaxHighlighterFactory"/>
          <codeInsight.lineMarkerProvider language="SilverStripe"
                                          implementationClass="com.raket.silverstripe.editor.lines.SilverStripeLineMarkerProvider"/>
+        <php.typeProvider2 implementation="com.raket.silverstripe.providers.type.DataObjectTypeProvider"/>
         -->
         <liveTemplateContext id="SilverStripe" implementation="com.raket.silverstripe.editor.livetemplates.SilverStripeTemplateContext"/>
         <defaultLiveTemplatesProvider implementation="com.raket.silverstripe.editor.livetemplates.SilverStripeTemplatesProvider"/>
-        <php.typeProvider2 implementation="com.raket.silverstripe.providers.type.DataObjectTypeProvider"/>
     </extensions>
 </idea-plugin>

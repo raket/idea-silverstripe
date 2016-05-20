@@ -27,12 +27,10 @@ public class SilverStripeComparisonAnnotator implements Annotator {
 			final Project project = element.getProject();
 			String varValue = element.getText();
 			if (varValue.startsWith("<") || varValue.startsWith(">")) {
-				PsiFile version = SilverStripeFileUtil.getVersion(project);
 				SilverStripeProjectComponent projectComponent = (SilverStripeProjectComponent)project.getComponent("SilverStripeProjectComponent");
 				String versionText = projectComponent.getSilverStripeVersion();
 				if (versionText != null && !versionText.isEmpty()) {
 					String[] parts = versionText.split("\\.");
-					boolean versionBool = false;
 					if (parts.length > 0) {
 						int majorVersion = Integer.parseInt(parts[0]);
 						int minorVersion = Integer.parseInt(parts[1]);

@@ -130,7 +130,10 @@ public class SilverStripeFileUtil {
 					public Result<PsiFile> compute() {
 						VirtualFile versionFile = LocalFileSystem.getInstance().findFileByPath(project.getBasePath()
 							+ File.separatorChar + "framework" + File.separatorChar + "silverstripe_version");
-						PsiFile contents = PsiManager.getInstance(project).findFile(versionFile);
+						PsiFile contents = null;
+						if (versionFile != null) {
+							contents = PsiManager.getInstance(project).findFile(versionFile);
+						}
 						return CachedValueProvider.Result.create(contents, ModificationTracker.NEVER_CHANGED);
 					}
 				}

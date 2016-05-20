@@ -61,8 +61,12 @@ public class SilverStripeRequireReference extends PsiReferenceBase<PsiElement> i
 		if (key != null && cssParts.length > 0 && (fileExtemsion.equals("css") || fileExtemsion.equals("js"))) {
 			VirtualFile cssFile = LocalFileSystem.getInstance().findFileByPath(project.getBasePath()
 				+ File.separatorChar + key);
-			PsiFile cssPsiFile = PsiManager.getInstance(project).findFile(cssFile);
-			results.add(new PsiElementResolveResult(cssPsiFile));
+			if (cssFile != null) {
+				PsiFile cssPsiFile = PsiManager.getInstance(project).findFile(cssFile);
+				if (cssPsiFile != null) {
+					results.add(new PsiElementResolveResult(cssPsiFile));
+				}
+			}
 		}
 		// We just have a name, no file ending
 		else {
