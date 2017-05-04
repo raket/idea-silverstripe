@@ -39,7 +39,8 @@ public class SilverStripeEnterHandler extends EnterHandlerDelegateAdapter {
 		 */
 		if (file instanceof SilverStripeFile
 				&& isBetweenHbTags(editor, file, caretOffset.get())) {
-			originalHandler.execute(editor, dataContext);
+
+			originalHandler.execute(editor, null, dataContext);
 			return EnterHandlerDelegate.Result.Default;
 		}
 		return EnterHandlerDelegate.Result.Continue;

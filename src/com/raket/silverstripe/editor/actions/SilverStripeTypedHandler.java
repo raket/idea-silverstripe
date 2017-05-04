@@ -44,6 +44,7 @@ public class SilverStripeTypedHandler extends TypedHandlerDelegate {
 			PsiDocumentManager.getInstance(project).commitAllDocuments();
 
 			// we suppress the built-in "}" auto-complete when we see "{{"
+			/**/
 			if (c == '{') {
 				// since the "}" autocomplete is built in to IDEA, we need to hack around it a bit by
 				// intercepting it before it is inserted, doing the work of inserting for the user
